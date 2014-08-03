@@ -24,6 +24,14 @@
   },
   "dependencies": {
     "react": "~0.10.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "express": "~4.0.0",
+    "request": "~2.34.0",
+    "querystring": "~0.2.0"
   },  
   "devDependencies": {
     "react-tools": "~0.11.1",
