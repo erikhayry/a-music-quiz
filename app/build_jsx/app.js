@@ -7,8 +7,8 @@
 var MusicApp = React.createClass({displayName: 'MusicApp',
   render: function() {
     return (
-      React.DOM.div( {className:"main"}, 
-        " Hello World testing "
+      React.DOM.div( {className:"m-app"}, 
+        Game(null )
       )
     );
   }

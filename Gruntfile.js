@@ -2,11 +2,17 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-react');
     grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    // Do grunt-related things in here
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        watch: {
+          jsx: {
+            files: ['app/jsx//**/*.jsx'],
+            tasks: ['build']
+          }
+        },
 
         react: {
             dynamic_mappings: {
@@ -28,6 +34,7 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.registerTask('serve', ['watch']);
     grunt.registerTask('build', ['react']);
     grunt.registerTask('test', ['build', 'karma']);
 
