@@ -8,7 +8,7 @@ var MusicApp = React.createClass({
   render: function() {
     return (
       <div className='m-app'>
-        <Game />
+        <GameView />
       </div>
     );
   }

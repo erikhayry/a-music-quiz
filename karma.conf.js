@@ -15,13 +15,14 @@ module.exports = function(config) {
     files: [
         'test_libs/react-with-addons.js',
         'app/build_jsx/**/*.js',
+        'app/scripts/**/*.js',
         'test/**/*.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      
+      'app/vendor/**/*.js',
     ],
 
 

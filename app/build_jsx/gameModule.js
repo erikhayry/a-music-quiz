@@ -19,7 +19,7 @@
 	}
 
 
-var Game = React.createClass({displayName: 'Game',
+var GameView = React.createClass({displayName: 'GameView',
 	getInitialState: function() {
     	return {
     		answered: false
