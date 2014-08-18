@@ -1,15 +1,8 @@
 "use strict";
-
 var Game = function(id){
 	this.id = id;
 	this.currentOptionsIndex = -1;
-	this.options = [
-					{trackUrl: 'http:url.to.track1.mp3', trackName: 'Creep'},	
-					{trackUrl: 'http:url.to.track2.mp3', trackName: 'Silent Shout'},	
-					{trackUrl: 'http:url.to.track3.mp3', trackName: 'Paper Planes'},	
-					{trackUrl: 'http:url.to.track4.mp3', trackName: 'Air'},	
-					{trackUrl: 'http:url.to.track5.mp3', trackName: '2012'},	
-					];
+	this.options = spotifyService.getTracks();
 	this.points = 0;
 }
 

@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-react');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-browserify');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -27,11 +28,13 @@ module.exports = function(grunt) {
                 ]
             }
         },
+
         karma: {
             unit: {
                 configFile: 'karma.conf.js'
             }
-        }
+        },
+     
     });
 
     grunt.registerTask('serve', ['watch']);

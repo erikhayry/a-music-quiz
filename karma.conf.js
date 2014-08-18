@@ -8,13 +8,13 @@ module.exports = function(config) {
     basePath: '',
 
     // frameworks to use
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'sinon-chai'],
 
 
     // list of files / patterns to load in the browser
     files: [
         'test_libs/react-with-addons.js',
-        'app/build_jsx/**/*.js',
+        'app/build_jsx/**/*.js',        
         'app/scripts/**/*.js',
         'test/**/*.js'
     ],

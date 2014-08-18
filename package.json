@@ -50,6 +50,7 @@
     "karma-safari-launcher": "~0.1.1",
     "phantomjs": "~1.9.1-0",
     "grunt-karma": "~0.6.2",
-    "grunt-react": "~0.6.0"
+    "grunt-react": "~0.6.0",
+    "karma-sinon-chai": "~0.2.0"
   }
 }
