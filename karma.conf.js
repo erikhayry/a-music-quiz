@@ -16,7 +16,8 @@ module.exports = function(config) {
         'test_libs/react-with-addons.js',
         'app/build_jsx/**/*.js',        
         'app/scripts/**/*.js',
-        'test/**/*.js'
+        'test/**/*.js',
+        'scripts/vendor/q.js'
     ],
 
 

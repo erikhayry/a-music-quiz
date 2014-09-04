@@ -1,19 +1,24 @@
 "use strict";
 describe("Game Model", function(){
-    var _game, _spotifyServiceGetTracks;
+    var _game, _spotifyServiceGetTracks, _sandbox;
 
-    //stubs, spies and mocks
-    _spotifyServiceGetTracks = sinon.stub(spotifyService, "getTracks").returns([
-        {trackUrl: 'http:url.to.track1.mp3', trackName: 'Creep'},   
-        {trackUrl: 'http:url.to.track2.mp3', trackName: 'Silent Shout'},    
-        {trackUrl: 'http:url.to.track3.mp3', trackName: 'Paper Planes'},    
-        {trackUrl: 'http:url.to.track4.mp3', trackName: 'Air'}, 
-        {trackUrl: 'http:url.to.track5.mp3', trackName: '2012'}
-    ]);
+    beforeEach(function() {    
+        _sandbox = sinon.sandbox.create();
+        //stubs, spies and mocks
+        _sandbox.stub(spotifyService, "getTracks").returns([
+            {trackUrl: 'http:url.to.track1.mp3', trackName: 'Creep'},   
+            {trackUrl: 'http:url.to.track2.mp3', trackName: 'Silent Shout'},    
+            {trackUrl: 'http:url.to.track3.mp3', trackName: 'Paper Planes'},    
+            {trackUrl: 'http:url.to.track4.mp3', trackName: 'Air'}, 
+            {trackUrl: 'http:url.to.track5.mp3', trackName: '2012'}
+        ]);         
 
+        _game = new Game('123');
 
-    beforeEach(function() {
-        _game = new Game('123'); 
+    });
+
+    afterEach(function () {
+        _sandbox.restore();
     });
 
     it("Should be defined and have inital properties set", function() {
@@ -31,14 +36,30 @@ describe("Game Model", function(){
 });
 
 describe("Game.getNextOptions()", function(){
-    var _game, _options;
+    var _game, _options, _sandbox;
 
-    beforeEach(function() {
+    beforeEach(function() {    
+        _sandbox = sinon.sandbox.create();
+        //stubs, spies and mocks
+        _sandbox.stub(spotifyService, "getTracks").returns([
+            {trackUrl: 'http:url.to.track1.mp3', trackName: 'Creep'},   
+            {trackUrl: 'http:url.to.track2.mp3', trackName: 'Silent Shout'},    
+            {trackUrl: 'http:url.to.track3.mp3', trackName: 'Paper Planes'},    
+            {trackUrl: 'http:url.to.track4.mp3', trackName: 'Air'}, 
+            {trackUrl: 'http:url.to.track5.mp3', trackName: '2012'}
+        ]);         
+
         _game = new Game('123');
-        _options = _game.getNextOptions();
+        _options = _game.getNextOptions()
+
     });
 
-    it("should return next game options property values", function(){        
+    afterEach(function () {
+        _sandbox.restore();
+    });
+
+    it("should return next game options property values", function(){
+
         expect(_game.currentOptionsIndex).toEqual(0);
         expect(_options.trackUrl).toEqual('http:url.to.track1.mp3');
         expect(_options.trackName).toEqual('Creep');
