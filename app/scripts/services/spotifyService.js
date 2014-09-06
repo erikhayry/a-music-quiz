@@ -5,7 +5,7 @@ var spotifyService = (function(id){
 
 	function _getPlaylists(userId){
 		var _deferred = Q.defer();
-		
+
 		microAjax('/v1/users/' + userId + '/playlists', function (res) {
 			var _playLists = []; 
 		    res.items.forEach(function(playlist){

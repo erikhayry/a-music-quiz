@@ -1,35 +1,62 @@
 "use strict";
-var Game = function(id){
-	this.id = id;
-	this.currentOptionsIndex = -1;
-	this.options = spotifyService.getTracks();
-	this.points = 0;
+var Game = function(playerName, playlistId){
+	var _this = this;
+	_this.id = playlistId;
+	_this.player = playerName;
+	_this.currentOptionsIndex = -1;
+	_this.points = 0;
 }
 
-Game.prototype.getNextOptions = function(){
-	var _optionsLength = this.options.length;
+Game.prototype.getTracks = function(){
+	var _this = this,
+		_deferred = Q.defer();
 	
-	if(this.currentOptionsIndex + 1 >= _optionsLength){
-		this.currentOptionsIndex = -1;
-		return undefined;
+	if(_this.options){
+		_deferred.resolve(_this.options);
 	}
-
-	this.currentOptionsIndex++;	
-
-	var _nextOptions = {
-		trackUrl: this.options[this.currentOptionsIndex].trackUrl,
-		trackName: this.options[this.currentOptionsIndex].trackName,
-		options: [
-			this.options[this.currentOptionsIndex].trackName
-		]
+	
+	else{
+		spotifyService.getTracks(_this.playerName, _this.playlistId).then(function(tracks){
+			_this.options = tracks;
+			_deferred.resolve(_this.options);	
+		});		
 	}
+	
+	return _deferred.promise;
+}
 
-	while(_nextOptions.options.length < 4){
-		var _randomIndex = Math.floor(Math.random() * _optionsLength);
-		if(_nextOptions.options.indexOf(this.options[_randomIndex].trackName) === -1){
-			_nextOptions.options.push(this.options[_randomIndex].trackName);
+Game.prototype.getNextTrack = function(){
+	var _this = this,
+		_deferred = Q.defer();
+
+	_this.getTracks().then(function(tracks){
+		_optionsLength = tracks.length;
+		
+		if(_this.currentOptionsIndex + 1 >= _optionsLength){
+			_this.currentOptionsIndex = -1;
+			return undefined;
 		}
-	}
 
-	return _nextOptions;
+		_this.currentOptionsIndex++;	
+
+		var _nextTrack = {
+			track: tracks[_this.currentOptionsIndex],
+			options: [
+				tracks[_this.currentOptionsIndex].artist.id
+			]
+		}
+
+		while(_nextTrack.options.length < 4){
+			var _randomIndex = Math.floor(Math.random() * _optionsLength);
+			if(_nextTrack.options.indexOf(tracks[_randomIndex].artist.id) === -1){
+				_nextTrack.options.push(tracks[_randomIndex].artist.id);
+			}
+		}
+
+		_deferred.resolve(_nextTrack);
+	})
+
+
+    
+    return _deferred.promise;	
 }
