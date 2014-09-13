@@ -7,7 +7,7 @@ var Game = function(playerName, playlistId){
 	_this.points = 0;
 }
 
-Game.prototype.getTracks = function(){
+Game.prototype.getAllTracks = function(){
 	var _this = this,
 		_deferred = Q.defer();
 	
@@ -29,31 +29,30 @@ Game.prototype.getNextTrack = function(){
 	var _this = this,
 		_deferred = Q.defer();
 
-	_this.getTracks().then(function(tracks){
-		_optionsLength = tracks.length;
-		
+	_this.getAllTracks().then(function(tracks){
+		var _optionsLength = tracks.length;
 		if(_this.currentOptionsIndex + 1 >= _optionsLength){
 			_this.currentOptionsIndex = -1;
-			return undefined;
+			_deferred.resolve(undefined);
 		}
+		else{
+			_this.currentOptionsIndex++;	
 
-		_this.currentOptionsIndex++;	
-
-		var _nextTrack = {
-			track: tracks[_this.currentOptionsIndex],
-			options: [
-				tracks[_this.currentOptionsIndex].artist.id
-			]
-		}
-
-		while(_nextTrack.options.length < 4){
-			var _randomIndex = Math.floor(Math.random() * _optionsLength);
-			if(_nextTrack.options.indexOf(tracks[_randomIndex].artist.id) === -1){
-				_nextTrack.options.push(tracks[_randomIndex].artist.id);
+			var _nextTrack = {
+				current: tracks[_this.currentOptionsIndex],
+				options: [
+					tracks[_this.currentOptionsIndex].artist.name
+				]
 			}
-		}
 
-		_deferred.resolve(_nextTrack);
+			while(_nextTrack.options.length < 4){
+				var _randomIndex = Math.floor(Math.random() * _optionsLength);
+				if(_nextTrack.options.indexOf(tracks[_randomIndex].artist.name) === -1){
+					_nextTrack.options.push(tracks[_randomIndex].artist.name);
+				}
+			}
+			_deferred.resolve(_nextTrack);			
+		}
 	})
 
 

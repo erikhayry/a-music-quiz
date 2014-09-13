@@ -1,96 +1,6 @@
 "use strict";
 describe("Game Model", function(){
-    var _clock, _game, _spotifyServiceGetTracks, _sandbox,
-        _spotifyTracks = [
-                    {
-                        'artist': {
-                            'name': 'Radiohead',
-                            'id': 1
-                        },
-                        'track': {
-                            'name': 'Creep',
-                            'url': 'http:url.to.track1.mp3'
-                        }
-                    },
-                    {
-                        'artist': {
-                            'name': 'The Knife',
-                            'id': 2
-                        },
-                        'track': {
-                            'name': 'Silent Shout',
-                            'url': 'http:url.to.track2.mp3'
-                        }
-                    },
-                    {
-                        'artist': {
-                            'name': 'Radiohead',
-                            'id': 1
-                        },
-                        'track': {
-                            'name': 'Knives Out',
-                            'url': 'http:url.to.track3.mp3'
-                        }
-                    },
-                    {
-                        'artist': {
-                            'name': 'M.I.A',
-                            'id': 3
-                        },
-                        'track': {
-                            'name': 'Paper Planes',
-                            'url': 'http:url.to.track4.mp3'
-                        }
-                    },
-                    {
-                        'artist': {
-                            'name': 'Beck',
-                            'id': 4
-                        },
-                        'track': {
-                            'name': 'Air',
-                            'url': 'http:url.to.track5.mp3'
-                        }
-                    },
-                    {
-                        'artist': {
-                            'name': 'Bob Hund',
-                            'id': 5
-                        },
-                        'track': {
-                            'name': 'Fantastiskt',
-                            'url': 'http:url.to.track6.mp3'
-                        }
-                    },
-                    {
-                        'artist': {
-                            'name': 'Fever Ray',
-                            'id': 6
-                        },
-                        'track': {
-                            'name': 'Kepp the Streets Empty',
-                            'url': 'http:url.to.track7.mp3'
-                        }
-                    }   
-        ];
-
-    beforeEach(function() {    
-        _sandbox = sinon.sandbox.create();
-        //stubs, spies and mocks
-        _clock = sinon.useFakeTimers();
-        _sandbox.stub(spotifyService, "getTracks", function(){
-            var _deferred = Q.defer();
-            _deferred.resolve(_spotifyTracks);
-            return _deferred.promise;
-        });    
-
-
-    });
-
-    afterEach(function () {
-        _sandbox.restore();
-        _clock.restore();
-    });
+    var _game, _spotifyServiceGetTracks;
 
     it("Should be defined and have inital properties set", function() {
         _game = new Game('erikportin', '123');
@@ -104,66 +14,123 @@ describe("Game Model", function(){
 
     it("Should be able to add to points", function(){
         _game = new Game('erikportin', '123');    
-        _clock.tick(); 
         _game.points += 3000;
         expect(_game.points).toEqual(3000);
     })
 });
 
-/*describe("Game.getNextTrack()", function(){
-    var _game, _options, _sandbox;
+describe("Game.getNextTrack()", function(){
+    var _game, _getNextTrack, _sandbox, _clock, _options, 
+        _spotifyServiceStub = [
+            {artist: {name: 'Artist Name 1'}, track: {name: 'Track Name 1', url: 'http://d318706lgtcm8e.cloudfront.net/mp3-preview/1'}},
+            {artist: {name: 'Artist Name 2'}, track: {name: 'Track Name 2', url: 'http://d328706lgtcm8e.cloudfront.net/mp3-preview/2'}},
+            {artist: {name: 'Artist Name 3'}, track: {name: 'Track Name 3', url: 'http://d338706lgtcm8e.cloudfront.net/mp3-preview/3'}},
+            {artist: {name: 'Artist Name 4'}, track: {name: 'Track Name 4', url: 'http://d348706lgtcm8e.cloudfront.net/mp3-preview/4'}},
+            {artist: {name: 'Artist Name 5'}, track: {name: 'Track Name 5', url: 'http://d358706lgtcm8e.cloudfront.net/mp3-preview/5'}},
+            {artist: {name: 'Artist Name 6'}, track: {name: 'Track Name 6', url: 'http://d368706lgtcm8e.cloudfront.net/mp3-preview/6'}}
+        ]
 
     beforeEach(function() {    
         _sandbox = sinon.sandbox.create();
+        
+        _clock = sinon.useFakeTimers(); 
+
         //stubs, spies and mocks
-       
+        _sandbox.stub(spotifyService, "getTracks", function(){
+            var _deferred = Q.defer();
+            _deferred.resolve(_spotifyServiceStub);
+            return _deferred.promise;
+        });
+
         _game = new Game('erikportin', '123');
-        _options = _game.getNextTrack()
+        _getNextTrack = _game.getNextTrack()
+
+        jasmine.addMatchers({
+            toBeUnique: function () {
+                return {
+                    compare: function (actual, expected) {
+                        var n = 0;
+                        expected.forEach(function(string){
+                            if(string === actual){
+                                n++;
+                            }
+                        })
+
+                        return {
+                            pass: n === 1
+                        };
+                    }
+                };
+            }
+        });
+
     });
 
     afterEach(function () {
         _sandbox.restore();
+        _clock.restore();
     });
+
 
     it("should return next game options property values", function(){
+        _getNextTrack.then(function(options){
+            _options = options;
+        })
+        _clock.tick();
+    
         expect(_game.currentOptionsIndex).toEqual(0);
-        expect(_options.track.url).toEqual('http:url.to.track2.mp3');
-        expect(_options.track.name).toEqual('Silent Shout');
-        expect(_options.artist.id).toContain('Silent Shout');  
-        expect(_options.artist.name).toContain('Silent Shout');    
+        expect(_options.current.track.url).toEqual('http://d318706lgtcm8e.cloudfront.net/mp3-preview/1');
+        expect(_options.current.track.name).toEqual('Track Name 1');
+        expect(_options.current.artist.name).toEqual('Artist Name 1');
+
+        expect(_options.options.length).toEqual(4);
+        expect(_options.options.indexOf('Artist Name 1') > -1).toEqual(true);
     });
 
-    it("should return unique game option values", function(){        
-        var _unqiueOptions = [];
-        
-        _options.options.forEach(function(option){
-            if(_unqiueOptions.indexOf(option) === -1){
-                _unqiueOptions.push(option)
-            }
+    it("should return unique game option values", function(){     
+        _getNextTrack.then(function(options){
+            _options = options;
         })
-
-        expect(_unqiueOptions.length).toEqual(4);
+        _clock.tick();       
+         expect(_options.options[0]).toBeUnique(_options.options);
+         expect(_options.options[1]).toBeUnique(_options.options);
+         expect(_options.options[2]).toBeUnique(_options.options);
+         expect(_options.options[3]).toBeUnique(_options.options);
     });
 
     it("should return following game options property values", function(){
-        var _options2 = _game.getNextTrack();      
+        _getNextTrack.then(function(options){
+
+        })
+        _game.getNextTrack().then(function(options){
+            _options = options;
+        })
+        _clock.tick();
+        
         expect(_game.currentOptionsIndex).toEqual(1);
-        expect(_options2.track.url).toEqual('http:url.to.track2.mp3');
-        expect(_options2.track.name).toEqual('Silent Shout');
-        expect(_options2.artist.id).toContain('Silent Shout');  
-        expect(_options2.artist.name).toContain('Silent Shout');  
+        expect(_options.current.track.url).toEqual('http://d328706lgtcm8e.cloudfront.net/mp3-preview/2');
+        expect(_options.current.track.name).toEqual('Track Name 2');
+        expect(_options.current.artist.name).toEqual('Artist Name 2');
     });
 
     it("should return undefined and reset current options index if no more options", function(){
-        var _optionsLast = _game.getNextTrack();   
-        
-        _optionsLast = _game.getNextTrack();
-        _optionsLast = _game.getNextTrack();
-        _optionsLast = _game.getNextTrack();
-        _optionsLast = _game.getNextTrack();
-
+        _getNextTrack.then(function(options){
+        })
+        _game.getNextTrack().then(function(options){
+        })
+        _game.getNextTrack().then(function(options){
+        })
+        _game.getNextTrack().then(function(options){
+        })
+        _game.getNextTrack().then(function(options){
+        })
+        _game.getNextTrack().then(function(options){
+        })       
+        _game.getNextTrack().then(function(options){
+            _options = options       
+        })            
+        _clock.tick();
         expect(_game.currentOptionsIndex).toEqual(-1);
-        expect(_optionsLast).toBeUndefined();   
-    });    
-
-})*/
+        expect(_options).toBeUndefined();   
+    });   
+})
