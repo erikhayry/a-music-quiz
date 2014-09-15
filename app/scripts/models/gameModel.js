@@ -7,6 +7,26 @@ var Game = function(playerName, playlistId){
 	_this.points = 0;
 }
 
+function _shuffle(array) {
+  var _currentIndex = array.length, _temporaryValue, _randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== _currentIndex ) {
+
+    // Pick a remaining element...
+    _randomIndex = Math.floor(Math.random() * _currentIndex);
+    _currentIndex -= 1;
+
+    // And swap it with the current element.
+    _temporaryValue = array[_currentIndex];
+    array[_currentIndex] = array[_randomIndex];
+    array[_randomIndex] = _temporaryValue;
+  }
+
+
+  return array;
+}
+
 Game.prototype.getAllTracks = function(){
 	var _this = this,
 		_deferred = Q.defer();
@@ -41,17 +61,21 @@ Game.prototype.getNextTrack = function(){
 			var _nextTrack = {
 				current: tracks[_this.currentOptionsIndex],
 				options: [
-					tracks[_this.currentOptionsIndex].artist.name
+					tracks[_this.currentOptionsIndex].artist.id
 				]
 			}
 
 			while(_nextTrack.options.length < 4){
 				var _randomIndex = Math.floor(Math.random() * _optionsLength);
-				if(_nextTrack.options.indexOf(tracks[_randomIndex].artist.name) === -1){
-					_nextTrack.options.push(tracks[_randomIndex].artist.name);
+				if(_nextTrack.options.indexOf(tracks[_randomIndex].artist.id) === -1){
+					_nextTrack.options.push(tracks[_randomIndex].artist.id);
 				}
 			}
-			_deferred.resolve(_nextTrack);			
+
+			//shuffle options
+			_shuffle(_nextTrack.options)
+
+			_deferred.resolve(_nextTrack);
 		}
 	})
 

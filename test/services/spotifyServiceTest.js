@@ -3,7 +3,7 @@ describe("Spotify Service", function(){
     //stubs, spies and mocks
     var _clock,
         _sandbox,
-        _microAjaxStub,
+        _ajaxStub,
         _trackApiCallData = {
                                 "href": "https://api.spotify.com/v1/users/wizzler/playlists/6Df19VKaShrdWrAnHinwVO/tracks",
                                 "items": [ 
@@ -521,7 +521,7 @@ describe("Spotify Service", function(){
     beforeEach(function(){
       _clock = sinon.useFakeTimers();
       _sandbox = sinon.sandbox.create();        
-      _microAjaxStub = _sandbox.stub(window, "microAjax", function(url, callback){
+      _ajaxStub = _sandbox.stub(window, "ajax", function(url, callback){
           var _returnData, _deferredType = 'resolve';
 
           switch(url){
@@ -560,10 +560,12 @@ describe("Spotify Service", function(){
         expect(_tracks.length).toBe(5);
 
         expect(_tracks[0].artist.name).toEqual('Artist Name 1');
+        expect(_tracks[0].artist.id).toEqual('1');
         expect(_tracks[0].track.name).toEqual('Track Name 1');
         expect(_tracks[0].track.url).toEqual('http://d318706lgtcm8e.cloudfront.net/mp3-preview/1');
 
         expect(_tracks[4].artist.name).toEqual('Artist Name 5');
+        expect(_tracks[4].artist.id).toEqual('5');
         expect(_tracks[4].track.name).toEqual('Track Name 5');
         expect(_tracks[4].track.url).toEqual('http://d318706lgtcm8e.cloudfront.net/mp3-preview/5');
 
@@ -575,7 +577,7 @@ describe("Spotify Service", function(){
           _tracks = tracks;
         })
         _clock.tick();
-        expect(_microAjaxStub.called).toBe(false);
+        expect(_ajaxStub.called).toBe(false);
         expect(_tracks.length).toBe(5);
       });      
     });
@@ -596,5 +598,15 @@ describe("Spotify Service", function(){
         expect(_playlists[0].tracks).toEqual(30);
         expect(_playlists[0].owner).toEqual('wizzler');
       }); 
-    });   
+    });
+
+    describe("getPlaylists()", function(){
+      it("should return playlists", function() {
+        var _tokens = spotifyService.getTokens('?key1=value1&access_token=access_token_value&key2=value2&refresh_token=refresh_token_value');
+
+        expect(_tokens.refreshToken).toEqual('refresh_token_value');
+        expect(_tokens.accessToken).toEqual('access_token_value');
+
+      }); 
+    });       
 })
