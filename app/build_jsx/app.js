@@ -3,6 +3,7 @@
  */
 
 'use strict';
+var loginUrl = '';
 
 var MusicApp = React.createClass({displayName: 'MusicApp',
   render: function() {
@@ -14,4 +15,52 @@ var MusicApp = React.createClass({displayName: 'MusicApp',
   }
 });
 
-if(document.getElementById('app')) React.renderComponent(MusicApp(null ), document.getElementById('app')); // jshint ignore:line
+var LoginLink = React.createClass({displayName: 'LoginLink',
+  render: function() {
+    return (
+      React.DOM.a( {href:loginUrl}, "Login")
+    );
+  }
+});
+
+document.body.onload = function(){
+	function login(){
+		ajax('api/login', '').then(function(data){
+			loginUrl = data['redirect_url'];
+			if(document.getElementById('app')) {
+				React.renderComponent(LoginLink(null ), document.getElementById('app')); // jshint ignore:line
+			}
+		})		
+	}
+
+	var tokens = spotifyService.getTokens(window.location.search);
+
+	if(tokens.accessToken && tokens.refreshToken){	
+
+		spotifyService.getUser(tokens.accessToken).then(function(userData){
+			spotifyService.getPlaylists(userData.id).then(function(playlists){
+
+				//Start game
+				var _game = new Game(userData.id, playlists[2].id)
+				_game.getNextTrack().then(function(tracks){
+					console.log(tracks)
+					React.renderComponent(GameView( {game:_game, options:tracks}), document.getElementById('app')); // jshint ignore:line
+				});
+
+
+			}).fail(function(failed){
+				console.log(failed)
+			})
+
+		}, function(error){
+			console.log(error)
+			login();
+		})		
+	}
+	else{
+		login();
+	}
+	
+}
+
+

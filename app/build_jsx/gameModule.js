@@ -6,13 +6,6 @@
 
 	var game = {
 		round : {
-			options : [
-				{name: 'Radiohead', id: 'radiohead'},
-				{name: 'Kent', id: 'kent'},
-				{name: 'Bjork', id: 'bjork'},
-				{name: 'Bob Hund', id: 'bobhund'}
-			],
-			answer: 'radiohead',
 			points: 30000
 		},
 		points: 48000
@@ -34,14 +27,21 @@ var GameView = React.createClass({displayName: 'GameView',
     },
 
 	render: function() {
+		console.log('render')
+		console.log(this.props)
+		var _game = this.props.game;
+		var _options = this.props.options.options;
+
+		console.log(_options)
+		
 		return (
 		  React.DOM.div(null, 
 		  	React.DOM.div(null, 
-		   		GamePoints( {points:game.points})
+		   		GamePoints( {points:_game.points})
 		  	),
 		  	React.DOM.div(null, 
-		  		RoundPoints( {points:game.round.points, stop:this.state.answered}),
-		    	RoundOptions( {options:game.round.options, answered:this.state.answered, onAnswer:this.handleAnswer})
+		  		//RoundPoints( {points:_game.round.points, stop:this.state.answered}),
+		    	RoundOptions( {options:_options, answered:this.state.answered, onAnswer:this.handleAnswer})
 		    )
 		  )
 	)}

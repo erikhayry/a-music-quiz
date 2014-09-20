@@ -28,6 +28,7 @@ function _shuffle(array) {
 }
 
 Game.prototype.getAllTracks = function(){
+	console.log('getAllTracks')
 	var _this = this,
 		_deferred = Q.defer();
 	
@@ -36,7 +37,7 @@ Game.prototype.getAllTracks = function(){
 	}
 	
 	else{
-		spotifyService.getTracks(_this.playerName, _this.playlistId).then(function(tracks){
+		spotifyService.getTracks(_this.player, _this.id).then(function(tracks){
 			_this.options = tracks;
 			_deferred.resolve(_this.options);	
 		});		
@@ -46,10 +47,12 @@ Game.prototype.getAllTracks = function(){
 }
 
 Game.prototype.getNextTrack = function(){
+	console.log('getNextTrack')
 	var _this = this,
 		_deferred = Q.defer();
 
 	_this.getAllTracks().then(function(tracks){
+		console.log(tracks)
 		var _optionsLength = tracks.length;
 		if(_this.currentOptionsIndex + 1 >= _optionsLength){
 			_this.currentOptionsIndex = -1;
@@ -60,15 +63,19 @@ Game.prototype.getNextTrack = function(){
 
 			var _nextTrack = {
 				current: tracks[_this.currentOptionsIndex],
-				options: [
-					tracks[_this.currentOptionsIndex].artist.id
-				]
+				options: [{
+						'id' : tracks[_this.currentOptionsIndex].artist.id,
+						'name' : tracks[_this.currentOptionsIndex].artist.name
+					}]
 			}
 
 			while(_nextTrack.options.length < 4){
 				var _randomIndex = Math.floor(Math.random() * _optionsLength);
 				if(_nextTrack.options.indexOf(tracks[_randomIndex].artist.id) === -1){
-					_nextTrack.options.push(tracks[_randomIndex].artist.id);
+					_nextTrack.options.push({
+						'id' : tracks[_randomIndex].artist.id,
+						'name' : tracks[_randomIndex].artist.name
+					});
 				}
 			}
 

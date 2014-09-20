@@ -2,11 +2,13 @@
 
 var spotifyService = (function(id){
 	var _spotifyTrackData = {};
+	var _apiUrl = 'https://api.spotify.com/v1';
+	var _config = {};
 
 	function _getPlaylists(userId){
 		var _deferred = Q.defer();
 
-		ajax('/v1/users/' + userId + '/playlists', function (res) {
+		ajax(_apiUrl + '/users/' + userId + '/playlists', _config).then(function(res) {
 			var _playLists = []; 
 		    res.items.forEach(function(playlist){
 		    		_playLists.push({
@@ -30,7 +32,7 @@ var spotifyService = (function(id){
 		}
 
 		else{
-		    ajax('/v1/users/' + userId + '/playlists/' + playListId + '/tracks', function (res) {
+		    ajax(_apiUrl + '/users/' + userId + '/playlists/' + playListId + '/tracks', _config).then(function(res) {
 		    	var _tracks = [];
 		    	res.items.forEach(function(trackData){
 		    		_tracks.push({
@@ -53,21 +55,13 @@ var spotifyService = (function(id){
 	    return _deferred.promise;
 	}
 
-    var _apiUrl = 'https://api.spotify.com/v1';
-
-    function _getUser = function(accessToken){
-    	var _deferred = Q.defer();
-        var _config = {
-              headers:  {
-                'Authorization': 'Bearer ' + accessToken              
-              }
-            };    
-        
-        ajax(_apiUrl + '/me', _config, function(res){
-        	_deferred.resolve(res);
-        });
-
-        return _deferred.promise;
+    function _getUser(accessToken){
+        _config = {
+          headers:  {
+            'Authorization': 'Bearer ' + accessToken              
+          }
+        };    
+        return ajax(_apiUrl + '/me', _config);
   	}
     
     /**
