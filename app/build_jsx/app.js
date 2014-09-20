@@ -42,11 +42,7 @@ document.body.onload = function(){
 
 				//Start game
 				var _game = new Game(userData.id, playlists[2].id)
-				_game.getNextTrack().then(function(tracks){
-					console.log(tracks)
-					React.renderComponent(GameView( {game:_game, options:tracks}), document.getElementById('app')); // jshint ignore:line
-				});
-
+				React.renderComponent(GameView( {game:_game}), document.getElementById('app')); // jshint ignore:line
 
 			}).fail(function(failed){
 				console.log(failed)

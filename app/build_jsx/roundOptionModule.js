@@ -8,8 +8,7 @@ var RoundOption = React.createClass({displayName: 'RoundOption',
     	};
   	},
 
-	handleClick: function(){
-		
+	handleClick: function(){		
 		this.setState({
 			selectedOptionId: this.getDOMNode().value
 		});
@@ -19,14 +18,11 @@ var RoundOption = React.createClass({displayName: 'RoundOption',
         );		
 	},
 
-    render: function() {    	
-    	var _className = (this.props.option.id === this.state.selectedOptionId) ? 'is-selected' : this.props.option.name;
-
+    render: function() {  
         return (React.DOM.button(
         			{disabled:this.props.answered,
-        			className:_className, 
         			value:this.props.option.id,
         			onClick:this.handleClick}
-        		, _className));
+        		, this.props.option.name));
     }
 });

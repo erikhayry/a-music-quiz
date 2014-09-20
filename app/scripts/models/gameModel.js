@@ -1,10 +1,10 @@
 "use strict";
 var Game = function(playerName, playlistId){
-	var _this = this;
-	_this.id = playlistId;
-	_this.player = playerName;
-	_this.currentOptionsIndex = -1;
-	_this.points = 0;
+	this.id = playlistId;
+	this.player = playerName;
+	this.currentOptionsIndex = -1;
+	this.points = 0,
+	this.nextTrack = [];
 }
 
 function _shuffle(array) {
@@ -27,19 +27,29 @@ function _shuffle(array) {
   return array;
 }
 
+function _containsId(arr, id){
+	for (var i = 0; i < arr.length; i++) {
+		if(arr[i].id === id){
+			return true;
+		}
+	};
+
+	return false;
+}
+
 Game.prototype.getAllTracks = function(){
 	console.log('getAllTracks')
 	var _this = this,
 		_deferred = Q.defer();
 	
-	if(_this.options){
-		_deferred.resolve(_this.options);
+	if(_this.allTracks){
+		_deferred.resolve(_this.allTracks);
 	}
 	
 	else{
 		spotifyService.getTracks(_this.player, _this.id).then(function(tracks){
-			_this.options = tracks;
-			_deferred.resolve(_this.options);	
+			_this.allTracks = tracks;
+			_deferred.resolve(_this.allTracks);	
 		});		
 	}
 	
@@ -51,9 +61,8 @@ Game.prototype.getNextTrack = function(){
 	var _this = this,
 		_deferred = Q.defer();
 
-	_this.getAllTracks().then(function(tracks){
-		console.log(tracks)
-		var _optionsLength = tracks.length;
+	_this.getAllTracks().then(function(allTracks){
+		var _optionsLength = allTracks.length;
 		if(_this.currentOptionsIndex + 1 >= _optionsLength){
 			_this.currentOptionsIndex = -1;
 			_deferred.resolve(undefined);
@@ -62,25 +71,27 @@ Game.prototype.getNextTrack = function(){
 			_this.currentOptionsIndex++;	
 
 			var _nextTrack = {
-				current: tracks[_this.currentOptionsIndex],
+				current: allTracks[_this.currentOptionsIndex],
 				options: [{
-						'id' : tracks[_this.currentOptionsIndex].artist.id,
-						'name' : tracks[_this.currentOptionsIndex].artist.name
+						'id' : allTracks[_this.currentOptionsIndex].artist.id,
+						'name' : allTracks[_this.currentOptionsIndex].artist.name
 					}]
 			}
 
 			while(_nextTrack.options.length < 4){
 				var _randomIndex = Math.floor(Math.random() * _optionsLength);
-				if(_nextTrack.options.indexOf(tracks[_randomIndex].artist.id) === -1){
+				if(!_containsId(_nextTrack.options, allTracks[_randomIndex].artist.id)){
 					_nextTrack.options.push({
-						'id' : tracks[_randomIndex].artist.id,
-						'name' : tracks[_randomIndex].artist.name
+						'id' : allTracks[_randomIndex].artist.id,
+						'name' : allTracks[_randomIndex].artist.name
 					});
 				}
 			}
 
 			//shuffle options
 			_shuffle(_nextTrack.options)
+
+			_this.nextTrack = _nextTrack;
 
 			_deferred.resolve(_nextTrack);
 		}
