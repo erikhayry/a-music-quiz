@@ -521,24 +521,26 @@ describe("Spotify Service", function(){
     beforeEach(function(){
       _clock = sinon.useFakeTimers();
       _sandbox = sinon.sandbox.create();        
-      _ajaxStub = _sandbox.stub(window, "ajax", function(url, callback){
+      _ajaxStub = _sandbox.stub(window, "ajax", function(url, config){
+          var _deferred = Q.defer();
           var _returnData, _deferredType = 'resolve';
 
           switch(url){
-              case '/v1/users/erikportin/playlists':
+              case 'https://api.spotify.com/v1/users/erikportin/playlists':
                   _returnData = _userPlaylistsApiCallData;
               break;
-              case '/v1/users/erikportin/playlists/222':
+              case 'https://api.spotify.com/v1/users/erikportin/playlists/222':
                   _returnData = _playlistApiCallData;
               break;
-              case '/v1/users/erikportin/playlists/222/tracks':
+              case 'https://api.spotify.com/v1/users/erikportin/playlists/222/tracks':
                   _returnData = _trackApiCallData;
-              break; 
+              break;               
               default: 
                   _returnData = 'error';
                   _deferredType = 'reject';
           }
-          callback(_returnData)
+          _deferred[_deferredType](_returnData)
+          return _deferred.promise;
       }); 
     })
 
@@ -556,7 +558,6 @@ describe("Spotify Service", function(){
         })
 
         _clock.tick();
-
         expect(_tracks.length).toBe(5);
 
         expect(_tracks[0].artist.name).toEqual('Artist Name 1');
@@ -600,13 +601,28 @@ describe("Spotify Service", function(){
       }); 
     });
 
-    describe("getPlaylists()", function(){
-      it("should return playlists", function() {
+    describe("getTokens()", function(){
+      it("should return tokens from url serach string", function() {
         var _tokens = spotifyService.getTokens('?key1=value1&access_token=access_token_value&key2=value2&refresh_token=refresh_token_value');
 
         expect(_tokens.refreshToken).toEqual('refresh_token_value');
         expect(_tokens.accessToken).toEqual('access_token_value');
 
       }); 
-    });       
+    });   
+
+    describe("getUser()", function(){
+      it("should return spotify user", function() {
+        _sandbox.restore();
+        var _ajaxSpy = sinon.spy(window, "ajax")
+        spotifyService.getUser('access_token_value');
+
+        _clock.tick();
+
+        expect(_ajaxSpy.args[0][0]).toEqual('https://api.spotify.com/v1/me')
+        expect(_ajaxSpy.args[0][1].headers.Authorization).toEqual('Bearer access_token_value')
+
+      }); 
+    }); 
+
 })

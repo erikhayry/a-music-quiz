@@ -46,6 +46,19 @@ describe("Game.getNextTrack()", function(){
         _getNextTrack = _game.getNextTrack()
 
         jasmine.addMatchers({
+            
+            toBeIdInObjectArray: function(){
+                return {
+                    compare: function (actual, expected) {
+                        return {
+                            pass: expected.some(function(obj){
+                                return obj.id === actual;
+                            })
+                        }
+                    }
+                };                
+            },     
+
             toBeUnique: function () {
                 return {
                     compare: function (actual, expected) {
@@ -62,6 +75,7 @@ describe("Game.getNextTrack()", function(){
                     }
                 };
             }
+
         });
 
     });
@@ -85,18 +99,22 @@ describe("Game.getNextTrack()", function(){
         expect(_options.current.artist.id).toEqual('1');
 
         expect(_options.options.length).toEqual(4);
-        expect(_options.options.indexOf('1') > -1).toEqual(true);
+        expect('1').toBeIdInObjectArray(_options.options);
     });
 
     it("should return unique game option values", function(){     
         _getNextTrack.then(function(options){
             _options = options;
         })
-        _clock.tick();       
-         expect(_options.options[0]).toBeUnique(_options.options);
-         expect(_options.options[1]).toBeUnique(_options.options);
-         expect(_options.options[2]).toBeUnique(_options.options);
-         expect(_options.options[3]).toBeUnique(_options.options);
+        _clock.tick();      
+
+        expect(_options.options[0].id).toBeDefined();
+        expect(_options.options[0].name).toBeDefined();
+
+        expect(_options.options[0]).toBeUnique(_options.options);
+        expect(_options.options[1]).toBeUnique(_options.options);
+        expect(_options.options[2]).toBeUnique(_options.options);
+        expect(_options.options[3]).toBeUnique(_options.options);
     });
 
     it("should return following game options property values", function(){

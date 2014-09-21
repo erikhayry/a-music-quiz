@@ -81,7 +81,15 @@ var spotifyService = (function(id){
           access_token : _searchObj.access_token,
           refresh_token : _searchObj.refresh_token 
       };
-    }	
+    }
+
+    function _getTokens(searchParams){
+		var _params = _getSearchParams(searchParams);
+		return {
+		  accessToken : _params.access_token,
+		  refreshToken : _params.refresh_token
+		};
+	}
 
 	return {
 		getTracks : _getTrackData,
@@ -91,13 +99,7 @@ var spotifyService = (function(id){
 		* get Spotify acces tokens
 		* @return {Object} Tokens
 		*/
-		getTokens: function(searchParams){
-			var _params = _getSearchParams(searchParams);
-			return {
-			  accessToken : _params.access_token,
-			  refreshToken : _params.refresh_token
-			};
-		},
+		getTokens: _getTokens,
 
 		/**
 		* Get user data from Spotify

@@ -16,8 +16,8 @@ describe("App Test",function(){
     });
 
 
-    it("Should init the app", function () {
+/*    it("Should init the app", function () {
         ReactTestUtils.renderIntoDocument(MusicApp(null, container));
         expect(MusicApp).toBeDefined();
-    });
+    });*/
 });

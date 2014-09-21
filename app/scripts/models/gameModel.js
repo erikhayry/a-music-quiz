@@ -38,7 +38,6 @@ function _containsId(arr, id){
 }
 
 Game.prototype.getAllTracks = function(){
-	console.log('getAllTracks')
 	var _this = this,
 		_deferred = Q.defer();
 	
@@ -57,7 +56,6 @@ Game.prototype.getAllTracks = function(){
 }
 
 Game.prototype.getNextTrack = function(){
-	console.log('getNextTrack')
 	var _this = this,
 		_deferred = Q.defer();
 
