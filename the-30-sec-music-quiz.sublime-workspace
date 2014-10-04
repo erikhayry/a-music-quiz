@@ -1,0 +1,309 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ans",
+				"answered"
+			],
+			[
+				"Ro",
+				"RoundOption"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app/jsx/components/roundOptionModule.jsx",
+			"settings":
+			{
+				"buffer_size": 396,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/jsx/components/roundOptions-test.js",
+			"settings":
+			{
+				"buffer_size": 1440,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"INSTALL",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/erikportin/lab/the-30-sec-music-quiz",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/dist",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/scripts/models",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/scripts/services",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/scripts/vendor",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx/components",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/models"
+	],
+	"file_history":
+	[
+		"/Users/erikportin/lab/the-30-sec-music-quiz/Gruntfile.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/roundOptionModule.js",
+		"/Users/erikportin/lab/ReactjsUnitTest/build_jsx/test/ui/startSpec.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx/components/roundOption-test.jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/musicPlayerModule.jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/gameModule.jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/app.jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/app.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/gamePointsModule.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/gameModule.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt-react/node_modules/react-tools/src/eventPlugins/AnalyticsEventPluginFactory.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/react/lib/getActiveElement.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt-react/test/fixtures/js/fixture-jsx.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt-react/test/expected/multiple_jsx_files",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt-react/node_modules/react-tools/bin/jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/bower_components/react/JSXTransformer.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt-react/node_modules/.bin/jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/react-tools/bin/jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/.bin/jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt/node_modules/js-yaml/node_modules/argparse/lib/argument_parser.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/phantomjs/install.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/react/lib/isNode.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/index.html",
+		"/Users/erikportin/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"container",
+			"ReactTestUtils",
+			"loginUrl"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/jsx/components/roundOptionModule.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 396,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								60,
+								60
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "test/jsx/components/roundOptions-test.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1440,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								392,
+								392
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "the-30-sec-music-quiz.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"game",
+				"app/jsx/components/gameModule.jsx"
+			],
+			[
+				"jsx",
+				"app/jsx/app.jsx"
+			],
+			[
+				"app",
+				"app/build_jsx/app.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 280.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -1,24 +1,13 @@
 /** @jsx React.DOM */
 
 var RoundOption = React.createClass({
-
-	getInitialState: function() {
-    	return {
-    		selectedOptionId: ''
-    	};
-  	},
-
-	handleClick: function(){		
-		this.setState({
-			selectedOptionId: this.getDOMNode().value
-		});
-
+	handleClick: function(){
         this.props.onAnswer(
             this.getDOMNode().value
         );		
 	},
 
-    render: function() {  
+    render: function() { 
         return (<button
         			disabled={this.props.answered}
         			value={this.props.option.id}

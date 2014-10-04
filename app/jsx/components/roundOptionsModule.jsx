@@ -2,7 +2,6 @@
 
 var RoundOptions = React.createClass({
     render: function() {
-
         var _options = [],
         	_answered = this.props.answered,
         	_onAnswer = this.props.onAnswer;

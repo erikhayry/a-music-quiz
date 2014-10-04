@@ -9,10 +9,14 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         watch: {
-          jsx: {
-            files: ['app/jsx//**/*.jsx'],
-            tasks: ['build']
-          }
+            jsx: {
+                files: ['app/jsx/**/*.jsx'],
+                tasks: ['build']
+            },
+            jsxTest: {
+                files: ['test/jsx/**/*.jsx'],
+                tasks: ['build']
+            }
         },
 
         react: {
@@ -26,7 +30,7 @@ module.exports = function(grunt) {
                         ext: '.js'
                     }
                 ]
-            }
+            }                
         },
 
         karma: {
@@ -37,7 +41,7 @@ module.exports = function(grunt) {
      
     });
 
-    grunt.registerTask('serve', ['watch']);
+    grunt.registerTask('serve', ['watch:jsx']);
     grunt.registerTask('build', ['react']);
     grunt.registerTask('test', ['build', 'karma']);
 

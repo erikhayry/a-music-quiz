@@ -49,42 +49,7 @@ var GameView = React.createClass({
 		var _this = this,
     		_game = this.props.game;  	
     	
-/*    	_this.setState({
-    		answered: false,
-    		tracks: [],
-    		current: {
-    			name: '',
-    			url: ''
-    		},
-    		points: 0
-    	})*/
-
-        
-/*        if(_this.state.answer){
-        	_game.points += points
-        	_this.setState({
-				points: _game.points
-			});		
-        }
-
-        _this.setState({
-			answer: false,
-			answered: false
-		});	*/
-
-		_game.getNextTrack().then(function(tracks){
-/*			if(_this.state.answer){
-	        	_game.points += points
-	        	_this.setState({
-					points: _game.points
-				});		
-	        }*/
-
-/*	        _this.setState({
-				answered: false
-			});	*/		
-
-
+		_game.getNextTrack().then(function(tracks){	
 			_this.setNextTrack(tracks)
 		});
     },
@@ -109,7 +74,7 @@ var GameView = React.createClass({
 		   		<GamePoints points={this.state.points}/>
 		  	</div>
 		  	<div>
-				<MusicPlayerModule current={this.state.current} answered={this.state.answered} onAudioStop={this.onAudioStop}/>		  	
+				<MusicPlayer current={this.state.current} answered={this.state.answered} onAudioStop={this.onAudioStop}/>		  	
 		    	<RoundOptions options={this.state.tracks} answered={this.state.answered} onAnswer={this.handleAnswer}/>
 		    </div>
 		  </div>
