@@ -8,8 +8,7 @@ var loginUrl = '';
 var MusicApp = React.createClass({displayName: 'MusicApp',
   render: function() {
     return (
-      React.DOM.div( {className:"m-app"}, 
-        GameView(null )
+      React.DOM.div( {className:"m-app"}
       )
     );
   }
@@ -28,7 +27,7 @@ document.body.onload = function(){
 		ajax('api/login', '').then(function(data){
 			loginUrl = data['redirect_url'];
 			if(document.getElementById('app')) {
-				React.renderComponent(LoginLink(null ), document.getElementById('app')); // jshint ignore:line
+				React.renderComponent(LoginLink(null ), document.getElementById('app'));
 			}
 		})		
 	}
@@ -42,7 +41,7 @@ document.body.onload = function(){
 
 				//Start game
 				var _game = new Game(userData.id, playlists[2].id)
-				React.renderComponent(GameView( {game:_game}), document.getElementById('app')); // jshint ignore:line
+				React.renderComponent(GameView( {game:_game}), document.getElementById('app'));
 
 			}).fail(function(failed){
 				console.log(failed)
@@ -56,7 +55,4 @@ document.body.onload = function(){
 	else{
 		login();
 	}
-	
 }
-
-

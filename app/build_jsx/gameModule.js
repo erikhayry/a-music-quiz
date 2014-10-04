@@ -7,6 +7,7 @@
 var GameView = React.createClass({displayName: 'GameView',
 	
 	setNextTrack: function(tracks){
+		console.log(tracks)
 		this.setState({
 			tracks: tracks.options,
 			current: {
@@ -49,7 +50,7 @@ var GameView = React.createClass({displayName: 'GameView',
 		var _this = this,
     		_game = this.props.game;  	
     	
-		_game.getNextTrack().then(function(tracks){	
+		_game.getNextTrack().then(function(tracks){
 			_this.setNextTrack(tracks)
 		});
     },
@@ -61,7 +62,6 @@ var GameView = React.createClass({displayName: 'GameView',
 			_game = this.props.game;
 			
 		_game.getNextTrack().then(function(tracks){
-			console.log(tracks)
 			_this.setNextTrack(tracks)
 		});
 	},    

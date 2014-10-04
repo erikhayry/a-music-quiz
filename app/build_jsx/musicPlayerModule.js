@@ -7,43 +7,68 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         };
     },
 
-    bindEvents: function(audioElement){ 
-        console.log('bindEvents')       
+    stopAction: function(audioElement){
+        var _this = this;
+        //console.log('stopAction')
+        audioElement.pause();
+        if(_this.interval){
+            window.clearInterval(_this.interval);    
+        }    
+        _this.props.onAudioStop(_this.currentPoints);
+    },
+
+    startRound: function(audioElement){ 
+        //console.log('startRound')       
         var _this = this,
-            _interval,
-            _currentPoints = 0,
-            _pointsElement = _this.refs.points.getDOMNode(),
-            _stopAction = function(){
-                window.clearInterval(_interval);
-                _this.props.onAudioStop(_currentPoints);
-            };
+            _pointsElement = _this.refs.points.getDOMNode()
+
+        audioElement.addEventListener('loadedmetadata', function(){
+           //console.log('loadedmetadata')
+           audioElement.play();
+           audioElement.volume = 0;
+        }, false);    
+
+        audioElement.addEventListener('pause', function(){
+           //console.log('pause')
+           _this.stopAction(this);
+           this.removeEventListener('pause', arguments.callee);
+        }, false); 
+
+        audioElement.addEventListener('ended', function(){
+           _this.stopAction(this);
+           this.removeEventListener('ended', arguments.callee);
+        }, false);           
 
         _this.interval = window.setInterval(function(){
-            console.log('intervalling')
-            _pointsElement.innerHTML = _currentPoints = parseInt(audioElement.duration-audioElement.currentTime)
+            //console.log('intervalling')
+            _pointsElement.innerHTML = _this.currentPoints = parseInt(audioElement.duration - audioElement.currentTime)
         }, 1000) 
-
 
     },
 
     componentDidUpdate: function() {
-        console.log('MusicPlayerModule componentDidUpdate', this.props.answered)
+        //console.log('MusicPlayerModule componentDidUpdate', this.props.answered)
         var _this = this,
-            audioElement = this.refs.audio.getDOMNode();
+            _audioElement = this.refs.audio.getDOMNode();
         
         if(this.props.answered){
-            audioElement.pause();
-            window.clearInterval(_this.interval);
-            _this.props.onAudioStop(10);            
+            //console.log('got answer')
+            _this.stopAction(_audioElement);            
         }
         else{
-            this.bindEvents(audioElement)
+            this.startRound(_audioElement);
         }
 
     }, 
 
     render: function() {
-        console.log('Render') 
+        //console.log('Render')
+        
+        if(this.interval){
+            window.clearInterval(this.interval);
+        }
+
+        this.currentPoints = 30; 
         return (
             React.DOM.div(null,   
                 React.DOM.p( {ref:"points"}),

@@ -5,7 +5,7 @@
 "use strict";
 
 
-describe("Round Option Test",function(){
+describe("Round Options Test",function(){
     var _ReactTestUtils, _RoundOptionsProps, _RoundOptions,  _answer;
 
     beforeEach(function() {

@@ -5,7 +5,7 @@
 "use strict";
 
 
-describe("Round Option Test",function(){
+describe("Music Player Test",function(){
     var _ReactTestUtils, _MusicPlayerProps, _MusicPlayer,  _points, _sandbox;
 
     beforeEach(function() {
@@ -32,7 +32,7 @@ describe("Round Option Test",function(){
         expect(_MusicPlayer.interval).toBeDefined();
     });
 
-    it("Should clear interval if quetion is answered", function () {
+    it("Should clear interval if question is answered", function () {
         var _intervalSpy = _sandbox.spy(window, "clearInterval");
         _MusicPlayer = _ReactTestUtils.renderIntoDocument(MusicPlayer(_MusicPlayerProps, ""));
         _MusicPlayer.setState();
@@ -43,20 +43,23 @@ describe("Round Option Test",function(){
         _MusicPlayer.props.answered = true;
         _MusicPlayer.setState();
         
+        expect(_intervalSpy.calledTwice).toEqual(true);
         expect(_intervalSpy.args[0][0]).toEqual(_intervalId);
-    });    
+        expect(_intervalSpy.args[1][0]).toEqual(_intervalId);
+    });  
 
-/*    it("should call onAnswer if button is enabled", function () {
+    it("Should call onAudioStop when music stops", function () {
         _MusicPlayer = _ReactTestUtils.renderIntoDocument(MusicPlayer(_MusicPlayerProps, ""));
-        _ReactTestUtils.Simulate.click(_MusicPlayer.getDOMNode());
-        expect(_answer).toEqual('123')
-    });
+        _MusicPlayer.setState();    
+        _MusicPlayer.props.answered = true;
+        _MusicPlayer.setState();
+        
+        expect(_points).toEqual(30);
+    }); 
 
-    it("should not call onAnswer if button is disabled", function () {
-        _MusicPlayerProps.answered = true;
+    it("Should set audio url", function () {
         _MusicPlayer = _ReactTestUtils.renderIntoDocument(MusicPlayer(_MusicPlayerProps, "")); 
-        _ReactTestUtils.Simulate.click(_MusicPlayer.getDOMNode());
-        expect(_answer).toBeUndefined();
-    });*/
+        expect(_MusicPlayer.refs.audio.getDOMNode().src).toEqual('http://url.to.mp3/');
+    }); 
 
 });
