@@ -30,12 +30,7 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress', 'junit'],
-
-    junitReporter: {
-      outputFile: 'func_tests/reports/karma-test-results.xml',
-      suite: ''
-    },
+    reporters: ['progress'],
 
     // web server port
     port: 9876,
