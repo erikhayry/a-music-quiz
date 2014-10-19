@@ -89,6 +89,7 @@ describe("Game.getNextTrack()", function(){
         expect(_options.current.track.name).toEqual('Track Name 1');
         expect(_options.current.artist.name).toEqual('Artist Name 1');
         expect(_options.current.artist.id).toEqual('1');
+        expect(_options.current.index).toEqual(1);
 
         expect(_options.options.length).toEqual(4);
         expect('1').toBeIdInObjectArray(_options.options);
@@ -123,6 +124,7 @@ describe("Game.getNextTrack()", function(){
         expect(_options.current.track.name).toEqual('Track Name 2');
         expect(_options.current.artist.name).toEqual('Artist Name 2');
         expect(_options.current.artist.id).toEqual('2');
+        expect(_options.current.index).toEqual(2);
     });
 
     it("should return undefined and reset current options index if no more options", function(){

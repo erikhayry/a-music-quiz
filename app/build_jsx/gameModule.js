@@ -5,17 +5,8 @@
 'use strict';
 
 var GameView = React.createClass({displayName: 'GameView',
-	
-	setNextTrack: function(tracks){
-		//console.log(tracks)
-		this.setState({
-			tracks: tracks.options,
-			current: {
-				name: tracks.current.artist.name,
-				url: tracks.current.track.url
-			},
-			answered: false
-		});
+	getPoints: function(points){
+		return (this.state.answer) ? this.state.points + points : this.state.points;
 	},
 
 	getInitialState: function() {
@@ -26,9 +17,38 @@ var GameView = React.createClass({displayName: 'GameView',
     			name: '',
     			url: ''
     		},
-    		points: 0
+    		points: 0,
+    		gameOver: false
     	};
-  	},	
+  	},
+
+	componentDidMount: function() {
+
+		var _this = this,
+			_game = this.props.game;
+			
+		_game.getNextTrack().then(function(tracks){
+			_this.setNextTrack(tracks, 0)
+		});
+	}, 	 		
+	
+	setNextTrack: function(tracks, points){
+		var _this = this,
+			_points = 0;
+
+		_this.setState({
+			tracks: tracks.options,
+			current: {
+				name: tracks.current.artist.name,
+				url: tracks.current.track.url,
+			},
+			answered: false,
+			points: _this.getPoints(points),
+			answer: false,
+			round: tracks.current.index
+		});			
+		
+	},
 
     handleAnswer: function(answer) {
     	var _game = this.props.game,
@@ -48,35 +68,59 @@ var GameView = React.createClass({displayName: 'GameView',
 
     onAudioStop: function(points){
 		var _this = this,
-    		_game = this.props.game;  	
+    		_game = this.props.game;  
     	
-		_game.getNextTrack().then(function(tracks){
-			_this.setNextTrack(tracks)
+		_game.getNextTrack().then(function(tracks){			
+			if(tracks && tracks.current.index <= Settings.gameLength){
+				_this.setNextTrack(tracks, points)
+			}
+			
+			else{
+				_this.setState({
+					points: _this.getPoints(points),
+					gameOver: true
+				})
+			}
 		});
     },
 
-	componentDidMount: function() {
-		console.log('GameView componentDidMount')
+    restart: function(){
+		React.renderComponent(GameView( {game:this.props.game.reset()}), document.getElementById('app'));
+    	this.replaceState(this.getInitialState())
+    	this.componentDidMount();
+    },
 
-		var _this = this,
-			_game = this.props.game;
-			
-		_game.getNextTrack().then(function(tracks){
-			_this.setNextTrack(tracks)
-		});
-	},    
+    goToPlaylist: function(){
+    	React.renderComponent(AppView(null ), document.getElementById('app'));
+    },
 
 	render: function() {
-		var _game = this.props.game;
+		var _this = this,
+			_game = _this.props.game,
+			_gameBottom;
+
+
+		if(!this.state.gameOver){
+			_gameBottom = 	React.DOM.div(null, 
+								MusicPlayer( {current:this.state.current, answered:this.state.answered, onAudioStop:this.onAudioStop}),		  	
+				    			RoundOptions( {options:this.state.tracks, answered:this.state.answered, onAnswer:this.handleAnswer})
+				    		)
+		}
+		
+		else{
+			_gameBottom = 	React.DOM.ul(null, 
+								React.DOM.li(null, React.DOM.button( {onClick:_this.restart}, "Play again")),
+								React.DOM.li(null, React.DOM.button( {onClick:_this.goToPlaylist}, "Choose another playlist"))
+							)
+		}
+		
 		return (
-		  React.DOM.div(null, 
-		  	React.DOM.div(null, 
-		   		GamePoints( {points:this.state.points})
-		  	),
-		  	React.DOM.div(null, 
-				MusicPlayer( {current:this.state.current, answered:this.state.answered, onAudioStop:this.onAudioStop}),		  	
-		    	RoundOptions( {options:this.state.tracks, answered:this.state.answered, onAnswer:this.handleAnswer})
-		    )
-		  )
-	)}
+			  React.DOM.div(null, 
+			  	React.DOM.div(null, 
+			   		GamePoints( {points:this.state.points, round:this.state.round})
+			  	),
+			  	_gameBottom
+			  )
+			)
+	}    
 });

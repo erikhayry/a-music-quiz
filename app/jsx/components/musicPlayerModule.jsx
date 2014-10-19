@@ -15,17 +15,15 @@ var MusicPlayer = React.createClass({
         if(_this.interval){
             window.clearInterval(_this.interval);    
         }    
-        _this.props.onAudioStop(_this.currentPoints);      
+        _this.props.onAudioStop(parseInt(audioElement.duration - audioElement.currentTime));      
     },
 
     startRound: function(audioElement){ 
-        //console.log('startRound')       
         var _this = this,
             _pointsElement = _this.refs.points.getDOMNode();
 
         audioElement.addEventListener('loadedmetadata', function(){
            audioElement.play();
-           audioElement.volume = 0;
            this.removeEventListener('loadedmetadata', arguments.callee, false);
         }, false);  
     
@@ -41,12 +39,10 @@ var MusicPlayer = React.createClass({
     },
 
     componentDidUpdate: function() {
-        //console.log('MusicPlayerModule componentDidUpdate', this.props.answered)
         var _this = this,
             _audioElement = this.refs.audio.getDOMNode();
         
         if(this.props.answered){
-            //console.log('got answer')
             _this.stopAction(_audioElement);            
         }
         else{
@@ -56,7 +52,6 @@ var MusicPlayer = React.createClass({
     }, 
 
     render: function() {
-        //console.log('Render')
         
         if(this.interval){
             window.clearInterval(this.interval);
@@ -66,8 +61,6 @@ var MusicPlayer = React.createClass({
         return (
             <div>  
                 <p ref="points"></p>
-                <p>Artist: {this.props.current.name}</p>
-                <p>Url: {this.props.current.url}</p>
                 <audio src={this.props.current.url} ref="audio" type="audio/mpeg"  />
             </div>
         );

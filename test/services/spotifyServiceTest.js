@@ -113,6 +113,6 @@ describe("Spotify Service", function(){
         expect(_ajaxSpy.args[0][1].headers.Authorization).toEqual('Bearer access_token_value')
 
       }); 
-    }); 
+    });
 
 })

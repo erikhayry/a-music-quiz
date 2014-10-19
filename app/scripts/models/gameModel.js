@@ -37,6 +37,14 @@ function _containsId(arr, id){
 	return false;
 }
 
+Game.prototype.reset = function(){
+	this.currentOptionsIndex = -1;
+	this.points = 0,
+	this.nextTrack = [];
+
+	return this;
+}
+
 Game.prototype.getAllTracks = function(){
 	var _this = this,
 		_deferred = Q.defer();
@@ -71,17 +79,19 @@ Game.prototype.getNextTrack = function(){
 			var _nextTrack = {
 				current: allTracks[_this.currentOptionsIndex],
 				options: [{
-						'id' : allTracks[_this.currentOptionsIndex].artist.id,
-						'name' : allTracks[_this.currentOptionsIndex].artist.name
+						'id': allTracks[_this.currentOptionsIndex].artist.id,
+						'name': allTracks[_this.currentOptionsIndex].artist.name
 					}]
 			}
+
+			_nextTrack.current.index = _this.currentOptionsIndex + 1;
 
 			while(_nextTrack.options.length < 4){
 				var _randomIndex = Math.floor(Math.random() * _optionsLength);
 				if(!_containsId(_nextTrack.options, allTracks[_randomIndex].artist.id)){
 					_nextTrack.options.push({
-						'id' : allTracks[_randomIndex].artist.id,
-						'name' : allTracks[_randomIndex].artist.name
+						'id': allTracks[_randomIndex].artist.id,
+						'name': allTracks[_randomIndex].artist.name
 					});
 				}
 			}

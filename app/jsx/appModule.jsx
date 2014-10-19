@@ -4,13 +4,13 @@
 
 'use strict';
 
-var AppView = React.createClass({displayName: 'AppView',
+var AppView = React.createClass({
 
 	login: function(){
 		ajax('api/login', '').then(function(data){
 			var _loginUrl = data['redirect_url'];
 			if(document.getElementById('app')) {
-				React.renderComponent(LoginLink( {url:_loginUrl}), document.getElementById('app'));
+				React.renderComponent(<LoginLink url={_loginUrl}/>, document.getElementById('app'));
 			}
 		})		
 	},
@@ -20,7 +20,7 @@ var AppView = React.createClass({displayName: 'AppView',
 		spotifyService.getUser(accessToken).then(function(userData){
 			spotifyService.getPlaylists(userData.id).then(function(playlists){
 				//Show playlists
-				React.renderComponent(PlaylistView( {userId:userData.id, playlists:playlists}), document.getElementById('app'));
+				React.renderComponent(<PlaylistView userId={userData.id} playlists={playlists}/>, document.getElementById('app'));
 			
 			}).fail(function(failed){
 				//Failed
@@ -41,6 +41,6 @@ var AppView = React.createClass({displayName: 'AppView',
 			this.login();
 		}
 
-		return (React.DOM.div(null, "Loading"))		
+		return (<div>Loading</div>)		
 	}
 })
