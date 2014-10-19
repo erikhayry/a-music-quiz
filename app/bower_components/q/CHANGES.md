@@ -1,6 +1,6 @@
 <!-- vim:ts=4:sts=4:sw=4:et:tw=70 -->
 
-## 2.0.0 :warning: BACKWARD INCOMPATIBILITY
+## 2.0.2 :warning: BACKWARD INCOMPATIBILITY
 
 This is an experimental release train, based on a rewrite of Q. The full
 interface of version 1 is supported but portions of the interface issue
@@ -62,8 +62,10 @@ deprecation warnings. Deprecated features will be removed outright in version 3.
    partially apply arguments. It now also takes a second argument
    that determines whether the decorated function needs a variadic or named
    argument nodeback.
- - :warning: `makeNodeResolver` has been deprecated and no longer
-   implicitly captures variadic arguments in an array.
+ - :warning: `makeNodeResolver` no longer implicitly captures variadic arguments
+   in an array. The user must pass `true` to resolve with an array of variadic
+   arguments. The user may pass an array of names to resolve with an object with
+   the corresponding properties for each argument.
  - Promises now support vicious cycle detection.  If a deferred promise
    ultimately depends upon its own resolution, it will be rejected with
    the singleton vicious cycle error.
@@ -107,7 +109,7 @@ var promise = new Q.Promise(function (resolve, reject, setEstimate) {
 var deferred = Q.defer();
 setTimeout(deferred.resolve, 1000);
 deferred.setEstimate(Date.now() + 1000);
-var promise = defferred.promise;
+var promise = deferred.promise;
 
 var estimate = promise.getEstimate(); // now + 1s
 promise.observeEstimate(function (estimate) {
