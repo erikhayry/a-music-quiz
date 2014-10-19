@@ -1,28 +1,4 @@
-/**
- * @jsx React.DOM
- */
-
-'use strict';
-
-var LoginLink = React.createClass({displayName: 'LoginLink',
-  render: function() {
-    return (
-      React.DOM.a( {href:this.props.url}, "Login")
-    );
-  }
-});
-
-var MusicApp = React.createClass({displayName: 'MusicApp',
-  render: function() {
-    return (
-      React.DOM.div( {className:"m-app"}
-      )
-    );
-  }
-});
-
-
-document.body.onload = function(){
+window.onload = function(){
 	function _login(){
 		ajax('api/login', '').then(function(data){
 			var _loginUrl = data['redirect_url'];
@@ -35,10 +11,12 @@ document.body.onload = function(){
 	function _startGame(accessToken){
 		spotifyService.getUser(tokens.accessToken).then(function(userData){
 			spotifyService.getPlaylists(userData.id).then(function(playlists){
-				//Start game
-				var _game = new Game(userData.id, playlists[2].id)
-				React.renderComponent(GameView( {game:_game}), document.getElementById('app'));
-
+				//Show playlists
+				React.renderComponent(PlaylistView( {
+					userId:userData.id,
+					playlists: playlists,
+				}), document.getElementById('app'));
+				
 			}).fail(function(failed){
 				console.log(failed)
 			})

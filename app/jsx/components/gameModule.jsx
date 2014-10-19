@@ -7,7 +7,7 @@
 var GameView = React.createClass({
 	
 	setNextTrack: function(tracks){
-		console.log(tracks)
+		//console.log(tracks)
 		this.setState({
 			tracks: tracks.options,
 			current: {

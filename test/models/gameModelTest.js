@@ -7,7 +7,7 @@ describe("Game Model", function(){
 
         expect(_game).toBeDefined();  
         expect(_game.id).toEqual('123');
-        expect(_game.player).toEqual('erikportin');
+        expect(_game.playerId).toEqual('erikportin');
         expect(_game.points).toEqual(0);
         expect(_game.currentOptionsIndex).toEqual(-1);
     });

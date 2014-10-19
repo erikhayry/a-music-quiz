@@ -9,38 +9,32 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
 
     stopAction: function(audioElement){
         var _this = this;
-        //console.log('stopAction')
+
         audioElement.pause();
+        
         if(_this.interval){
             window.clearInterval(_this.interval);    
         }    
-        _this.props.onAudioStop(_this.currentPoints);
+        _this.props.onAudioStop(_this.currentPoints);      
     },
 
     startRound: function(audioElement){ 
         //console.log('startRound')       
         var _this = this,
-            _pointsElement = _this.refs.points.getDOMNode()
+            _pointsElement = _this.refs.points.getDOMNode();
 
         audioElement.addEventListener('loadedmetadata', function(){
-           //console.log('loadedmetadata')
            audioElement.play();
            audioElement.volume = 0;
-        }, false);    
-
-        audioElement.addEventListener('pause', function(){
-           //console.log('pause')
-           _this.stopAction(this);
-           this.removeEventListener('pause', arguments.callee);
-        }, false); 
-
+           this.removeEventListener('loadedmetadata', arguments.callee, false);
+        }, false);  
+    
         audioElement.addEventListener('ended', function(){
            _this.stopAction(this);
-           this.removeEventListener('ended', arguments.callee);
+           this.removeEventListener('ended', arguments.callee, false);
         }, false);           
 
         _this.interval = window.setInterval(function(){
-            //console.log('intervalling')
             _pointsElement.innerHTML = _this.currentPoints = parseInt(audioElement.duration - audioElement.currentTime)
         }, 1000) 
 
@@ -74,7 +68,7 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
                 React.DOM.p( {ref:"points"}),
                 React.DOM.p(null, "Artist: ", this.props.current.name),
                 React.DOM.p(null, "Url: ", this.props.current.url),
-                React.DOM.audio( {src:this.props.current.url, ref:"audio", type:"audio/mpeg", preload:"auto"} )
+                React.DOM.audio( {src:this.props.current.url, ref:"audio", type:"audio/mpeg"}  )
             )
         );
     }

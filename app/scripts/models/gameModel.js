@@ -1,7 +1,7 @@
 "use strict";
-var Game = function(playerName, playlistId){
+var Game = function(playerId, playlistId){
 	this.id = playlistId;
-	this.player = playerName;
+	this.playerId = playerId;
 	this.currentOptionsIndex = -1;
 	this.points = 0,
 	this.nextTrack = [];
@@ -46,7 +46,7 @@ Game.prototype.getAllTracks = function(){
 	}
 	
 	else{
-		spotifyService.getTracks(_this.player, _this.id).then(function(tracks){
+		spotifyService.getTracks(_this.playerId, _this.id).then(function(tracks){
 			_this.allTracks = tracks;
 			_deferred.resolve(_this.allTracks);	
 		});		

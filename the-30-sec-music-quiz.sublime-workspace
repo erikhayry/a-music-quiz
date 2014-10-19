@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"_gam",
+				"_GameView"
+			],
+			[
+				"toBe",
+				"toBeDefined"
+			],
+			[
+				"quer",
+				"querySelectorAll(${0:selectors})	Element"
+			],
+			[
+				"a",
+				"answer"
+			],
+			[
 				"ans",
 				"answered"
 			],
@@ -16,28 +32,40 @@
 	"buffers":
 	[
 		{
-			"file": "app/jsx/components/roundOptionModule.jsx",
+			"file": "test/jsx/components/game-test.js",
 			"settings":
 			{
-				"buffer_size": 396,
+				"buffer_size": 3011,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "test/jsx/components/roundOptions-test.js",
+			"file": "test/models/gameModelTest.js",
 			"settings":
 			{
-				"buffer_size": 1440,
+				"buffer_size": 4905,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/jsx/components/gameModule.jsx",
+			"settings":
+			{
+				"buffer_size": 1594,
 				"line_ending": "Unix"
 			}
 		}
 	],
-	"build_system": "",
+	"build_system": "Packages/User/grunt.sublime-build",
 	"command_palette":
 	{
 		"height": 47.0,
 		"selected_items":
 		[
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
 			[
 				"install",
 				"Package Control: Install Package"
@@ -51,7 +79,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 449.0
+		"width": 521.0
 	},
 	"console":
 	{
@@ -78,24 +106,44 @@
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/dist",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/scripts",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/scripts/models",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/scripts/services",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/scripts/vendor",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/test",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx/components",
-		"/Users/erikportin/lab/the-30-sec-music-quiz/test/models"
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/models",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/services",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities/stubs"
 	],
 	"file_history":
 	[
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities/stubs/game_getNextTrack.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/models/gameModelTest.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/musicPlayerModule.jsx",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/Gruntfile.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities/stubs/game.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/app.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/app.jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/gameModule.jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/karma.conf.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/services/spotifyServiceTest.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities/stubs/spotifyServiceStub.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities/stubs/playlistApiCallData.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities/stubs/userPlaylists.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/utilities/stubs/tracks.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/index.html",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx/components/roundOptions-test.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx/components/musicPlayer-test.js",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/roundOptionsModule.jsx",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/roundOptionModule.jsx",
+		"/Users/erikportin/Library/Application Support/Sublime Text 3/Packages/User/grunt.sublime-build",
+		"/Users/erikportin/lab/the-30-sec-music-quiz/the-30-sec-music-quiz.sublime-project",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/roundOptionModule.js",
 		"/Users/erikportin/lab/ReactjsUnitTest/build_jsx/test/ui/startSpec.js",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/test/jsx/components/roundOption-test.jsx",
-		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/musicPlayerModule.jsx",
-		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/components/gameModule.jsx",
-		"/Users/erikportin/lab/the-30-sec-music-quiz/app/jsx/app.jsx",
-		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/app.js",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/gamePointsModule.js",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/app/build_jsx/gameModule.js",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt-react/node_modules/react-tools/src/eventPlugins/AnalyticsEventPluginFactory.js",
@@ -111,7 +159,6 @@
 		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/grunt/node_modules/js-yaml/node_modules/argparse/lib/argument_parser.js",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/phantomjs/install.js",
 		"/Users/erikportin/lab/the-30-sec-music-quiz/node_modules/react/lib/isNode.js",
-		"/Users/erikportin/lab/the-30-sec-music-quiz/app/index.html",
 		"/Users/erikportin/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings"
 	],
 	"find":
@@ -130,6 +177,46 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"toBe",
+			"array",
+			"console",
+			"Track Name",
+			"Isaac Hayes",
+			"3IKV7o6WPphDB7cCWXaG3E",
+			"__proto__",
+			"Object",
+			"setNextTrack",
+			"nextTrack",
+			"_Game",
+			"Object",
+			"{\n",
+			"_MusicPlayer",
+			"MusicPlayer(",
+			"MusicPlayer",
+			"_MusicPlayerProps",
+			" // jshint ignore:line",
+			"_audioElement",
+			"clearInterval",
+			"bindEvents",
+			"currentPoints",
+			"_currentPoints",
+			"audioElement",
+			"- ",
+			"spy",
+			"answered",
+			"bindEvents",
+			"getInitialState",
+			"RoundOption",
+			"_RoundOption",
+			"_RoundOptionProps",
+			"_answer",
+			"onAudioStop",
+			"_RoundOptionProps",
+			"p",
+			"=",
+			":",
+			"_RoundOption",
+			"_RoundOptionProps",
 			"container",
 			"ReactTestUtils",
 			"loginUrl"
@@ -150,24 +237,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "app/jsx/components/roundOptionModule.jsx",
+					"file": "test/jsx/components/game-test.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 396,
+						"buffer_size": 3011,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								60,
-								60
+								1183,
+								1183
 							]
 						],
 						"settings":
@@ -177,40 +264,68 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 515.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "test/models/gameModelTest.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 4905,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3088,
+								3088
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 1020.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "test/jsx/components/roundOptions-test.js",
+					"buffer": 2,
+					"file": "app/jsx/components/gameModule.jsx",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1440,
+						"buffer_size": 1594,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								392,
-								392
+								1145,
+								1157
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/ReactJS/syntax/jsx/tmLanguage/JavaScript (JSX).tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -222,7 +337,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{

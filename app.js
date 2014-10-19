@@ -22,7 +22,6 @@ var port = process.env.PORT || 3000;
 
 
 process.argv.forEach(function(v){
-  console.log('Running in ' + v + ' mode.')
   if(v == 'dev') {
     dir = '/app';    
   }
@@ -34,7 +33,7 @@ process.argv.forEach(function(v){
 app.use(express.static(__dirname + dir));
 
 app.get('/api/login', function(req, res) {
-  console.log('api/login')
+  console.log('get api/login')
   var redirect_uri = host + redirect_uri_path;
   var scope = 'playlist-modify playlist-modify-private';
   res.send({
@@ -49,7 +48,7 @@ app.get('/api/login', function(req, res) {
 });
 
 app.get('/api/callback', function(req, res) {
-  console.log('callback')
+  console.log('get /api/callback')
   var redirect_uri = host + redirect_uri_path;
   console.log(redirect_uri)
   // your application requests refresh and access tokens
@@ -69,9 +68,8 @@ app.get('/api/callback', function(req, res) {
     json: true
   };
 
-  //onsole.log(authOptions)
   request.post(authOptions, function(error, response, body) {
-    //console.log(response)
+    console.log('post response', response)
     if (!error && response.statusCode === 200) {
 
       var access_token = body.access_token,
@@ -88,7 +86,6 @@ app.get('/api/callback', function(req, res) {
       
       });*/
 
-      console.log('redirect?')
       // we can also pass the token to the browser to make requests from there
       res.redirect(host + '?' +
         querystring.stringify({
@@ -104,7 +101,7 @@ app.get('/api/callback', function(req, res) {
 });
 
 app.get('/api/refresh_token', function(req, res) {
-
+  console.log('get /api/refresh_token')
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
   var authOptions = {
@@ -128,4 +125,5 @@ app.get('/api/refresh_token', function(req, res) {
 });
 
 console.log('Listening on ' + port);
+
 app.listen(port);
