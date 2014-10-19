@@ -34,7 +34,17 @@ module.exports = function(grunt) {
 
         karma: {
             unit: {
-                configFile: 'karma.conf.js'
+                configFile: 'karma.conf.js',
+                options: {
+                    files: [
+                            'test/utilities/**/*.js',
+                            'test_libs/react-with-addons.js',
+                            'app/build_jsx/**/*.js',        
+                            'app/scripts/**/*.js',
+                            'test/**/*.js',
+                            'scripts/vendor/q.js'
+                        ]
+                }
             }
         },
      

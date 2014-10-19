@@ -45,7 +45,6 @@ describe("Game Test",function(){
         _GameView.setState();  
 
         _clock.tick();   
-        console.log(_GameView.state)
         expect(_GameView).toBeDefined();
 
         //State
