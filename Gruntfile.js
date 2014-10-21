@@ -38,12 +38,16 @@ module.exports = function(grunt) {
                 options: {
                     files: [
                             'test/utilities/**/*.js',
-                            'test_libs/react-with-addons.js',
-                            'app/build_jsx/**/*.js',        
+                            //'test_libs/react-with-addons.js',
+                            //'app/build_jsx/**/*.js',        
                             'app/scripts/**/*.js',
                             'test/**/*.js',
                             'scripts/vendor/q.js'
-                        ]
+                        ],
+                    exclude: [
+                            'test/jsx/**/*.js',
+                            'app/scripts/app.js'
+                    ]    
                 }
             }
         },
