@@ -24,8 +24,19 @@ var MusicPlayer = React.createClass({
 
         audioElement.addEventListener('loadedmetadata', function(){
            audioElement.play();
+           audioElement.volume = 0;
            this.removeEventListener('loadedmetadata', arguments.callee, false);
-        }, false);  
+        }, false); 
+
+        audioElement.addEventListener('timeupdate', function(){
+           if(audioElement.currentTime < 1){
+                audioElement.volume = parseInt(audioElement.currentTime*10)/10
+           }
+           else if((audioElement.duration - audioElement.currentTime) < 1){
+                audioElement.volume = parseInt((audioElement.duration - audioElement.currentTime) * 10)/10
+           }     
+
+        }, false);          
     
         audioElement.addEventListener('ended', function(){
            _this.stopAction(this);
@@ -58,9 +69,10 @@ var MusicPlayer = React.createClass({
         }
 
         this.currentPoints = 30; 
+        
         return (
             <div>  
-                <p ref="points"></p>
+                <p ref="points">30</p>
                 <audio src={this.props.current.url} ref="audio" type="audio/mpeg"  />
             </div>
         );

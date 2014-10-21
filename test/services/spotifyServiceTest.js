@@ -7,7 +7,8 @@ describe("Spotify Service", function(){
         _trackApiCallData = Stub_tracks,
         _userPlaylistsApiCallData = Stub_userPlaylists,
         _userPlaylistsApiCallDataOffset50 = Stub_userPlaylistsOffset50,
-        _playlistApiCallData = Stub_playlistApiCallData;
+        _playlistApiCallData = Stub_playlistApiCallData,
+        _offset = 0;
     
     beforeEach(function(){
       _clock = sinon.useFakeTimers();
@@ -16,26 +17,51 @@ describe("Spotify Service", function(){
           var _deferred = Q.defer();
           var _returnData, _deferredType = 'resolve';
 
-          switch(url){
-              case 'https://api.spotify.com/v1/users/erikportin/playlists?limit=50&offest=0':
-                  _returnData = _userPlaylistsApiCallData;
-              break;
-              case 'https://api.spotify.com/v1/users/erikportin/playlists?limit=50&offest=50':
-                  _returnData = _userPlaylistsApiCallDataOffset50;
-              break;              
-              case 'https://api.spotify.com/v1/users/erikportin/playlists/222':
-                  _returnData = _playlistApiCallData;
-              break;
-              case 'https://api.spotify.com/v1/users/erikportin/playlists/222/tracks':
-                  _returnData = _trackApiCallData;
-              break;               
-              default: 
-                  _returnData = 'error';
-                  _deferredType = 'reject';
+          if(url.indexOf('https://api.spotify.com/v1/users/erikportin/playlists/53Y8wT46QIMz5H4WQ8O22c/tracks') === 0){
+             _returnData = _trackApiCallData;
           }
-          _deferred[_deferredType](_returnData)
+
+          else{
+            switch(url){
+                case 'https://api.spotify.com/v1/users/erikportin/playlists?limit=50&offest=0':
+                    _returnData = _userPlaylistsApiCallData;
+                break;
+                case 'https://api.spotify.com/v1/users/erikportin/playlists?limit=50&offest=50':
+                    _returnData = _userPlaylistsApiCallDataOffset50;
+                break;              
+                case 'https://api.spotify.com/v1/users/erikportin/playlists/53Y8wT46QIMz5H4WQ8O22c':
+                    _returnData = _playlistApiCallData;
+                break;                           
+                default: 
+                    _returnData = 'error';
+                    _deferredType = 'reject';
+            }            
+          }
+          
+          _deferred[_deferredType](_returnData);
+          
           return _deferred.promise;
       }); 
+
+      jasmine.addMatchers({            
+        toBeCalledWithValidRandomOffset: function () {
+            return {
+                compare: function (actual, expected) {
+                    var _url = actual,
+                        _queries = {};
+                    
+                    _url.split('?')[1].split('&').forEach(function(query){
+                      var keyPair = query.split('=');
+                      _queries[keyPair[0]] = parseInt(keyPair[1]);
+                    })
+
+                    return {
+                        pass: expected >= _queries.offset + _queries.limit
+                    };
+                }
+            };
+        }
+      });
     })
 
     afterEach(function(){
@@ -47,34 +73,46 @@ describe("Spotify Service", function(){
 
       it("should return track data", function() {  
         var _tracks;      
-        spotifyService.getTracks('erikportin', '222').then(function(tracks){
+        spotifyService.getTracks('erikportin', '53Y8wT46QIMz5H4WQ8O22c', 200).then(function(tracks){
           _tracks = tracks;
         })
 
         _clock.tick();
         expect(_tracks.length).toBe(5);
 
-        expect(_tracks[0].artist.name).toEqual('Artist Name 1');
-        expect(_tracks[0].artist.id).toEqual('1');
-        expect(_tracks[0].track.name).toEqual('Track Name 1');
-        expect(_tracks[0].track.url).toEqual('http://d318706lgtcm8e.cloudfront.net/mp3-preview/1');
+        expect(_tracks[0].artist.name).toBeDefined()
+        expect(_tracks[0].artist.id).toBeDefined()
+        expect(_tracks[0].track.name).toBeDefined()
+        expect(_tracks[0].track.url).toBeDefined()
 
-        expect(_tracks[4].artist.name).toEqual('Artist Name 5');
-        expect(_tracks[4].artist.id).toEqual('5');
-        expect(_tracks[4].track.name).toEqual('Track Name 5');
-        expect(_tracks[4].track.url).toEqual('http://d318706lgtcm8e.cloudfront.net/mp3-preview/5');
+        expect(_tracks[4].artist.name).toBeDefined()
+        expect(_tracks[4].artist.id).toBeDefined()
+        expect(_tracks[4].track.name).toBeDefined()
+        expect(_tracks[4].track.url).toBeDefined()
+
+        expect(_ajaxStub.args[2][0]).toBeCalledWithValidRandomOffset(200);
 
       });
 
       it("should use stored playlist data if exists", function() {  
-        var _tracks;      
-        spotifyService.getTracks('erikportin', '222').then(function(tracks){
+        var _tracks; 
+        
+        spotifyService.getTracks('erikportin', '53Y8wT46QIMz5H4WQ8O22c', 99).then(function(tracks){
           _tracks = tracks;
         })
         _clock.tick();
-        expect(_ajaxStub.called).toBe(false);
+
+        spotifyService.getTracks('erikportin', '53Y8wT46QIMz5H4WQ8O22c', 99).then(function(tracks){
+          _tracks = tracks;
+        })
+        
+        _clock.tick();
+
+        expect(_ajaxStub.calledTwice).toBe(false);
         expect(_tracks.length).toBe(5);
-      });      
+      }); 
+
+
     });
 
     describe("getPlaylists()", function(){
@@ -87,12 +125,31 @@ describe("Spotify Service", function(){
         
         _clock.tick();
 
-        expect(_playlists.length).toBe(4)
-        expect(_playlists[0].name).toEqual('erikportins Big Playlist');
-        expect(_playlists[0].id).toEqual('53Y8wT46QIMz5H4WQ8O22c');
-        expect(_playlists[0].tracks).toEqual(30);
-        expect(_playlists[0].owner).toEqual('erikportin');
-      }); 
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].name).toEqual('erikportins Big Playlist');
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].id).toEqual('53Y8wT46QIMz5H4WQ8O22c');
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].tracks).toEqual(30);
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].owner).toEqual('erikportin');
+      
+      });
+
+      it("should return playlists from storage", function() {
+        var _playlists;
+        
+        spotifyService.getPlaylists('erikportin').then(function(playlists){
+          _playlists = playlists;
+        })
+        
+        _clock.tick();
+
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].name).toEqual('erikportins Big Playlist');
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].id).toEqual('53Y8wT46QIMz5H4WQ8O22c');
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].tracks).toEqual(30);
+        expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].owner).toEqual('erikportin');
+
+        expect(_ajaxStub.called).toBe(false);
+      
+      });
+
     });
 
     describe("getTokens()", function(){

@@ -18,7 +18,8 @@ var GameView = React.createClass({
     			url: ''
     		},
     		points: 0,
-    		gameOver: false
+    		gameOver: false,
+    		rightAnswer: ''
     	};
   	},
 
@@ -33,6 +34,7 @@ var GameView = React.createClass({
 	}, 	 		
 	
 	setNextTrack: function(tracks, points){
+		console.log('setNextTrack')
 		var _this = this,
 			_points = 0;
 
@@ -45,43 +47,42 @@ var GameView = React.createClass({
 			answered: false,
 			points: _this.getPoints(points),
 			answer: false,
+			rightAnswer: '',
 			round: tracks.current.index
 		});			
 		
 	},
 
     handleAnswer: function(answer) {
+    	console.log('handleAnswer')
     	var _game = this.props.game,
     		_rightAnswer = _game.nextTrack.current.artist.id;	
 
         this.setState({
-    		answered: true
-    	});
-
-        if(answer === _rightAnswer){
-        	this.setState({
-				answer: true
-			});		
-        }
-      	
+        	rightAnswer: _rightAnswer,
+    		answered: true,
+    		answer: answer === _rightAnswer
+    	})
     },
 
     onAudioStop: function(points){
 		var _this = this,
     		_game = this.props.game;  
-    	
-		_game.getNextTrack().then(function(tracks){			
-			if(tracks && tracks.current.index <= Settings.gameLength){
-				_this.setNextTrack(tracks, points)
-			}
-			
-			else{
-				_this.setState({
-					points: _this.getPoints(points),
-					gameOver: true
-				})
-			}
-		});
+	
+    	setTimeout(function(){
+			_game.getNextTrack().then(function(tracks){			
+				if(tracks && tracks.current.index <= Settings.gameLength){
+					_this.setNextTrack(tracks, points)
+				}
+				
+				else{
+					_this.setState({
+						points: _this.getPoints(points),
+						gameOver: true
+					})
+				}
+			});    		
+    	}, 1500)
     },
 
     restart: function(){
@@ -103,7 +104,7 @@ var GameView = React.createClass({
 		if(!this.state.gameOver){
 			_gameBottom = 	<div>
 								<MusicPlayer current={this.state.current} answered={this.state.answered} onAudioStop={this.onAudioStop}/>		  	
-				    			<RoundOptions options={this.state.tracks} answered={this.state.answered} onAnswer={this.handleAnswer}/>
+				    			<RoundOptions options={this.state.tracks} answered={this.state.answered} rightAnswer={this.state.rightAnswer} onAnswer={this.handleAnswer}/>
 				    		</div>
 		}
 		
