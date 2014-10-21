@@ -6,6 +6,7 @@ describe("Spotify Service", function(){
         _ajaxStub,
         _trackApiCallData = Stub_tracks,
         _userPlaylistsApiCallData = Stub_userPlaylists,
+        _userPlaylistsApiCallDataOffset50 = Stub_userPlaylistsOffset50,
         _playlistApiCallData = Stub_playlistApiCallData;
     
     beforeEach(function(){
@@ -16,9 +17,12 @@ describe("Spotify Service", function(){
           var _returnData, _deferredType = 'resolve';
 
           switch(url){
-              case 'https://api.spotify.com/v1/users/erikportin/playlists':
+              case 'https://api.spotify.com/v1/users/erikportin/playlists?limit=50&offest=0':
                   _returnData = _userPlaylistsApiCallData;
               break;
+              case 'https://api.spotify.com/v1/users/erikportin/playlists?limit=50&offest=50':
+                  _returnData = _userPlaylistsApiCallDataOffset50;
+              break;              
               case 'https://api.spotify.com/v1/users/erikportin/playlists/222':
                   _returnData = _playlistApiCallData;
               break;
@@ -83,11 +87,11 @@ describe("Spotify Service", function(){
         
         _clock.tick();
 
-        expect(_playlists.length).toBe(2)
-        expect(_playlists[0].name).toEqual('Wizzlers Big Playlist');
+        expect(_playlists.length).toBe(4)
+        expect(_playlists[0].name).toEqual('erikportins Big Playlist');
         expect(_playlists[0].id).toEqual('53Y8wT46QIMz5H4WQ8O22c');
         expect(_playlists[0].tracks).toEqual(30);
-        expect(_playlists[0].owner).toEqual('wizzler');
+        expect(_playlists[0].owner).toEqual('erikportin');
       }); 
     });
 

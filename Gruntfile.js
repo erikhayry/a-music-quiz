@@ -65,11 +65,14 @@ module.exports = function(grunt) {
                 configFile: 'karma.conf.js',
                 options: {
                     files: [
-                            'test/utilities/**/*.js',
-                            'test_libs/react-with-addons.js',
-                            'scripts/vendor/q.js',
-                            '<%= path %>'
-                        ] 
+                        'test/utilities/**/*.js',
+                        'test_libs/react-with-addons.js',
+                        'app/scripts/**/*.js',
+                        '<%= path %>'
+                        ],
+                    exclude: [
+                        'app/scripts/app.js'
+                    ]
                 }                
             }
         },

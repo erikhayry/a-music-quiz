@@ -1,15 +1,16 @@
 "use strict";
 
 var spotifyService = (function(id){
-	var _spotifyTrackData = {};
-	var _apiUrl = 'https://api.spotify.com/v1';
-	var _config = {};
+	var _spotifyTrackData = {},
+		_apiUrl = 'https://api.spotify.com/v1',
+		_config = {};
 
-	function _getPlaylists(userId){
-		var _deferred = Q.defer();
+	function _getPlaylists(userId, pl, url, deferred){
+		var _deferred = deferred || Q.defer(),
+			_playLists = pl || [],
+			_url = url || _apiUrl + '/users/' + userId + '/playlists?limit=50&offest=0';
 
-		ajax(_apiUrl + '/users/' + userId + '/playlists', _config).then(function(res) {
-			var _playLists = []; 
+		ajax(_url, _config).then(function(res) {
 		    res.items.forEach(function(playlist){
 		    		_playLists.push({
 		    			'name': playlist.name,
@@ -17,8 +18,14 @@ var spotifyService = (function(id){
 		    			'tracks': playlist.tracks.total,
 		    			'owner': playlist.owner.id
 		    		})
-		    });	    		    		      	
-		    _deferred.resolve(_playLists);
+		    });
+
+		    if(res.next){
+		    	_getPlaylists(userId, _playLists, res.next, _deferred)
+		    }
+		    else{
+		    	_deferred.resolve(_playLists);		    	
+		    }
 		});			
 
 		return _deferred.promise;
