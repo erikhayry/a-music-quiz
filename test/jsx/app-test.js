@@ -15,9 +15,4 @@ describe("App Test",function(){
 	    document.body.appendChild(container);    
     });
 
-
-/*    it("Should init the app", function () {
-        ReactTestUtils.renderIntoDocument(MusicApp(null, container));
-        expect(MusicApp).toBeDefined();
-    });*/
 });

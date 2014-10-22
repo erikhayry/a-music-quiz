@@ -67,7 +67,7 @@ module.exports = function(grunt) {
                             'test/utilities/**/*.js',
                             'test_libs/react-with-addons.js',
                             'scripts/vendor/q.js',
-                            'app/build_jsx/**/*.js',        
+                            'app/dist/**/*.js',        
                             'app/scripts/**/*.js',
                             'test/jsx/**/*.js'                            
                         ] 
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
                         'test/utilities/**/*.js',
                         'test_libs/react-with-addons.js',
                         'app/scripts/**/*.js',
-                        'app/build_jsx/**/*.js',
+                        'app/dist/**/*.js',
                         '<%= path %>'
                         ],
                     exclude: [
