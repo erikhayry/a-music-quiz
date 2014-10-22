@@ -1,9 +1,10 @@
 /** @jsx React.DOM */
 
 var MusicPlayer = React.createClass({
+    
     getInitialState: function() {
         return {
-            answered: false
+            isPlaying: false
         };
     },
 
@@ -14,8 +15,13 @@ var MusicPlayer = React.createClass({
         
         if(_this.interval){
             window.clearInterval(_this.interval);    
-        }    
-        _this.props.onAudioStop(parseInt(audioElement.duration - audioElement.currentTime));      
+        }   
+
+        _this.props.onRoundOver(this.props.answer, parseInt(audioElement.duration - audioElement.currentTime));
+
+        _this.setState({
+            isPlaying: false
+        })      
     },
 
     startRound: function(audioElement){ 
@@ -23,57 +29,69 @@ var MusicPlayer = React.createClass({
             _pointsElement = _this.refs.points.getDOMNode();
 
         audioElement.addEventListener('loadedmetadata', function(){
-           audioElement.play();
-           audioElement.volume = 0;
-           this.removeEventListener('loadedmetadata', arguments.callee, false);
+            audioElement.play();
+            audioElement.volume = 0;
+            
+            _this.setState({
+                isPlaying: true
+            })
+
+            this.removeEventListener('loadedmetadata', arguments.callee, false);
         }, false); 
 
         audioElement.addEventListener('timeupdate', function(){
-           if(audioElement.currentTime < 1){
+            if(audioElement.currentTime < 1){
                 audioElement.volume = parseInt(audioElement.currentTime*10)/10
-           }
-           else if((audioElement.duration - audioElement.currentTime) < 1){
+            }
+            else if((audioElement.duration - audioElement.currentTime) < 1){
                 audioElement.volume = parseInt((audioElement.duration - audioElement.currentTime) * 10)/10
-           }     
+            }     
 
         }, false);          
     
         audioElement.addEventListener('ended', function(){
-           _this.stopAction(this);
-           this.removeEventListener('ended', arguments.callee, false);
+            if(_this.state.isPlaying){
+                _this.stopAction(this);
+            }
+            this.removeEventListener('ended', arguments.callee, false);
         }, false);           
 
         _this.interval = window.setInterval(function(){
-            _pointsElement.innerHTML = _this.currentPoints = parseInt(audioElement.duration - audioElement.currentTime)
+            _pointsElement.innerHTML = parseInt(audioElement.duration - audioElement.currentTime)
         }, 1000) 
-
     },
 
     componentDidUpdate: function() {
         var _this = this,
-            _audioElement = this.refs.audio.getDOMNode();
+            _audioElement = '';
         
-        if(this.props.answered){
-            _this.stopAction(_audioElement);            
-        }
-        else{
-            this.startRound(_audioElement);
+        if(_this.refs.audio){
+            _audioElement = _this.refs.audio.getDOMNode();
+            if(_this.props.answer && _this.state.isPlaying){            
+                _this.stopAction(_audioElement);            
+            }
+            else{
+                _this.startRound(_audioElement);
+            }            
         }
 
     }, 
 
     render: function() {
+        var _audioEl = '';
         
         if(this.interval){
             window.clearInterval(this.interval);
         }
 
-        this.currentPoints = 30; 
+        if(this.props.current && this.props.current.track){
+            _audioEl = <audio src={this.props.current.track.url} ref="audio" type="audio/mpeg"  />
+        }
         
         return (
             <div>  
                 <p ref="points">30</p>
-                <audio src={this.props.current.url} ref="audio" type="audio/mpeg"  />
+                {_audioEl}
             </div>
         );
     }

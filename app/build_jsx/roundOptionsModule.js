@@ -1,20 +1,28 @@
 /** @jsx React.DOM */
 
 var RoundOptions = React.createClass({displayName: 'RoundOptions',
-    render: function() {
-        console.log('render Roundoptions')
-        var _options = [],
-            _answered = this.props.answered,
+    render: function() {    
+        var _optionsEls = [],
+            _options = this.props.options,
+            _answer = this.props.answer,
         	_rightAnswer = this.props.rightAnswer,
-        	_onAnswer = this.props.onAnswer;
+            _isAnswerCorrect = this.props.isAnswerCorrect,
+            _onUserAnswer = this.props.onUserAnswer;
 
-        this.props.options.forEach(function(option) {
-            _options.push(RoundOption( {option:option, answered:_answered, rightAnswer:_rightAnswer, onAnswer:_onAnswer}));
+        _options.forEach(function(option) {
+            _optionsEls.push(RoundOption( 
+                                {key:option.id, 
+                                option:option, 
+                                answer:_answer, 
+                                rightAnswer:_rightAnswer, 
+                                isAnswerCorrect:_isAnswerCorrect, 
+                                onUserAnswer:_onUserAnswer}
+                            ));
         });
 
         return (
             React.DOM.div(null, 
-                _options
+                _optionsEls
             )
         );
     }

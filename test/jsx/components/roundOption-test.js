@@ -16,8 +16,8 @@ describe("Round Option Test",function(){
                 'id': '123',
                 'name': 'Radiohead'
             },
-            'answered': false,
-            'onAnswer': function(answer){
+            'answer': false,
+            'onUserAnswer': function(answer){
                 _answer = answer;
             }
         };        
@@ -29,14 +29,14 @@ describe("Round Option Test",function(){
         expect(_RoundOption.getDOMNode().innerHTML).toEqual('Radiohead');
     });
 
-    it("should call onAnswer if button is enabled", function () {
+    it("should call onUserAnswer if button is enabled", function () {
         _RoundOption = _ReactTestUtils.renderIntoDocument(RoundOption(_RoundOptionProps, ""));
         _ReactTestUtils.Simulate.click(_RoundOption.getDOMNode());
         expect(_answer).toEqual('123')
     });
 
-    it("should not call onAnswer if button is disabled", function () {
-        _RoundOptionProps.answered = true;
+    it("should not call onUserAnswer if button is disabled", function () {
+        _RoundOptionProps.answer = true;
         _RoundOption = _ReactTestUtils.renderIntoDocument(RoundOption(_RoundOptionProps, "")); 
         _ReactTestUtils.Simulate.click(_RoundOption.getDOMNode());
         expect(_answer).toBeUndefined();

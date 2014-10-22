@@ -13,6 +13,10 @@ module.exports = function(grunt) {
                 files: ['app/jsx/**/*.jsx'],
                 tasks: ['build']
             },
+            less: {
+                files: ['app/**/*.less'],
+                tasks: ['build']
+            },            
             jsxTest: {
                 files: ['test/jsx/**/*.jsx'],
                 tasks: ['build']
@@ -25,7 +29,7 @@ module.exports = function(grunt) {
               sourceMap: true
             },
             files: {
-              "styles/style.css": "app/**/*.less"
+              "app/styles/style.css": "app/**/*.less"
             }
           }
         },        
@@ -114,7 +118,7 @@ module.exports = function(grunt) {
     })
 
     grunt.registerTask('serve', ['watch:jsx']);
-    grunt.registerTask('build', ['react']);
+    grunt.registerTask('build', ['react', 'less']);
     //grunt.registerTask('test', ['build', 'karma:unit', 'karma:react']);
 
 };

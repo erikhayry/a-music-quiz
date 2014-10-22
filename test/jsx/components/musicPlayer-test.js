@@ -14,11 +14,13 @@ describe("Music Player Test",function(){
         _points = undefined,            
         _MusicPlayerProps = {
             current: {
-                name: 'Radiohead',
-                url: 'http://url.to.mp3'
+                track: {
+                    name: 'Radiohead',
+                    url: 'http://url.to.mp3'                    
+                }
             },
-            answered: false,
-            onAudioStop: function(points){
+            answer: null,
+            onRoundOver: function(points){
                 _points = points;
             }
         };        
@@ -26,13 +28,13 @@ describe("Music Player Test",function(){
 
     it("Should init a MusicPlayer", function () {
         _MusicPlayer = _ReactTestUtils.renderIntoDocument(MusicPlayer(_MusicPlayerProps, ""));
-        _MusicPlayer.setState({answered: false});
+        _MusicPlayer.setState();
         
         expect(_MusicPlayer).toBeDefined();
         expect(_MusicPlayer.interval).toBeDefined();
     });
 
-    it("Should clear interval if question is answered", function () {
+    it("Should clear interval if question is answer", function () {
         var _intervalSpy = _sandbox.spy(window, "clearInterval");
         _MusicPlayer = _ReactTestUtils.renderIntoDocument(MusicPlayer(_MusicPlayerProps, ""));
         _MusicPlayer.setState();
@@ -40,21 +42,18 @@ describe("Music Player Test",function(){
         
         expect(_intervalId).toBeDefined();
 
-        _MusicPlayer.props.answered = true;
+        _MusicPlayer.props.answer = true;
         _MusicPlayer.setState();
         
-        expect(_intervalSpy.calledTwice).toEqual(true);
+        expect(_intervalSpy.calledOnce).toEqual(true);
         expect(_intervalSpy.args[0][0]).toEqual(_intervalId);
-        expect(_intervalSpy.args[1][0]).toEqual(_intervalId);
     });  
 
     it("Should call onAudioStop when music stops", function () {
         _MusicPlayer = _ReactTestUtils.renderIntoDocument(MusicPlayer(_MusicPlayerProps, ""));
         _MusicPlayer.setState();    
-        _MusicPlayer.props.answered = true;
+        _MusicPlayer.props.answer = true;
         _MusicPlayer.setState();
-        
-        //expect(_points).toEqual(30);
     }); 
 
     it("Should set audio url", function () {

@@ -2,37 +2,33 @@
 
 var RoundOption = React.createClass({displayName: 'RoundOption',
     
-    getInitialState: function() {
-        return {
-            isSelected: false
-        };
-    },
-
 	handleClick: function(){
         var _this = this;
         
-        _this.props.onAnswer(
+        _this.props.onUserAnswer(
             _this.getDOMNode().value
-        );
-
-        _this.setState({
-            isSelected: true
-        })    		
+        );        
 	},
 
     render: function() { 
         var _className = '';
+
+        if(this.props.answer == this.props.option.id){
+            _className += 'is-selected';
+        }
+
         
-        if(this.props.option.id === this.props.rightAnswer){
-            _className = 'is-true';
+        if(this.props.isAnswerCorrect){
+            _className += ' is-correct-answer';
         }
-
-        if(this.state.isSelected){
-            _className += ' is-active';
-        }
-
+        
+        //null if not set yet
+        else if(this.props.isAnswerCorrect === false){
+            _className += ' is-wrong-answer';
+        }            
+        
         return (React.DOM.button(
-        			{disabled:this.props.answered,
+        			{disabled:this.props.answer,
         			value:this.props.option.id,
                     className:_className,
         			onClick:this.handleClick}

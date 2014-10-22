@@ -73,12 +73,13 @@ describe("Game Test",function(){
         expect(_state.isAnswerCorrect).toBe(null);
     });
 
-   it("Should set answer onAnswer", function () { 
+   it("Should set answer onUserAnswer", function () { 
         _GameView = _ReactTestUtils.renderIntoDocument(GameView(_GameViewProps, ""));
         _GameView.setState();          
-        _GameView.onAnswer('1', 20);
         
         _clock.tick();   
+
+        _GameView.onUserAnswer('1');
 
         //State
         var _state = _GameView.state;
@@ -96,8 +97,11 @@ describe("Game Test",function(){
 
    it("Should set got answer state getAnswer", function () {   
         _GameView = _ReactTestUtils.renderIntoDocument(GameView(_GameViewProps, ""));
-        _GameView.setState();          
-        _GameView.onAnswer('1', 20);
+        _GameView.setState();
+
+        _clock.tick();   
+        _GameView.onUserAnswer('1'); 
+        _GameView.getAnswer('1', 20);
 
         _clock.tick(2001);   
 
@@ -108,6 +112,7 @@ describe("Game Test",function(){
         expect(_state.current.artist.id).toBe('1');
         expect(_state.round).toBe(1);
         expect(_state.gameLength).toBe(10);
+        
         expect(_state.answer).toBe('1');
         expect(_state.gameOver).toBe(false);
 

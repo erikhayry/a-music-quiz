@@ -7,7 +7,6 @@
 var GameView = React.createClass({
 
 	getInitialState: function() {
-		console.log('getInitialState')
     	return {
 			options: [],
 			current: {},
@@ -22,44 +21,43 @@ var GameView = React.createClass({
   	},
 
 	componentDidMount: function() {
-		console.log('componentDidMount')
 		this.setupNewRound();	
 	},
 
+	next: function(round){
+		if(!round){
+			this.gameOver();
+		}
+		else{
+			this.startNewRound(round);				
+		}
+	},
+
 	setupNewRound: function(delay){
-		console.log('setupNewRound')
 		var _this = this,
 			_game = this.props.game,
 			_delay = delay || 0;
 			
 		_game.next().then(function(round){
 			setTimeout(function(){
-				if(!round){
-					_this.gameOver();
-				}
-				else{
-					_this.startNewRound(round)
-					setTimeout(function(){
-						_this.onAnswer(_this.state.current.artist.id, 20);
-					}, 3000)					
-				}
+				_this.next(round);
 			}, _delay)
-
 		});	
 	},
 
 	startNewRound: function(round){
-		console.log('startNewRound')
 		this.setState({
 			options: round.options,
 			current: round.current,
 			round: round.index,
-			gameLength: round.gameLength
+			gameLength: round.gameLength,
+			answer: null,
+			isAnswerCorrect: null,
+			rightAnswer: null
 		})
 	},
 
 	gameOver: function(){
-		console.log('gameOver')
 		this.setState({
 			options: [],
 			current: {},
@@ -68,87 +66,34 @@ var GameView = React.createClass({
 			answer: null,
 			gameOver: true,
 		})
-		console.log(this.state)
 	},
 
-	onAnswer: function(answer, points){
-		console.log('onAnswer')
-
+	onUserAnswer: function(answer){
 		this.setState({
 			answer: answer
 		})
-
-		this.getAnswer(answer, points)
 	},	
 
 	getAnswer: function(answer, points){
-		console.log('getAnswer')
 		var _this = this,
 			_game = _this.props.game;
 
 		_game.answer(answer, points).then(function(answerData){
 			setTimeout(function(){
-				_this.setState({
-					rightAnswer: answerData.rightAnswer,
-					points: answerData.points,
-					isAnswerCorrect: answerData.isAnswerCorrect
-				})
-
-				_this.setupNewRound(2000);
-
-			}, 2000)
+				_this.answered(answerData)
+			}, Settings.userDelay)
 		})
 	},
-	
-/*	setNextTrack: function(tracks, points){
-		var _this = this,
-			_points = 0;
 
-		_this.setState({
-			tracks: tracks.options,
-			current: {
-				name: tracks.current.artist.name,
-				url: tracks.current.track.url,
-			},
-			answered: false,
-			points: _this.getPoints(points),
-			answer: false,
-			rightAnswer: '',
-			round: tracks.current.index
-		});			
-		
+	answered: function(answerData){
+		this.setState({
+			rightAnswer: answerData.rightAnswer,
+			points: answerData.points,
+			isAnswerCorrect: answerData.isAnswerCorrect
+		})
+
+		this.setupNewRound(Settings.userDelay);
 	},
-
-    handleAnswer: function(answer) {
-    	var _game = this.props.game,
-    		_rightAnswer = _game.nextTrack.current.artist.id;	
-
-        this.setState({
-        	rightAnswer: _rightAnswer,
-    		answered: true,
-    		answer: answer === _rightAnswer
-    	})
-    },
-
-    onAudioStop: function(points){
-		var _this = this,
-    		_game = this.props.game;  
-	
-    	setTimeout(function(){
-			_game.getNextTrack().then(function(tracks){			
-				if(tracks && tracks.current.index <= Settings.gameLength){
-					_this.setNextTrack(tracks, points)
-				}
-				
-				else{
-					_this.setState({
-						points: _this.getPoints(points),
-						gameOver: true
-					})
-				}
-			});    		
-    	}, 1500)
-    },
 
     restart: function(){
 		React.renderComponent(<GameView game={this.props.game.reset()}/>, document.getElementById('app'));
@@ -158,18 +103,26 @@ var GameView = React.createClass({
 
     goToPlaylist: function(){
     	React.renderComponent(<AppView />, document.getElementById('app'));
-    },*/
+    },
 
 	render: function() {
-		console.log('Render')
 		var _this = this,
 			_gameBottom;
 
-
 		if(!this.state.gameOver){
 			_gameBottom = 	<div>
-/*								<MusicPlayer current={this.state.current} answered={this.state.answered} onAudioStop={this.onAudioStop}/>		  	
-*/				    			<RoundOptions options={this.state.tracks} answered={this.state.answered} rightAnswer={this.state.rightAnswer} onAnswer={this.handleAnswer}/>
+				    			<MusicPlayer 
+				    				current={this.state.current} 
+				    				answer={this.state.answer} 
+				    				onRoundOver={this.getAnswer}
+				    			/>
+								<RoundOptions 
+									options={this.state.options} 
+									answer={this.state.answer} 
+									rightAnswer={this.state.rightAnswer} 
+									isAnswerCorrect={this.state.isAnswerCorrect}
+									onUserAnswer={this.onUserAnswer}
+								/>
 				    		</div>
 		}
 		

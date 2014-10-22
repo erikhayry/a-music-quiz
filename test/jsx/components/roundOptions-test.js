@@ -19,7 +19,7 @@ describe("Round Options Test",function(){
                 {name: 'd', id: '4'}
             ],
             answered: false,
-            onAnswer: function(answer){
+            onUserAnswer: function(answer){
                 _answer = answer;
             }
         };        

@@ -1,6 +1,7 @@
 var Settings = (function(){
 	return {
-		minPlaylistSize: 11,
-		gameLength: 3
+		minPlaylistSize: 20,
+		gameLength: 15,
+		userDelay: 2000
 	}
 })();
