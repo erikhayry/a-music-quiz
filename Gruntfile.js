@@ -10,15 +10,11 @@ module.exports = function(grunt) {
 
         watch: {
             jsx: {
-                files: ['app/jsx/**/*.jsx'],
+                files: ['app/**/*.jsx'],
                 tasks: ['build']
             },
             less: {
-                files: ['app/**/*.less'],
-                tasks: ['build']
-            },            
-            jsxTest: {
-                files: ['test/jsx/**/*.jsx'],
+                files: ['app/**/*.less', 'app/modules/**/*.less'],
                 tasks: ['build']
             }
         },
@@ -29,7 +25,7 @@ module.exports = function(grunt) {
               sourceMap: true
             },
             files: {
-              "app/styles/style.css": "app/**/*.less"
+              "app/dist/styles/style.css": "app/styles/style.less"
             }
           }
         },        
@@ -40,8 +36,8 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: ['app/jsx/**/*.jsx'],
-                        dest: './app/build_jsx/',
+                        src: ['app/**/*.jsx'],
+                        dest: './app/dist/scripts',
                         ext: '.js'
                     }
                 ]

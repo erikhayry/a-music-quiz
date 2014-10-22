@@ -28,6 +28,9 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         var _this = this,
             _pointsElement = _this.refs.points.getDOMNode();
 
+        var _points = parseInt(audioElement.duration - audioElement.currentTime);
+        _pointsElement.innerHTML = _points || '30';   
+
         audioElement.addEventListener('loadedmetadata', function(){
             audioElement.play();
             audioElement.volume = 0;
@@ -57,7 +60,8 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         }, false);           
 
         _this.interval = window.setInterval(function(){
-            _pointsElement.innerHTML = parseInt(audioElement.duration - audioElement.currentTime)
+            var _points = parseInt(audioElement.duration - audioElement.currentTime);
+            _pointsElement.innerHTML = _points || '30';
         }, 1000) 
     },
 
@@ -89,7 +93,7 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         }
         
         return (
-            React.DOM.div(null,   
+            React.DOM.div( {className:"m-music-player"},   
                 React.DOM.p( {ref:"points"}, "30"),
                 _audioEl
             )

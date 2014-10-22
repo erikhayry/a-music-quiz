@@ -21,10 +21,10 @@ var PlaylistView = React.createClass({displayName: 'PlaylistView',
 		}		
 
 		return (
-		  React.DOM.ul( {className:"m-playlist"}, 
+		  React.DOM.ul( {className:"m-playlists"}, 
 		    _playlists.map(function(playlist) {
 		    	if(playlist.tracks >= Settings.minPlaylistSize){
-					return React.DOM.li(null, 
+					return React.DOM.li( {className:"m-playlists-item"}, 
 								React.DOM.a( {href:'/' + playlist.id, 'data-user':_this.props.userId, 'data-playlist':playlist.id,  onClick:_this.handleClick}, playlist.name)
 							);		    		
 		    	}

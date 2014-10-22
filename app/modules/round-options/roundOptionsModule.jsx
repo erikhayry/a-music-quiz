@@ -21,7 +21,7 @@ var RoundOptions = React.createClass({
         });
 
         return (
-            <div>
+            <div className='m-round-options'>
                 {_optionsEls}
             </div>
         );

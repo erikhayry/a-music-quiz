@@ -4,7 +4,7 @@
 
 'use strict';
 
-var GameView = React.createClass({displayName: 'GameView',
+var GameView = React.createClass({
 
 	getInitialState: function() {
     	return {
@@ -96,13 +96,13 @@ var GameView = React.createClass({displayName: 'GameView',
 	},
 
     restart: function(){
-		React.renderComponent(GameView( {game:this.props.game.reset()}), document.getElementById('app'));
+		React.renderComponent(<GameView game={this.props.game.reset()}/>, document.getElementById('app'));
     	this.replaceState(this.getInitialState())
     	this.componentDidMount();
     },
 
     goToPlaylist: function(){
-    	React.renderComponent(AppView(null ), document.getElementById('app'));
+    	React.renderComponent(<AppView />, document.getElementById('app'));
     },
 
 	render: function() {
@@ -110,36 +110,36 @@ var GameView = React.createClass({displayName: 'GameView',
 			_gameBottom;
 
 		if(!this.state.gameOver){
-			_gameBottom = 	React.DOM.div(null, 
-				    			MusicPlayer( 
-				    				{current:this.state.current, 
-				    				answer:this.state.answer, 
-				    				onRoundOver:this.getAnswer}
-				    			),
-								RoundOptions( 
-									{options:this.state.options, 
-									answer:this.state.answer, 
-									rightAnswer:this.state.rightAnswer, 
-									isAnswerCorrect:this.state.isAnswerCorrect,
-									onUserAnswer:this.onUserAnswer}
-								)
-				    		)
+			_gameBottom = 	<div className="m-app-bottom">
+				    			<MusicPlayer 
+				    				current={this.state.current} 
+				    				answer={this.state.answer} 
+				    				onRoundOver={this.getAnswer}
+				    			/>
+								<RoundOptions 
+									options={this.state.options} 
+									answer={this.state.answer} 
+									rightAnswer={this.state.rightAnswer} 
+									isAnswerCorrect={this.state.isAnswerCorrect}
+									onUserAnswer={this.onUserAnswer}
+								/>
+				    		</div>
 		}
 		
 		else{
-			_gameBottom = 	React.DOM.ul(null, 
-								React.DOM.li(null, React.DOM.button( {onClick:_this.restart}, "Play again")),
-								React.DOM.li(null, React.DOM.button( {onClick:_this.goToPlaylist}, "Choose another playlist"))
-							)
+			_gameBottom = 	<ul className="m-app-bottom">
+								<li><button onClick={_this.restart}>Play again</button></li>
+								<li><button onClick={_this.goToPlaylist}>Choose another playlist</button></li>
+							</ul>
 		}
 		
 		return (
-			  React.DOM.div(null, 
-			  	React.DOM.div(null, 
-			   		GamePoints( {points:this.state.points, round:this.state.round, gameLength:this.state.gameLength})
-			  	),
-			  	_gameBottom
-			  )
+			  <div className="m-app">
+			   	<div className="m-app-top">
+			   		<GameState points={this.state.points} round={this.state.round} gameLength={this.state.gameLength}/>
+			   	</div>
+			  	{_gameBottom}
+			  </div>
 			)
 	}    
 });

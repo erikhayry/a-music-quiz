@@ -1,0 +1,26 @@
+.m-round-options{
+	height:  ~"calc(100% - 100px)";
+	button{
+		font-family: 'Varela Round', sans-serif;
+		width: 100%;
+		padding: 20px;
+		border: none;
+		background: transparent;
+		color: #FFF;
+		font-size: 1em;
+		height: 25%;
+		display: block;
+		cursor: pointer;
+		outline:none;
+		&.is-selected{
+			color: #616161;
+			&.is-correct-answer{
+				color: green;
+			}
+			&.is-wrong-answer{
+				color: red;
+			}
+		}
+
+	}
+}

@@ -21,7 +21,7 @@ var RoundOptions = React.createClass({displayName: 'RoundOptions',
         });
 
         return (
-            React.DOM.div(null, 
+            React.DOM.div( {className:"m-round-options"}, 
                 _optionsEls
             )
         );
