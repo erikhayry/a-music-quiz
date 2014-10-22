@@ -1,6 +1,6 @@
 var Settings = (function(){
 	return {
 		minPlaylistSize: 11,
-		gameLength: 10
+		gameLength: 3
 	}
 })();

@@ -7,7 +7,7 @@
 var PlaylistView = React.createClass({displayName: 'PlaylistView',
 	handleClick: function(event){
 		//Start game
-		var _game = new Game(event.target.dataset.user, event.target.dataset.playlist)
+		var _game = new Game(event.target.dataset.user, event.target.dataset.playlist, {gameLength: Settings.gameLength})
 		React.renderComponent(GameView( {game:_game}), document.getElementById('app'));	   
 		event.preventDefault(); 		
 	},	

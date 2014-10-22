@@ -4,7 +4,7 @@ var GamePoints = React.createClass({
     render: function() {
         return (<ul>
         			<li>Points: {this.props.points}</li>
-        			<li>Round: {this.props.round} / {Settings.gameLength}</li>
+        			<li>Round: {this.props.round} / {this.props.gameLength}</li>
         		</ul>);
     }
 });

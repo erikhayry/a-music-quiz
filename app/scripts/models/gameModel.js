@@ -1,10 +1,15 @@
 "use strict";
-var Game = function(playerId, playlistId){
-	this.id = playlistId;
+var Game = function(playerId, playlistId, settings){
+	var _settings = settings || {};
+	
+	this.playlistId = playlistId;
 	this.playerId = playerId;
-	this.currentOptionsIndex = -1;
-	this.points = 0,
-	this.nextTrack = [];
+	
+	this._gameLength = _settings.gameLength;
+	this._points = 0,	
+	this._currentOptionsIndex = -1;
+	this._currentRound = [];
+	this._allTracks = {};
 }
 
 function _containsId(arr, id){
@@ -17,59 +22,54 @@ function _containsId(arr, id){
 	return false;
 }
 
-Game.prototype.reset = function(){
-	this.currentOptionsIndex = -1;
-	this.points = 0,
-	this.nextTrack = [];
+function _getAllTracks(game){
+	var _deferred = Q.defer();
 
-	return this;
-}
-
-Game.prototype.getAllTracks = function(){
-	var _this = this,
-		_deferred = Q.defer();
-	
-	if(_this.allTracks){
-		_deferred.resolve(_this.allTracks);
+	if(Object.keys(game._allTracks).length !== 0){
+		_deferred.resolve(game._allTracks);
 	}
 	
 	else{
-		spotifyService.getTracks(_this.playerId, _this.id).then(function(tracks){
-			_this.allTracks = tracks;
-			_deferred.resolve(_this.allTracks);	
+		spotifyService.getTracks(game.playerId, game.playlistId).then(function(tracks){
+			game._allTracks = tracks;
+			_deferred.resolve(game._allTracks);	
 		});		
 	}
 	
 	return _deferred.promise;
 }
 
-Game.prototype.getNextTrack = function(){
+Game.prototype.next = function(){
 	var _this = this,
 		_deferred = Q.defer();
 
-	_this.getAllTracks().then(function(allTracks){
-		var _optionsLength = allTracks.length;
-		if(_this.currentOptionsIndex + 1 >= _optionsLength){
-			_this.currentOptionsIndex = -1;
+	_getAllTracks(_this).then(function(allTracks){
+		var _gameLength = allTracks.length;
+		if(_this._gameLength && _this._gameLength <= allTracks.length){
+			_gameLength = _this._gameLength
+
+		}
+
+		if(_this._currentOptionsIndex + 1 >= _gameLength){
 			_deferred.resolve(undefined);
 		}
 		else{
-			_this.currentOptionsIndex++;	
+			_this._currentOptionsIndex++;	
 
-			var _nextTrack = {
-				current: allTracks[_this.currentOptionsIndex],
+			var _currentRound = {
+				current: allTracks[_this._currentOptionsIndex],
 				options: [{
-						'id': allTracks[_this.currentOptionsIndex].artist.id,
-						'name': allTracks[_this.currentOptionsIndex].artist.name
+						'id': allTracks[_this._currentOptionsIndex].artist.id,
+						'name': allTracks[_this._currentOptionsIndex].artist.name
 					}]
 			}
 
-			_nextTrack.current.index = _this.currentOptionsIndex + 1;
+			_currentRound.current.index = _this._currentOptionsIndex + 1;
 
-			while(_nextTrack.options.length < 4){
-				var _randomIndex = Math.floor(Math.random() * _optionsLength);
-				if(!_containsId(_nextTrack.options, allTracks[_randomIndex].artist.id)){
-					_nextTrack.options.push({
+			while(_currentRound.options.length < 4){
+				var _randomIndex = Math.floor(Math.random() * allTracks.length);
+				if(!_containsId(_currentRound.options, allTracks[_randomIndex].artist.id)){
+					_currentRound.options.push({
 						'id': allTracks[_randomIndex].artist.id,
 						'name': allTracks[_randomIndex].artist.name
 					});
@@ -77,15 +77,52 @@ Game.prototype.getNextTrack = function(){
 			}
 
 			//shuffle options
-			Helpers.shuffle(_nextTrack.options)
+			Helpers.shuffle(_currentRound.options)
 
-			_this.nextTrack = _nextTrack;
+			_this._currentRound = _currentRound;
+			_this._currentRound.index = _this._currentOptionsIndex + 1;
+			_this._currentRound.gameLength = _gameLength;
 
-			_deferred.resolve(_nextTrack);
+			_deferred.resolve(_currentRound);
 		}
 	})
 
 
     
     return _deferred.promise;	
+}
+
+Game.prototype.answer = function(answer, points){
+	var _this = this,
+		_deferred = Q.defer(),
+		_ret = {
+				isAnswerCorrect: false,
+				points: _this._points
+			};
+
+	_getAllTracks(_this).then(function(allTracks){
+
+		if(allTracks[_this._currentOptionsIndex].artist.id === answer){
+			_ret = {
+				isAnswerCorrect: true,
+				points: _this._points += points
+			}
+		}
+
+		_ret.rightAnswer = allTracks[_this._currentOptionsIndex].artist.id
+		
+		_deferred.resolve(_ret);
+	});			
+
+	return _deferred.promise;
+}
+
+Game.prototype.reset = function(){
+	this._gameLength;
+	this._points = 0,	
+	this._currentOptionsIndex = -1;
+	this._currentRound = [];
+	this._allTracks = {};
+
+	return this;
 }

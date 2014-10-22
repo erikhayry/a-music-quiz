@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-react');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -17,6 +18,17 @@ module.exports = function(grunt) {
                 tasks: ['build']
             }
         },
+
+        less: {
+          development: {
+            options: {
+              sourceMap: true
+            },
+            files: {
+              "styles/style.css": "app/**/*.less"
+            }
+          }
+        },        
 
         react: {
             dynamic_mappings: {
@@ -68,6 +80,7 @@ module.exports = function(grunt) {
                         'test/utilities/**/*.js',
                         'test_libs/react-with-addons.js',
                         'app/scripts/**/*.js',
+                        'app/build_jsx/**/*.js',
                         '<%= path %>'
                         ],
                     exclude: [

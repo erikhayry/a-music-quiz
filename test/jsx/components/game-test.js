@@ -24,11 +24,23 @@ describe("Game Test",function(){
 
         var _game = new Game('erikportin', '123');
 
-        _sandbox.stub(_game, "getNextTrack", function(){
+        _sandbox.stub(_game, "next", function(){
             var _deferred = Q.defer();            
             _deferred.resolve(_gameGetNextTrackStub);        
             return _deferred.promise;
         });
+
+        _sandbox.stub(_game, "answer", function(answer, points){
+            var _deferred = Q.defer();            
+            _deferred.resolve({
+                rightAnswer: '1',
+                isAnswerCorrect: true,
+                points: 20
+            });        
+
+            return _deferred.promise;
+        });
+
 
         _GameViewProps = {
             game: _game
@@ -40,22 +52,69 @@ describe("Game Test",function(){
         _clock.restore();
     })
 
-   it("Should init a MusicPlayer and set initial state", function () {        
+   it("Should init a new game a start first round", function () { 
         _GameView = _ReactTestUtils.renderIntoDocument(GameView(_GameViewProps, ""));
         _GameView.setState();  
 
         _clock.tick();   
         expect(_GameView).toBeDefined();
+        
+        //State
+        var _state = _GameView.state;
+
+        expect(_state.options.length).toBe(4);
+        expect(_state.current.artist.id).toBe('1');
+        expect(_state.points).toBe(0);
+        expect(_state.round).toBe(1);
+        expect(_state.gameLength).toBe(10);
+        expect(_state.rightAnswer).toBe(null);
+        expect(_state.answer).toBe(null);
+        expect(_state.gameOver).toBe(false);
+        expect(_state.isAnswerCorrect).toBe(null);
+    });
+
+   it("Should set answer onAnswer", function () { 
+        _GameView = _ReactTestUtils.renderIntoDocument(GameView(_GameViewProps, ""));
+        _GameView.setState();          
+        _GameView.onAnswer('1', 20);
+        
+        _clock.tick();   
 
         //State
         var _state = _GameView.state;
-        expect(_state.answered).toBe(false);
-        expect(_state.tracks).toEqual(jasmine.any(Object));
-        expect(_state.tracks.length).toBe(4);
-        expect(_state.current.name).toEqual('Artist Name 1');
-        expect(_state.current.url).toEqual('http://d318706lgtcm8e.cloudfront.net/mp3-preview/1');
-        expect(_state.points).toEqual(0);
-    });
+
+        expect(_state.options.length).toBe(4);
+        expect(_state.current.artist.id).toBe('1');
+        expect(_state.points).toBe(0);
+        expect(_state.round).toBe(1);
+        expect(_state.gameLength).toBe(10);
+        expect(_state.rightAnswer).toBe(null);
+        expect(_state.answer).toBe('1');
+        expect(_state.gameOver).toBe(false);
+        expect(_state.isAnswerCorrect).toBe(null);
+    });  
+
+   it("Should set got answer state getAnswer", function () {   
+        _GameView = _ReactTestUtils.renderIntoDocument(GameView(_GameViewProps, ""));
+        _GameView.setState();          
+        _GameView.onAnswer('1', 20);
+
+        _clock.tick(2001);   
+
+        //State
+        var _state = _GameView.state;
+
+        expect(_state.options.length).toBe(4);
+        expect(_state.current.artist.id).toBe('1');
+        expect(_state.round).toBe(1);
+        expect(_state.gameLength).toBe(10);
+        expect(_state.answer).toBe('1');
+        expect(_state.gameOver).toBe(false);
+
+        expect(_state.rightAnswer).toBe('1');
+        expect(_state.points).toBe(20);        
+        expect(_state.isAnswerCorrect).toBe(true);
+    });       
 
 /*     it("Should clear interval if question is answered", function () {
         var _intervalSpy = _sandbox.spy(window, "clearInterval");
