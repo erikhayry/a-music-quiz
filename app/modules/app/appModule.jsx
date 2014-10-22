@@ -41,6 +41,6 @@ var AppView = React.createClass({
 			this.login();
 		}
 
-		return (<div className="m-app-loading">Loading</div>)		
+		return (<div className="m-app-loading">loading</div>)		
 	}
 })
