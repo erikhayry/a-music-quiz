@@ -6,7 +6,6 @@ var RoundOptions = React.createClass({
             _options = this.props.options,
             _answer = this.props.answer,
         	_rightAnswer = this.props.rightAnswer,
-            _isAnswerCorrect = this.props.isAnswerCorrect,
             _onUserAnswer = this.props.onUserAnswer;
 
         _options.forEach(function(option) {
@@ -15,7 +14,6 @@ var RoundOptions = React.createClass({
                                 option={option} 
                                 answer={_answer} 
                                 rightAnswer={_rightAnswer} 
-                                isAnswerCorrect={_isAnswerCorrect} 
                                 onUserAnswer={_onUserAnswer}
                             />);
         });

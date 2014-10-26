@@ -103,7 +103,7 @@ describe("Game Test",function(){
         _GameView.onUserAnswer('1'); 
         _GameView.getAnswer('1', 20);
 
-        _clock.tick(2001);   
+        _clock.tick();   
 
         //State
         var _state = _GameView.state;

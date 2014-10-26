@@ -4,7 +4,8 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     
     getInitialState: function() {
         return {
-            isPlaying: false
+            isPlaying: false,
+            isLoaded: false
         };
     },
 
@@ -20,25 +21,46 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         _this.props.onRoundOver(this.props.answer, parseInt(audioElement.duration - audioElement.currentTime));
 
         _this.setState({
-            isPlaying: false
+            isPlaying: false,
+            isLoaded: false
         })      
     },
 
-    startRound: function(audioElement){ 
-        var _this = this,
-            _pointsElement = _this.refs.points.getDOMNode();
+    startPlayer: function(audioElement){
+        var _pointsElement = this.refs.points.getDOMNode(),
+            _points = parseInt(audioElement.duration - audioElement.currentTime);
+        
+        _pointsElement.innerHTML = _points || '30';
+        
+        audioElement.play();
+        audioElement.volume = 0;
+        
+        this.interval = window.setInterval(function(){
+            var _points = parseInt(audioElement.duration - audioElement.currentTime);
+            _pointsElement.innerHTML = _points || '30';
+        }, 1000) 
 
-        var _points = parseInt(audioElement.duration - audioElement.currentTime);
-        _pointsElement.innerHTML = _points || '30';   
+
+        this.setState({
+            isPlaying: true
+        })
+    },
+
+    onLoaded: function(){
+        this.setState({
+            isLoaded: true
+        }) 
+
+        this.props.onReady()
+    },
+
+    loadRound: function(audioElement){ 
+        var _this = this; 
 
         audioElement.addEventListener('loadedmetadata', function(){
-            audioElement.play();
-            audioElement.volume = 0;
-            
-            _this.setState({
-                isPlaying: true
-            })
-
+            if(!_this.state.isLoaded){
+                _this.onLoaded(this);
+            }
             this.removeEventListener('loadedmetadata', arguments.callee, false);
         }, false); 
 
@@ -49,7 +71,6 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
             else if((audioElement.duration - audioElement.currentTime) < 1){
                 audioElement.volume = parseInt((audioElement.duration - audioElement.currentTime) * 10)/10
             }     
-
         }, false);          
     
         audioElement.addEventListener('ended', function(){
@@ -59,10 +80,7 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
             this.removeEventListener('ended', arguments.callee, false);
         }, false);           
 
-        _this.interval = window.setInterval(function(){
-            var _points = parseInt(audioElement.duration - audioElement.currentTime);
-            _pointsElement.innerHTML = _points || '30';
-        }, 1000) 
+
     },
 
     componentDidUpdate: function() {
@@ -71,11 +89,16 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         
         if(_this.refs.audio){
             _audioElement = _this.refs.audio.getDOMNode();
+            
             if(_this.props.answer && _this.state.isPlaying){            
                 _this.stopAction(_audioElement);            
             }
+            else if(!_this.props.answer && !_this.state.isPlaying && _this.state.isLoaded && _this.props.hasStarted){
+                _this.startPlayer(_audioElement);
+            }
+
             else{
-                _this.startRound(_audioElement);
+                _this.loadRound(_audioElement);
             }            
         }
 
@@ -84,10 +107,6 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     render: function() {
         var _audioEl = '';
         
-        if(this.interval){
-            window.clearInterval(this.interval);
-        }
-
         if(this.props.current && this.props.current.track){
             _audioEl = React.DOM.audio( {src:this.props.current.track.url, ref:"audio", type:"audio/mpeg"}  )
         }

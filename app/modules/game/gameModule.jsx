@@ -16,7 +16,10 @@ var GameView = React.createClass({
 			rightAnswer: null,
 			answer: null,
 			gameOver: false,
-			isAnswerCorrect: null
+			isAnswerCorrect: null,
+
+			roundLoaded: false,
+			roundStarted: false
     	};
   	},
 
@@ -52,10 +55,18 @@ var GameView = React.createClass({
 			round: round.index,
 			gameLength: round.gameLength,
 			answer: null,
-			isAnswerCorrect: null,
-			rightAnswer: null
+			rightAnswer: null,
+			roundLoaded: false,
+			roundStarted: false
 		})
 	},
+
+	startRound: function(){
+		this.setState({
+			isAnswerCorrect: null,
+			roundStarted: true
+		})
+	},	
 
 	gameOver: function(){
 		this.setState({
@@ -65,6 +76,14 @@ var GameView = React.createClass({
 			rightAnswer: null,
 			answer: null,
 			gameOver: true,
+			roundLoaded: false,
+			roundStarted: false
+		})
+	},
+
+	onReady: function(){
+		this.setState({
+			roundLoaded: true
 		})
 	},
 
@@ -92,7 +111,7 @@ var GameView = React.createClass({
 			isAnswerCorrect: answerData.isAnswerCorrect
 		})
 
-		this.setupNewRound(Settings.userDelay);
+		this.setupNewRound();
 	},
 
     restart: function(){
@@ -107,22 +126,42 @@ var GameView = React.createClass({
 
 	render: function() {
 		var _this = this,
-			_gameBottom;
+			_gameBottom, 
+			_gameBottomLower = '';
 
 		if(!this.state.gameOver){
+			if(!this.state.roundStarted && this.state.roundLoaded){
+				var _buttonTxt = 'Start';
+
+				if(this.state.isAnswerCorrect){
+					_buttonTxt = 'Right!';
+				}
+				
+				else if(this.state.isAnswerCorrect === false){
+					_buttonTxt = 'Wrong!';
+				}
+
+				_gameBottomLower = <button onClick={_this.startRound}>{_buttonTxt}</button>
+			}
+			else if(this.state.roundLoaded && this.state.roundStarted){
+				_gameBottomLower = 	<RoundOptions 
+										options={this.state.options} 
+										answer={this.state.answer} 
+										rightAnswer={this.state.rightAnswer} 
+										onUserAnswer={this.onUserAnswer}
+									/>
+			}
+
+
 			_gameBottom = 	<div className="m-app-bottom">
 				    			<MusicPlayer 
 				    				current={this.state.current} 
 				    				answer={this.state.answer} 
+				    				hasStarted={this.state.roundStarted}
 				    				onRoundOver={this.getAnswer}
+				    				onReady={this.onReady}				    			
 				    			/>
-								<RoundOptions 
-									options={this.state.options} 
-									answer={this.state.answer} 
-									rightAnswer={this.state.rightAnswer} 
-									isAnswerCorrect={this.state.isAnswerCorrect}
-									onUserAnswer={this.onUserAnswer}
-								/>
+				    			{_gameBottomLower}
 				    		</div>
 		}
 		
