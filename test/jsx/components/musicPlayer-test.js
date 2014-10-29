@@ -31,13 +31,20 @@ describe("Music Player Test",function(){
         _MusicPlayer.setState();
         
         expect(_MusicPlayer).toBeDefined();
-        expect(_MusicPlayer.interval).toBeDefined();
     });
 
     it("Should clear interval if question is answer", function () {
         var _intervalSpy = _sandbox.spy(window, "clearInterval");
+
         _MusicPlayer = _ReactTestUtils.renderIntoDocument(MusicPlayer(_MusicPlayerProps, ""));
-        _MusicPlayer.setState();
+        
+        _MusicPlayer.props.answer = null;
+        _MusicPlayer.props.hasStarted = true;    
+
+        _MusicPlayer.setState({
+            isPlaying: false,
+            isLoaded: true
+        });
         var _intervalId = _MusicPlayer.interval;
         
         expect(_intervalId).toBeDefined();
@@ -47,6 +54,8 @@ describe("Music Player Test",function(){
         
         expect(_intervalSpy.calledOnce).toEqual(true);
         expect(_intervalSpy.args[0][0]).toEqual(_intervalId);
+
+
     });  
 
     it("Should call onAudioStop when music stops", function () {

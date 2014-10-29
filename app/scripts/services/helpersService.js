@@ -18,7 +18,7 @@ var Helpers = (function(){
 
 
 	  return array;
-	},
+	}
 
 	function _getAudioSupport(){
 		var _deferred = Q.defer(),

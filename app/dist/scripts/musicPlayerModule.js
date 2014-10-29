@@ -87,12 +87,14 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         var _this = this,
             _audioElement = '';
         
+
         if(_this.refs.audio){
             _audioElement = _this.refs.audio.getDOMNode();
             
             if(_this.props.answer && _this.state.isPlaying){            
                 _this.stopAction(_audioElement);            
             }
+
             else if(!_this.props.answer && !_this.state.isPlaying && _this.state.isLoaded && _this.props.hasStarted){
                 _this.startPlayer(_audioElement);
             }

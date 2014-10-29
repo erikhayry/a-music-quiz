@@ -99,11 +99,15 @@ describe("Game Test",function(){
         _GameView = _ReactTestUtils.renderIntoDocument(GameView(_GameViewProps, ""));
         _GameView.setState();
 
+        _sandbox.stub(_GameView, 'setupNewRound');
+
         _clock.tick();   
         _GameView.onUserAnswer('1'); 
         _GameView.getAnswer('1', 20);
 
         _clock.tick();   
+        _clock.tick();   
+        _clock.tick(Settings.userDelay+1);   
 
         //State
         var _state = _GameView.state;
