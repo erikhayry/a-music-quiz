@@ -56,21 +56,35 @@ var MusicPlayer = React.createClass({
 
     loadRound: function(audioElement){ 
         var _this = this; 
+        
+        if(Settings.audioSupport !== 3){
 
-        audioElement.addEventListener('loadedmetadata', function(){
-            if(!_this.state.isLoaded){
-                _this.onLoaded(this);
-            }
-            this.removeEventListener('loadedmetadata', arguments.callee, false);
-        }, false); 
+            audioElement.addEventListener('loadedmetadata', function(){
+                if(!Settings.audioSupport){
+                    Settings.audioSupport = 2;                    
+                }
+                
+                if(!_this.state.isLoaded){
+                    _this.onLoaded(this);
+                }
+
+                this.removeEventListener('loadedmetadata', arguments.callee, false);
+            }, false);             
+        }
+        
+        else{
+            _this.onLoaded(this);            
+       }
 
         audioElement.addEventListener('timeupdate', function(){
-            if(audioElement.currentTime < 1){
-                audioElement.volume = parseInt(audioElement.currentTime*10)/10
+            if(!Settings.mute){
+                if(audioElement.currentTime < 1){
+                    audioElement.volume = parseInt(audioElement.currentTime*10)/10
+                }
+                else if((audioElement.duration - audioElement.currentTime) < 1){
+                    audioElement.volume = parseInt((audioElement.duration - audioElement.currentTime) * 10)/10
+                }                
             }
-            else if((audioElement.duration - audioElement.currentTime) < 1){
-                audioElement.volume = parseInt((audioElement.duration - audioElement.currentTime) * 10)/10
-            }     
         }, false);          
     
         audioElement.addEventListener('ended', function(){
@@ -79,14 +93,11 @@ var MusicPlayer = React.createClass({
             }
             this.removeEventListener('ended', arguments.callee, false);
         }, false);           
-
-
     },
 
-    componentDidUpdate: function() {
+    playerAction: function(){
         var _this = this,
             _audioElement = '';
-        
 
         if(_this.refs.audio){
             _audioElement = _this.refs.audio.getDOMNode();
@@ -95,13 +106,26 @@ var MusicPlayer = React.createClass({
                 _this.stopAction(_audioElement);            
             }
 
-            else if(!_this.props.answer && !_this.state.isPlaying && _this.state.isLoaded && _this.props.hasStarted){
+            else if(!_this.props.answer && !_this.state.isPlaying && _this.state.isLoaded && _this.props.isLoaded && _this.props.hasStarted){
                 _this.startPlayer(_audioElement);
             }
 
-            else{
+            else if(!_this.props.isLoaded){
                 _this.loadRound(_audioElement);
             }            
+        }
+    },
+
+    componentDidUpdate: function() {
+        var _this = this;
+        if(Settings.audioSupport){
+            _this.playerAction();
+        }
+        else{
+            Helpers.getAudioSupport().then(function(supportType){
+                Settings.audioSupport = supportType;
+                _this.playerAction();
+            }); 
         }
 
     }, 

@@ -24,7 +24,7 @@ var GameView = React.createClass({
   	},
 
 	componentDidMount: function() {
-		this.setupNewRound();	
+		this.setupNewRound();
 	},
 
 	next: function(round){
@@ -130,6 +130,8 @@ var GameView = React.createClass({
 			_gameBottomLower = '';
 
 		if(!this.state.gameOver){
+
+			
 			if(!this.state.roundStarted && this.state.roundLoaded){
 				var _buttonTxt = 'Start';
 
@@ -158,6 +160,7 @@ var GameView = React.createClass({
 				    				current={this.state.current} 
 				    				answer={this.state.answer} 
 				    				hasStarted={this.state.roundStarted}
+				    				isLoaded={this.state.roundLoaded}
 				    				onRoundOver={this.getAnswer}
 				    				onReady={this.onReady}				    			
 				    			/>

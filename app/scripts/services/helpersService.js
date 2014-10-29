@@ -35,26 +35,26 @@ var Helpers = (function(){
 		_audioEl.volume = 0; 
 
 		_audioEl.addEventListener('loadedmetadata', function () {
-			_type++;
+			_type = 2;
 		}, false);
 
 		_audioEl.addEventListener('timeupdate', function () {
-			_type++;
+			_type = 1;
 		}, false);
 
 		document.body.appendChild(_audioEl);
 
 		window.setTimeout(function(){
-			if(_type === "3"){
+			if(_type === 3){
 				_resolve(_type)
 			}
 			else{
 				_audioEl.play();
 				window.setTimeout(function(){
 					_resolve(_type)
-				}, 3000);
+				}, 200);
 			}
-		}, 3000)
+		}, 500)
 
 		return _deferred.promise; 
 	}

@@ -26,7 +26,7 @@ process.argv.forEach(function(v){
     dir = '/app';    
   }
   if(v == 'dist' || v == 'dev'){
-    host = 'http://localhost:' + port + '/';
+    host = 'http://192.168.1.66:' + port + '/';
   }
 })
 
