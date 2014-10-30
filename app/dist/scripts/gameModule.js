@@ -37,7 +37,6 @@ var GameView = React.createClass({displayName: 'GameView',
 	},
 
 	setupNewRound: function(delay){
-		console.log('- setupNewRound')
 		var _this = this,
 			_game = this.props.game,
 			_delay = delay || 0;
@@ -95,21 +94,17 @@ var GameView = React.createClass({displayName: 'GameView',
 	},	
 
 	getAnswer: function(answer, points){
-		console.log('getAnswer')
 		var _this = this,
 			_game = _this.props.game;
 
 		_game.answer(answer, points).then(function(answerData){
-			console.log('answer')
 			setTimeout(function(){
 				_this.answered(answerData)
 			}, Settings.userDelay)
 		})
-		console.log('after')
 	},
 
 	answered: function(answerData){
-		console.log('answered')
 		this.setState({
 			rightAnswer: answerData.rightAnswer,
 			points: answerData.points,
@@ -136,7 +131,6 @@ var GameView = React.createClass({displayName: 'GameView',
 
 		if(!this.state.gameOver){
 
-			console.log(this.state.roundStarted, this.state.roundLoaded)
 			
 			if(!this.state.roundStarted && this.state.roundLoaded){
 				var _buttonTxt = 'Start';

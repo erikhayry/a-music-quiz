@@ -10,7 +10,6 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     },
 
     stopAction: function(audioElement){
-        console.log('stopAction')
         var _this = this;
 
         audioElement.pause();
@@ -28,7 +27,6 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     },
 
     startPlayer: function(audioElement){
-        console.log('startPlayer')
         var _pointsElement = this.refs.points.getDOMNode(),
             _points = parseInt(audioElement.duration - audioElement.currentTime);
         
@@ -49,7 +47,6 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     },
 
     onLoaded: function(){
-        console.log('onLoaded')
         this.setState({
             isLoaded: true
         }) 
@@ -58,15 +55,11 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     },
 
     loadRound: function(audioElement){ 
-        console.log('loadRound')
         var _this = this; 
         
         if(Settings.audioSupport !== 3){
-            console.log('if')
-            //console.log(audioElement.buffered)
 
             audioElement.addEventListener('loadedmetadata', function(){
-                console.log('loadedmetadata')
                 if(!Settings.audioSupport){
                     Settings.audioSupport = 2;                    
                 }
@@ -80,7 +73,6 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         }
         
         else{
-            console.log('else')
             _this.onLoaded(this);            
        }
 
@@ -104,7 +96,6 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     },
 
     playerAction: function(){
-        console.log('playerAction')
         var _this = this,
             _audioElement = '';
 
@@ -126,15 +117,12 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     },
 
     componentDidUpdate: function() {
-        console.log('-----------------------')
         var _this = this;
         if(Settings.audioSupport){
-            console.log('know the support')
             _this.playerAction();
         }
         else{
             Helpers.getAudioSupport().then(function(supportType){
-                console.log('checkking suport')
                 Settings.audioSupport = supportType;
                 _this.playerAction();
             }); 
