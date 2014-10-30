@@ -20,7 +20,7 @@ var AppView = React.createClass({displayName: 'AppView',
 		spotifyService.getUser(accessToken).then(function(userData){
 			spotifyService.getPlaylists(userData.id).then(function(playlists){
 				//Show playlists
-				React.renderComponent(PlaylistView( {userId:userData.id, playlists:playlists}), document.getElementById('app'));
+				React.renderComponent(PlaylistView( {playlists:playlists}), document.getElementById('app'));
 			
 			}).fail(function(failed){
 				//Failed

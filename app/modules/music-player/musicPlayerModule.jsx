@@ -5,7 +5,8 @@ var MusicPlayer = React.createClass({
     getInitialState: function() {
         return {
             isPlaying: false,
-            isLoaded: false
+            isLoaded: false,
+            time: 30
         };
     },
 
@@ -18,7 +19,7 @@ var MusicPlayer = React.createClass({
             window.clearInterval(_this.interval);    
         }   
 
-        _this.props.onRoundOver(this.props.answer, parseInt(audioElement.duration - audioElement.currentTime));
+        _this.props.onRoundOver(_this.props.answer, _this.time);
 
         _this.setState({
             isPlaying: false,
@@ -27,17 +28,16 @@ var MusicPlayer = React.createClass({
     },
 
     startPlayer: function(audioElement){
-        var _pointsElement = this.refs.points.getDOMNode(),
-            _points = parseInt(audioElement.duration - audioElement.currentTime);
+        var _this = this,
+            _pointsElement = this.refs.points.getDOMNode();
         
-        _pointsElement.innerHTML = _points || '30';
+        _pointsElement.innerHTML = _this.time = parseInt(audioElement.duration - audioElement.currentTime) || '30';
         
         audioElement.play();
         audioElement.volume = 0;
         
-        this.interval = window.setInterval(function(){
-            var _points = parseInt(audioElement.duration - audioElement.currentTime);
-            _pointsElement.innerHTML = _points || '30';
+        _this.interval = window.setInterval(function(){
+            _pointsElement.innerHTML = _this.time = parseInt(audioElement.duration - audioElement.currentTime) || '30';
         }, 1000) 
 
 
@@ -55,21 +55,28 @@ var MusicPlayer = React.createClass({
     },
 
     loadRound: function(audioElement){ 
-        var _this = this; 
-        
-        if(Settings.audioSupport !== 3){
-
-            audioElement.addEventListener('loadedmetadata', function(){
+        var _this = this,
+            _onMetadataLoaded = function(){
                 if(!Settings.audioSupport){
                     Settings.audioSupport = 2;                    
                 }
                 
                 if(!_this.state.isLoaded){
                     _this.onLoaded(this);
-                }
+                }                  
+            }; 
+        
+        if(Settings.audioSupport !== 3){
 
-                this.removeEventListener('loadedmetadata', arguments.callee, false);
-            }, false);             
+            if(audioElement.buffered.length > 0){
+                _onMetadataLoaded(); 
+            }
+            else{
+                audioElement.addEventListener('loadedmetadata', function(){
+                    _onMetadataLoaded();                         
+                    this.removeEventListener('loadedmetadata', arguments.callee, false);
+                }, false);                        
+            }          
         }
         
         else{
@@ -139,7 +146,7 @@ var MusicPlayer = React.createClass({
         
         return (
             <div className="m-music-player">  
-                <p ref="points">30</p>
+                <p ref="points">{this.time}</p>
                 {_audioEl}
             </div>
         );
