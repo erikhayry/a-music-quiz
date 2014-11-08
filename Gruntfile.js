@@ -4,9 +4,27 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-concurrent');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        nodemon: {
+          dev: {
+            script: 'app.js',
+            options: {
+                args: ['dev']
+            }
+          }
+        },
+
+        concurrent: {
+            dev: ['nodemon:dev', 'watch:jsx'],
+            options: {
+                logConcurrentOutput: true
+            }            
+        },       
 
         watch: {
             jsx: {
@@ -113,7 +131,7 @@ module.exports = function(grunt) {
         }
     })
 
-    grunt.registerTask('serve', ['watch:jsx']);
+    grunt.registerTask('serve', ['build', 'concurrent:dev']);
     grunt.registerTask('build', ['react', 'less']);
     //grunt.registerTask('test', ['build', 'karma:unit', 'karma:react']);
 

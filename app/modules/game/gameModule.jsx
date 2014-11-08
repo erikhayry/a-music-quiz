@@ -17,6 +17,7 @@ var GameView = React.createClass({
 			answer: null,
 			gameOver: false,
 			isAnswerCorrect: null,
+			error: null,
 
 			roundLoaded: false,
 			roundStarted: false
@@ -25,6 +26,21 @@ var GameView = React.createClass({
 
 	componentDidMount: function() {
 		this.setupNewRound();
+	},
+
+	error: function(type){
+		switch(type){
+			case 1:
+				this.setState({
+					error: 1,
+				})
+				break;
+			default:
+				this.setState({
+					error: 1,
+				})				
+			break;
+		}
 	},
 
 	next: function(round){
@@ -45,6 +61,9 @@ var GameView = React.createClass({
 			setTimeout(function(){
 				_this.next(round);
 			}, _delay)
+
+		}, function(error){
+			_this.error(1)
 		});	
 	},
 
@@ -125,56 +144,70 @@ var GameView = React.createClass({
     },
 
 	render: function() {
+
 		var _this = this,
 			_gameBottom, 
 			_gameBottomLower = '';
 
-		if(!this.state.gameOver){
 
-			
-			if(!this.state.roundStarted && this.state.roundLoaded){
-				var _buttonTxt = 'Start';
-
-				if(this.state.isAnswerCorrect){
-					_buttonTxt = 'Right!';
-				}
-				
-				else if(this.state.isAnswerCorrect === false){
-					_buttonTxt = 'Wrong!';
-				}
-
-				_gameBottomLower = <button onClick={_this.startRound}>{_buttonTxt}</button>
-			}
-			else if(this.state.roundLoaded && this.state.roundStarted){
-				_gameBottomLower = 	<RoundOptions 
-										options={this.state.options} 
-										answer={this.state.answer} 
-										rightAnswer={this.state.rightAnswer} 
-										onUserAnswer={this.onUserAnswer}
-									/>
-			}
-
-
-			_gameBottom = 	<div className="m-app-bottom">
-				    			<MusicPlayer 
-				    				current={this.state.current} 
-				    				answer={this.state.answer} 
-				    				hasStarted={this.state.roundStarted}
-				    				isLoaded={this.state.roundLoaded}
-				    				onRoundOver={this.getAnswer}
-				    				onReady={this.onReady}				    			
-				    			/>
-				    			{_gameBottomLower}
-				    		</div>
-		}
-		
+		if(this.state.error === 1){
+			_gameBottom = 	<div class="m-error">
+								<p>Something is wrong with this playlist</p>
+								<button onClick={_this.goToPlaylist}>Choose another playlist</button>
+							</div>	
+		}	
 		else{
-			_gameBottom = 	<ul className="m-app-bottom">
-								<li><button onClick={_this.restart}>Play again</button></li>
-								<li><button onClick={_this.goToPlaylist}>Choose another playlist</button></li>
-							</ul>
+			if(!this.state.gameOver){
+
+				
+				if(!this.state.roundStarted && this.state.roundLoaded){
+					var _buttonTxt = 'Start';
+
+					if(this.state.isAnswerCorrect){
+						_buttonTxt = 'Right!';
+					}
+					
+					else if(this.state.isAnswerCorrect === false){
+						_buttonTxt = 'Wrong!';
+					}
+
+					_gameBottomLower = <button onClick={_this.startRound}>{_buttonTxt}</button>
+				}
+				else if(this.state.roundLoaded && this.state.roundStarted){
+					_gameBottomLower = 	<div>
+											<RoundOptions 
+												options={this.state.options} 
+												answer={this.state.answer} 
+												rightAnswer={this.state.rightAnswer} 
+												onUserAnswer={this.onUserAnswer}
+											/>
+											<button onClick={_this.goToPlaylist}>Back</button>
+										</div>	
+
+				}
+
+
+				_gameBottom = 	<div className="m-app-bottom">
+					    			<MusicPlayer 
+					    				current={this.state.current} 
+					    				answer={this.state.answer} 
+					    				hasStarted={this.state.roundStarted}
+					    				isLoaded={this.state.roundLoaded}
+					    				onRoundOver={this.getAnswer}
+					    				onReady={this.onReady}				    			
+					    			/>
+					    			{_gameBottomLower}
+					    		</div>
+			}
+			
+			else{
+				_gameBottom = 	<ul className="m-app-bottom">
+									<li><button onClick={_this.restart}>Play again</button></li>
+									<li><button onClick={_this.goToPlaylist}>Choose another playlist</button></li>
+								</ul>
+			}			
 		}
-		
+
 		return (
 			  <div className="m-app">
 			   	<div className="m-app-top">

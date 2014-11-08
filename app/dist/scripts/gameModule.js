@@ -17,6 +17,7 @@ var GameView = React.createClass({displayName: 'GameView',
 			answer: null,
 			gameOver: false,
 			isAnswerCorrect: null,
+			error: null,
 
 			roundLoaded: false,
 			roundStarted: false
@@ -25,6 +26,21 @@ var GameView = React.createClass({displayName: 'GameView',
 
 	componentDidMount: function() {
 		this.setupNewRound();
+	},
+
+	error: function(type){
+		switch(type){
+			case 1:
+				this.setState({
+					error: 1,
+				})
+				break;
+			default:
+				this.setState({
+					error: 1,
+				})				
+			break;
+		}
 	},
 
 	next: function(round){
@@ -45,6 +61,9 @@ var GameView = React.createClass({displayName: 'GameView',
 			setTimeout(function(){
 				_this.next(round);
 			}, _delay)
+
+		}, function(error){
+			_this.error(1)
 		});	
 	},
 
@@ -125,56 +144,70 @@ var GameView = React.createClass({displayName: 'GameView',
     },
 
 	render: function() {
+
 		var _this = this,
 			_gameBottom, 
 			_gameBottomLower = '';
 
-		if(!this.state.gameOver){
 
-			
-			if(!this.state.roundStarted && this.state.roundLoaded){
-				var _buttonTxt = 'Start';
-
-				if(this.state.isAnswerCorrect){
-					_buttonTxt = 'Right!';
-				}
-				
-				else if(this.state.isAnswerCorrect === false){
-					_buttonTxt = 'Wrong!';
-				}
-
-				_gameBottomLower = React.DOM.button( {onClick:_this.startRound}, _buttonTxt)
-			}
-			else if(this.state.roundLoaded && this.state.roundStarted){
-				_gameBottomLower = 	RoundOptions( 
-										{options:this.state.options, 
-										answer:this.state.answer, 
-										rightAnswer:this.state.rightAnswer, 
-										onUserAnswer:this.onUserAnswer}
-									)
-			}
-
-
-			_gameBottom = 	React.DOM.div( {className:"m-app-bottom"}, 
-				    			MusicPlayer( 
-				    				{current:this.state.current, 
-				    				answer:this.state.answer, 
-				    				hasStarted:this.state.roundStarted,
-				    				isLoaded:this.state.roundLoaded,
-				    				onRoundOver:this.getAnswer,
-				    				onReady:this.onReady}				    			
-				    			),
-				    			_gameBottomLower
-				    		)
-		}
-		
+		if(this.state.error === 1){
+			_gameBottom = 	React.DOM.div( {class:"m-error"}, 
+								React.DOM.p(null, "Something is wrong with this playlist"),
+								React.DOM.button( {onClick:_this.goToPlaylist}, "Choose another playlist")
+							)	
+		}	
 		else{
-			_gameBottom = 	React.DOM.ul( {className:"m-app-bottom"}, 
-								React.DOM.li(null, React.DOM.button( {onClick:_this.restart}, "Play again")),
-								React.DOM.li(null, React.DOM.button( {onClick:_this.goToPlaylist}, "Choose another playlist"))
-							)
+			if(!this.state.gameOver){
+
+				
+				if(!this.state.roundStarted && this.state.roundLoaded){
+					var _buttonTxt = 'Start';
+
+					if(this.state.isAnswerCorrect){
+						_buttonTxt = 'Right!';
+					}
+					
+					else if(this.state.isAnswerCorrect === false){
+						_buttonTxt = 'Wrong!';
+					}
+
+					_gameBottomLower = React.DOM.button( {onClick:_this.startRound}, _buttonTxt)
+				}
+				else if(this.state.roundLoaded && this.state.roundStarted){
+					_gameBottomLower = 	React.DOM.div(null, 
+											RoundOptions( 
+												{options:this.state.options, 
+												answer:this.state.answer, 
+												rightAnswer:this.state.rightAnswer, 
+												onUserAnswer:this.onUserAnswer}
+											),
+											React.DOM.button( {onClick:_this.goToPlaylist}, "Back")
+										)	
+
+				}
+
+
+				_gameBottom = 	React.DOM.div( {className:"m-app-bottom"}, 
+					    			MusicPlayer( 
+					    				{current:this.state.current, 
+					    				answer:this.state.answer, 
+					    				hasStarted:this.state.roundStarted,
+					    				isLoaded:this.state.roundLoaded,
+					    				onRoundOver:this.getAnswer,
+					    				onReady:this.onReady}				    			
+					    			),
+					    			_gameBottomLower
+					    		)
+			}
+			
+			else{
+				_gameBottom = 	React.DOM.ul( {className:"m-app-bottom"}, 
+									React.DOM.li(null, React.DOM.button( {onClick:_this.restart}, "Play again")),
+									React.DOM.li(null, React.DOM.button( {onClick:_this.goToPlaylist}, "Choose another playlist"))
+								)
+			}			
 		}
-		
+
 		return (
 			  React.DOM.div( {className:"m-app"}, 
 			   	React.DOM.div( {className:"m-app-top"}, 

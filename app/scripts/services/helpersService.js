@@ -1,5 +1,10 @@
 var Helpers = (function(){
 	
+	/**
+	 * shuffle an array
+	 * @param  {Array} array to be shuffled
+	 * @return {Array}
+	 */
 	function _shuffle(array) {
 	  var _currentIndex = array.length, _temporaryValue, _randomIndex;
 
@@ -20,10 +25,20 @@ var Helpers = (function(){
 	  return array;
 	}
 
+	/**
+	 * determinates the audio support of the client
+	 *
+	 * Types
+	 * 1 = supports autoplay
+	 * 2 = support loadedmetadata event but not autoplay. User action required to play.
+	 * 3 = no support for loadmetadata event nor autoplay. User action required to play.
+	 * 
+	 * @return {Number}
+	 */
 	function _getAudioSupport(){
 		var _deferred = Q.defer(),
 			_audioEl = document.createElement("audio"),
-			_type = 1,
+			_type = 3,
 			_resolve = function(type){
 				_deferred.resolve(type)
 				_audioEl.parentNode.removeChild(_audioEl);
@@ -42,13 +57,16 @@ var Helpers = (function(){
 			_type = 1;
 		}, false);
 
+		//add audio element to body
 		document.body.appendChild(_audioEl);
 
 		window.setTimeout(function(){
+			//no events fired in 500ms
 			if(_type === 3){
 				_resolve(_type)
 			}
 			else{
+				//try to auto play
 				_audioEl.play();
 				window.setTimeout(function(){
 					_resolve(_type)

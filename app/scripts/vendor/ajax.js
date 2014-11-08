@@ -29,8 +29,9 @@ function ajax(url, config, callbackFunction){
 	};
 
 	this.stateChange = function (object) {
+		console.log(this.request.status)
 		if(this.request.status == 401){
-			_deferred.reject(this.request.responseURL + ' : ' + this.request.statusText)
+			_deferred.reject(new Error(this.request.responseURL + ' : ' + this.request.statusText));
 		}
 
 		else if (this.request.readyState==4 && this.request.status == 200 &&  this.request.responseText){			

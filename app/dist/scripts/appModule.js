@@ -12,11 +12,14 @@ var AppView = React.createClass({displayName: 'AppView',
 			if(document.getElementById('app')) {
 				React.renderComponent(LoginLink( {url:_loginUrl}), document.getElementById('app'));
 			}
+		}, function(error){
+			console.error('Failed to login')
 		})		
 	},
 
 	startGame: function(accessToken){
 		var _this = this;
+
 		spotifyService.getUser(accessToken).then(function(userData){
 			spotifyService.getPlaylists(userData.id).then(function(playlists){
 				//Show playlists

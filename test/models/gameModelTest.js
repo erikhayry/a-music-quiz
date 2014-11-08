@@ -8,7 +8,9 @@ describe("Game Model", function(){
     var _game;
 
     it("Should be defined and have inital properties set", function() {
-        _game = new Game('erikportin', '123');
+        _game = new Game('erikportin', '123', {
+            gameLength: 10
+        });
 
         expect(_game).toBeDefined();  
 
@@ -16,10 +18,11 @@ describe("Game Model", function(){
         expect(_game.playerId).toEqual('erikportin');
         
         expect(_game._points).toEqual(0);
-        expect(_game._gameLength).toBeUndefined();
+        expect(_game._gameLength).toEqual(10);
         expect(_game._currentOptionsIndex).toEqual(-1);
         expect(_game._currentRound).toEqual([]);
         expect(_game._allTracks).toEqual({});
+        expect(_game._isValidPlaylist).toEqual(true);
     });
 });
 
