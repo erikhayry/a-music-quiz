@@ -1,0 +1,1 @@
+var RoundOptions=React.createClass({displayName:"RoundOptions",render:function(){var a=[],b=this.props.options,c=this.props.answer,d=this.props.rightAnswer,e=this.props.onUserAnswer;return b.forEach(function(b){a.push(RoundOption({key:b.id,option:b,answer:c,rightAnswer:d,onUserAnswer:e}))}),React.DOM.div({className:"m-round-options"},a)}});
