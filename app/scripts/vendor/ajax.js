@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 function ajax(url, config, callbackFunction){
 	var _deferred = Q.defer();
+	console.log('Ajax')
 	this.bindFunction = function (caller, object) {
 		return function() {
 			return caller.apply(object, [object]);
@@ -29,7 +30,6 @@ function ajax(url, config, callbackFunction){
 	};
 
 	this.stateChange = function (object) {
-		console.log(this.request.status)
 		if(this.request.status == 401){
 			_deferred.reject(new Error(this.request.responseURL + ' : ' + this.request.statusText));
 		}

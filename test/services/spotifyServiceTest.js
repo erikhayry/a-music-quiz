@@ -14,7 +14,9 @@ describe("Spotify Service", function() {
     beforeEach(function() {
         _clock = sinon.useFakeTimers();
         _sandbox = sinon.sandbox.create();
+
         _ajaxStub = _sandbox.stub(window, "ajax", function(url, config) {
+            console.log('Ajax stub')
             var _deferred = Q.defer();
             var _returnData, _deferredType = 'resolve';
 
@@ -39,12 +41,14 @@ describe("Spotify Service", function() {
                         break;
                     case 'https://api.spotify.com/v1/users/erikportin/playlists/53Y8wT46QIMz5H4WQ8O22c':
                         _returnData = _playlistApiCallData;
-                        break;
+                        break;                     
                     default:
                         _returnData = new Error('Error getting data');
                         _deferredType = 'reject';
                 }
             }
+
+            console.log(_deferredType)
 
             _deferred[_deferredType](_returnData);
 
@@ -88,22 +92,24 @@ describe("Spotify Service", function() {
     });
 
     describe("getUser()", function() {
-        it("should return spotify user when token are valid", function() {
+/*        it("should return spotify user when token are valid", function() {
             var _user;
 
             spotifyService.getUser('access_token_value').then(function(user){
+                console.log('then 1')
               _user = user;
             });
 
             _clock.tick();
 
             expect(_user.display_name).toEqual('Erik Portin');
-        });
+        });*/
 
-        it("should fail if token is invalid", function() {
+/*        it("should fail if token is invalid", function() {
             var _error;
 
             spotifyService.getUser('inavlid_access_token_value').then(function(user){
+                console.log('then 2')
             }, function(error){
               _error = error;
             });
@@ -111,16 +117,17 @@ describe("Spotify Service", function() {
             _clock.tick();
 
             expect(_error).toBeDefined();
-        });
+        });*/
 
     });
 
     describe("getPlaylists()", function(){
       
-      it("should return playlists if exists", function() {
+/*      it("should return playlists if exists", function() {
         var _playlists;
         
         spotifyService.getPlaylists('erikportin').then(function(playlists){
+            console.log('then 3')
           _playlists = playlists;
         })
         
@@ -131,13 +138,14 @@ describe("Spotify Service", function() {
         expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].total).toEqual(30);
         expect(_playlists['53Y8wT46QIMz5H4WQ8O22c'].owner).toEqual('erikportin');
       
-      });
+      });*/
 
 
-      it("should return error if data not available", function() {
+/*      it("should return error if data not available", function() {
         var _error;
         
         spotifyService.getPlaylists('unavailableUser').then(function(){
+            console.log('then')
         },function(error){
           _error = error;
         })
@@ -152,6 +160,7 @@ describe("Spotify Service", function() {
         var _playlists;
         
         spotifyService.getPlaylists('erikportin').then(function(playlists){
+            console.log('then')
           _playlists = playlists;
         })
         
@@ -164,15 +173,16 @@ describe("Spotify Service", function() {
 
         expect(_ajaxStub.called).toBe(false);
       
-      });
+      });*/
     });
 
-    describe("getTracks()", function(){
+/*    describe("getTracks()", function(){
 
       it("should return track data", function() {  
         var _tracks;      
         
         spotifyService.getTracks('erikportin', '53Y8wT46QIMz5H4WQ8O22c', 200).then(function(tracks){
+            console.log('then')
           _tracks = tracks;
         });
 
@@ -198,6 +208,7 @@ describe("Spotify Service", function() {
         var _error;      
         
         spotifyService.getTracks('erikportin', 'unavailableId', 200).then(function(tracks){
+            console.log('then 3')
         }, function(error){
           _error = error;
         })
@@ -210,22 +221,25 @@ describe("Spotify Service", function() {
 
       it("should use stored playlist data if exists", function() {  
         var _tracks; 
-        
+  
         spotifyService.getTracks('erikportin', '53Y8wT46QIMz5H4WQ8O22c', 99).then(function(tracks){
+            console.log('then -1')
           _tracks = tracks;
         })
         _clock.tick();
 
         spotifyService.getTracks('erikportin', '53Y8wT46QIMz5H4WQ8O22c', 99).then(function(tracks){
+            console.log('then -2')
           _tracks = tracks;
         })
         
         _clock.tick();
 
-        expect(_ajaxStub.calledTwice).toBe(false);
+        expect(_ajaxStub.calledOnce).toBe(false);        
         expect(_tracks.length).toBe(5);
+
       }); 
     });
-
+*/
     
 })
