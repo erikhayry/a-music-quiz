@@ -22,7 +22,7 @@ THE SOFTWARE.
 
 function ajax(url, config, callbackFunction){
 	var _deferred = Q.defer();
-	console.log('Ajax')
+
 	this.bindFunction = function (caller, object) {
 		return function() {
 			return caller.apply(object, [object]);
