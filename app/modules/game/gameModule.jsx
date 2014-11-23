@@ -53,11 +53,14 @@ var GameView = React.createClass({
 	},
 
 	setupNewRound: function(delay){
+		log('gameModule: setupNewRound')
 		var _this = this,
 			_game = this.props.game,
 			_delay = delay || 0;
 			
 		_game.next().then(function(round){
+			log('gameModule: setupNewRound: got data')
+			log(round)
 			setTimeout(function(){
 				_this.next(round);
 			}, _delay)
@@ -68,6 +71,7 @@ var GameView = React.createClass({
 	},
 
 	startNewRound: function(round){
+
 		this.setState({
 			options: round.options,
 			current: round.current,

@@ -60,6 +60,8 @@ function _isValidPlaylist(allTracks){
 }
 
 function _setCurrentRound(game, allTracks, gameLength){
+    log('Game Model: _setCurrentRound')
+    log(game, allTracks, gameLength)
     game._currentOptionsIndex++;
 
     //set current track for round

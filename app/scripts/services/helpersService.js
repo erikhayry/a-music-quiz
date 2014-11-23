@@ -64,12 +64,14 @@ var Helpers = (function(){
 		window.setTimeout(function(){
 			//no events fired in 500ms
 			if(_type === 3){
+				log('Helpers: _getAudioSupport - 3')
 				_resolve(_type)
 			}
 			else{
 				//try to auto play
 				_audioEl.play();
 				window.setTimeout(function(){
+					log('Helpers: _getAudioSupport - ' + _type)
 					_resolve(_type)
 				}, 200);
 			}

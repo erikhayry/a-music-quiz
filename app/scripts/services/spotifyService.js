@@ -14,6 +14,7 @@ var spotifyService = (function(id) {
      * @return {[type]}
      */
     function _getPlaylists(userId, settings) {
+        log('SpotifyService: _getPlaylists')
 
         var _settings = settings || {},
             _deferred = _settings.deferred || Q.defer(),
@@ -64,6 +65,7 @@ var spotifyService = (function(id) {
 	 * @return {external: Promise}
 	 */
     function _getPlaylistInfo(userId, playListId) {
+        log('SpotifyService: _getPlaylistInfo')
         var _deferred = Q.defer();
 
         //resolve with existing data if exists
@@ -98,6 +100,7 @@ var spotifyService = (function(id) {
      * @return {external: Promise}
      */
     function _getTracks(userId, playListId, total) {
+        log('SpotifyService: _getTracks')
         var _deferred = Q.defer(),
             _limit = 100, //max number of tracks spotify allow for a request
             _total = total || 0, //total number of tracks in playlist
@@ -157,6 +160,7 @@ var spotifyService = (function(id) {
     }
 
     function _getUser(accessToken) {
+        log('SpotifyService: _getUser')
         _config = {
             headers: {
                 'Authorization': 'Bearer ' + accessToken
@@ -170,6 +174,7 @@ var spotifyService = (function(id) {
      * @return Object
      */
     function _getSearchParams(searchParams) {
+        log('SpotifyService: _getSearchParams')
         var _search = (searchParams.indexOf('?') === 0) ? searchParams.slice(1).split('&') : searchParams.split('&'),
             _searchObj = {};
 

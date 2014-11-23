@@ -148,6 +148,8 @@ var MusicPlayer = React.createClass({
         var _audioEl = '';
         
         if(this.props.current && this.props.current.track){
+            log('Musicplayer: render new track: ')
+            log(this.props.current.track)
             _audioEl = <audio src={this.props.current.track.url} ref="audio" type="audio/mpeg"  />
         }
         
