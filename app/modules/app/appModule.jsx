@@ -7,7 +7,7 @@
 var AppView = React.createClass({
 
 	login: function(){
-		ajax('api/login', '').then(function(data){
+		$.ajax('api/login', '').then(function(data){
 			var _loginUrl = data['redirect_url'];
 			if(document.getElementById('app')) {
 				React.renderComponent(<LoginLink url={_loginUrl}/>, document.getElementById('app'));

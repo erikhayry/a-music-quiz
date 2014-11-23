@@ -27,7 +27,7 @@ var spotifyService = (function(id) {
 
         //get from api
         else {
-            ajax(_url, _config).then(function(res) {
+            $.ajax(_url, _config).then(function(res) {
                 res.items.forEach(function(playlist) {
                     _playLists[playlist.id] = {
                         'name': playlist.name,
@@ -146,7 +146,7 @@ var spotifyService = (function(id) {
 
         //get from local storage if exists
         else {
-            ajax(_url, _config).then(function(res) {
+            $.ajax(_url, _config).then(function(res) {
             	_normaliseTrackData(res.items)
             }, function(error) {
             	_deferred.reject(error);
@@ -162,7 +162,7 @@ var spotifyService = (function(id) {
                 'Authorization': 'Bearer ' + accessToken
             }
         };
-        return ajax(_apiUrl + '/me', _config);
+        return $.ajax(_apiUrl + '/me', _config);
     }
 
     /**

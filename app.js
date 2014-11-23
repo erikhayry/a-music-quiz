@@ -21,109 +21,105 @@ var host = 'http://a-music-quiz.herokuapp.com/';
 var port = process.env.PORT || 3000;
 
 
-process.argv.forEach(function(v){
-  if(v == 'dev') {
-    dir = '/app';    
-  }
-  if(v == 'dist' || v == 'dev'){
-    host = 'http://localhost:' + port + '/';
-  }
+process.argv.forEach(function(v) {
+    if (v == 'dev') {
+        dir = '/app';
+    }
+    if (v == 'dist' || v == 'dev') {
+        host = 'http://192.168.1.67:' + port + '/';
+    }
 })
 
 app.use(express.static(__dirname + dir));
 
 app.get('/api/login', function(req, res) {
-  console.log('get api/login')
-  var redirect_uri = host + redirect_uri_path;
-  var scope = 'playlist-modify playlist-modify-private';
-  res.send({
-      'redirect_url': 'https://accounts.spotify.com/authorize?' +
-        querystring.stringify({
-          response_type: 'code',
-          client_id: client_id,
-          scope: scope,
-          redirect_uri: redirect_uri
-        })
-  });
+    var redirect_uri = host + redirect_uri_path;
+    var scope = 'playlist-modify playlist-modify-private';
+    res.send({
+        'redirect_url': 'https://accounts.spotify.com/authorize?' +
+            querystring.stringify({
+                response_type: 'code',
+                client_id: client_id,
+                scope: scope,
+                redirect_uri: redirect_uri
+            })
+    });
 });
 
 app.get('/api/callback', function(req, res) {
-  console.log('get /api/callback')
-  var redirect_uri = host + redirect_uri_path;
-  console.log(redirect_uri)
-  // your application requests refresh and access tokens
-  var code = req.query.code;
+    var redirect_uri = host + redirect_uri_path;
+    // your application requests refresh and access tokens
+    var code = req.query.code;
 
-  console.log(req.query)
-  
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    form: {
-      code: code,
-      redirect_uri: redirect_uri,
-      grant_type: 'authorization_code',
-      client_id: client_id,
-      client_secret: client_secret
-    },
-    json: true
-  };
 
-  request.post(authOptions, function(error, response, body) {
-    console.log('post response', response)
-    if (!error && response.statusCode === 200) {
-
-      var access_token = body.access_token,
-          refresh_token = body.refresh_token;
-
-      var options = {
-        url: 'https://api.spotify.com/v1/me',
-        headers: { 'Authorization': 'Bearer ' + access_token },
+    var authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+            code: code,
+            redirect_uri: redirect_uri,
+            grant_type: 'authorization_code',
+            client_id: client_id,
+            client_secret: client_secret
+        },
         json: true
-      };
+    };
 
-      // use the access token to access the Spotify Web API
-/*      request.get(options, function(error, response, body) {
+    request.post(authOptions, function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+
+            var access_token = body.access_token,
+                refresh_token = body.refresh_token;
+
+            var options = {
+                url: 'https://api.spotify.com/v1/me',
+                headers: {
+                    'Authorization': 'Bearer ' + access_token
+                },
+                json: true
+            };
+
+            // use the access token to access the Spotify Web API
+            /*      request.get(options, function(error, response, body) {
       
       });*/
 
-      // we can also pass the token to the browser to make requests from there
-      res.redirect(host + '?' +
-        querystring.stringify({
-          access_token: access_token,
-          refresh_token: refresh_token
-        }));
-    }
-    else{
-      console.log(error)
-      res.redirect('?error=true');
-    }
-  });
+            // we can also pass the token to the browser to make requests from there
+            res.redirect(host + '?' +
+                querystring.stringify({
+                    access_token: access_token,
+                    refresh_token: refresh_token
+                }));
+        } else {
+            res.redirect('?error=true');
+        }
+    });
 });
 
 app.get('/api/refresh_token', function(req, res) {
-  console.log('get /api/refresh_token')
-  // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token
-    },
-    json: true
-  };
+    // requesting access token from refresh token
+    var refresh_token = req.query.refresh_token;
+    var authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+        },
+        form: {
+            grant_type: 'refresh_token',
+            refresh_token: refresh_token
+        },
+        json: true
+    };
 
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
-      });
-    }
-  });
+    request.post(authOptions, function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            var access_token = body.access_token;
+            res.send({
+                'access_token': access_token
+            });
+        }
+    });
 });
 
-console.log('Listening on ' + port);
+console.log('Listening on ' + host );
 
 app.listen(port);

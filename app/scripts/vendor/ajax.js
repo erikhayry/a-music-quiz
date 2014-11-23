@@ -20,48 +20,52 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-function ajax(url, config, callbackFunction){
-	var _deferred = Q.defer();
+var $ = (function() {
+    function _ajax(url, config, callbackFunction) {
+        var _deferred = Q.defer();
 
-	this.bindFunction = function (caller, object) {
-		return function() {
-			return caller.apply(object, [object]);
-		};
-	};
+        this.bindFunction = function(caller, object) {
+            return function() {
+                return caller.apply(object, [object]);
+            };
+        };
 
-	this.stateChange = function (object) {
-		if(this.request.status == 401){
-			_deferred.reject(new Error(this.request.responseURL + ' : ' + this.request.statusText));
-		}
+        this.stateChange = function(object) {
+            if (this.request.status == 401) {
+                _deferred.reject(new Error(this.request.responseURL + ' : ' + this.request.statusText));
+            } else if (this.request.readyState == 4 && this.request.status == 200 && this.request.responseText) {
+                _deferred.resolve(JSON.parse(this.request.responseText));
+            }
+        };
 
-		else if (this.request.readyState==4 && this.request.status == 200 &&  this.request.responseText){			
-			_deferred.resolve(JSON.parse(this.request.responseText));			
-		}
-	};
+        this.getRequest = function() {
+            if (window.ActiveXObject)
+                return new ActiveXObject('Microsoft.XMLHTTP');
+            else if (window.XMLHttpRequest)
+                return new XMLHttpRequest();
+            return false;
+        };
 
-	this.getRequest = function() {
-		if (window.ActiveXObject)
-			return new ActiveXObject('Microsoft.XMLHTTP');
-		else if (window.XMLHttpRequest)
-			return new XMLHttpRequest();
-		return false;
-	};
+        this.postBody = (arguments[2] || "");
+        this.url = url;
+        this.request = this.getRequest();
 
-	this.postBody = (arguments[2] || "");
-	this.url=url;
-	this.request = this.getRequest();
-	
-	if(this.request) {
-		var req = this.request;
-		req.onreadystatechange = this.bindFunction(this.stateChange, this);
-			req.open("GET", url, true);
-			for(var header in config.headers){
-				req.setRequestHeader(header, config.headers[header]);
-			}
+        if (this.request) {
+            var req = this.request;
+            req.onreadystatechange = this.bindFunction(this.stateChange, this);
+            req.open("GET", url, true);
+            for (var header in config.headers) {
+                req.setRequestHeader(header, config.headers[header]);
+            }
 
-			req.send(this.postBody) 
-	
-	}
+            req.send(this.postBody)
 
-	return _deferred.promise;
-}
+        }
+
+        return _deferred.promise;
+    }
+
+    return {
+    	ajax : _ajax
+    }
+})();

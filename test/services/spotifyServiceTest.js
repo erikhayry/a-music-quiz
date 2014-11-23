@@ -15,8 +15,8 @@ describe("Spotify Service", function() {
         _clock = sinon.useFakeTimers();
         _sandbox = sinon.sandbox.create();
 
-        _ajaxStub = _sandbox.stub(window, "ajax", function(url, config) {
-            console.log('Ajax stub')
+        _ajaxStub = _sandbox.stub($, "ajax", function(url, config) {
+            console.log('Ajax stub', url)
             var _deferred = Q.defer();
             var _returnData, _deferredType = 'resolve';
 
@@ -26,6 +26,7 @@ describe("Spotify Service", function() {
                 switch (url) {
                     case 'https://api.spotify.com/v1/me':
                         if(config.headers.Authorization === 'Bearer access_token_value'){
+                            console.log('in')
                           _returnData = _meApiCallData;                          
                         }
                         else{
@@ -49,6 +50,7 @@ describe("Spotify Service", function() {
             }
 
             console.log(_deferredType)
+            console.log(_returnData)
 
             _deferred[_deferredType](_returnData);
 
@@ -96,11 +98,9 @@ describe("Spotify Service", function() {
             var _user;
 
             spotifyService.getUser('access_token_value').then(function(user){
-                console.log('then 1')
-              _user = user;
+                console.log('then 1', _user)
+                _user = user;
             });
-
-            _clock.tick();
 
             expect(_user.display_name).toEqual('Erik Portin');
         });*/

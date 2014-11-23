@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                 options: {
                     args: ['dev']
                 }
-            }            
+            }
         },
 
         concurrent: {
@@ -145,18 +145,33 @@ module.exports = function(grunt) {
             }
         },
 
-      uglify: {
-        dist: {
-          files: [{
-              expand: true,
-              mangle: true,
-              compress: true,
-              cwd: 'dist/app/',
-              src: ['dist/**/*.js', 'scripts/**/*.js'],
-              dest: 'dist/app/'
-          }]
+        uglify: {
+            dist: {
+                files: [{
+                    expand: true,
+                    mangle: true,
+                    compress: true,
+                    cwd: 'dist/app/',
+                    src: ['dist/**/*.js', 'scripts/**/*.js'],
+                    dest: 'dist/app/'
+                }]
+            }
+        },
+
+
+        useminPrepare: {
+            html: 'app/index.html',
+                        options: {
+                dest: 'dist/app/'
+            }
+        },
+
+        usemin: {
+            html: ['dist/app/index.html'],
+            options: {
+                assetsDirs: ['dist']
+            }
         }
-      }
 
     });
 
@@ -183,8 +198,11 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'clean',
         'build-assets',
+        'useminPrepare',
+        'concat',
         'copy',
         'uglify',
+        'usemin'
     ]);
 
 

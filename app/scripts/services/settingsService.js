@@ -4,6 +4,6 @@ var Settings = (function(){
 		gameLength: 15,
 		userDelay: 2000,
 		audioSupport: null,
-		mute: false,
+		mute: true,
 	}
 })();
