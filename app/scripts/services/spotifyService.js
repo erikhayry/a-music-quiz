@@ -125,16 +125,24 @@ var spotifyService = (function(id) {
             _normaliseTrackData = function(items){
                 var _tracks = [];
                 items.forEach(function(trackData) {
-                    _tracks.push({
-                        'artist': {
-                            'name': trackData.track.artists[0].name,
-                            'id': trackData.track.artists[0].id
-                        },
-                        'track': {
-                            'name': trackData.track.name,
-                            'url': trackData.track.preview_url
-                        }
-                    })
+                    if(trackData.track.preview_url){
+                        //TODO get all artist names
+                        _tracks.push({
+                            'artist': {
+                                'name': trackData.track.artists[0].name,
+                                'id': trackData.track.artists[0].id
+                            },
+                            'track': {
+                                'name': trackData.track.name,
+                                'url': trackData.track.preview_url
+                            }
+                        })                        
+                    }
+                    else{
+                        //TODO return error if playlist to short
+                        log('preview_url missing for ' + trackData.track.name)
+                    }
+
                 })
 
                 _spotifyTrackData[_url] = _tracks;
