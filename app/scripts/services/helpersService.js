@@ -36,6 +36,7 @@ var Helpers = (function(){
 	 * @return {Number}
 	 */
 	function _getAudioSupport(){
+		log('Helpers: _getAudioSupport')
 		var _deferred = Q.defer(),
 			_audioEl = document.createElement("audio"),
 			_type = 3,

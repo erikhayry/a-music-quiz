@@ -11,6 +11,7 @@ var MusicPlayer = React.createClass({
     },
 
     stopAction: function(audioElement){
+        log('Musicplayer: stopAction')
         var _this = this;
 
         audioElement.pause();
@@ -28,6 +29,7 @@ var MusicPlayer = React.createClass({
     },
 
     startPlayer: function(audioElement){
+        log('Musicplayer: startPlayer')
         var _this = this,
             _pointsElement = this.refs.points.getDOMNode();
         
@@ -54,7 +56,8 @@ var MusicPlayer = React.createClass({
         this.props.onReady()
     },
 
-    loadRound: function(audioElement){ 
+    loadRound: function(audioElement){
+        log('Musicplayer: loadRound')
         var _this = this,
             _onMetadataLoaded = function(){
                 if(!Settings.audioSupport){
@@ -69,10 +72,13 @@ var MusicPlayer = React.createClass({
         if(Settings.audioSupport !== 3){
 
             if(audioElement.buffered.length > 0){
+                log('Musicplayer: audioElement buffered')
                 _onMetadataLoaded(); 
             }
             else{
+                log('Musicplayer: wait for loadedmetadata')
                 audioElement.addEventListener('loadedmetadata', function(){
+                    log('Musicplayer: loadedmetadata')
                     _onMetadataLoaded();                         
                     this.removeEventListener('loadedmetadata', arguments.callee, false);
                 }, false);                        
@@ -80,6 +86,7 @@ var MusicPlayer = React.createClass({
         }
         
         else{
+            log('Musicplayer: Settings.audioSupport = 3')
             _this.onLoaded(this);            
        }
 

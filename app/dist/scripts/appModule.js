@@ -38,7 +38,7 @@ var AppView = React.createClass({displayName: 'AppView',
 		var tokens = spotifyService.getTokens(window.location.search);
 
 		if(tokens.accessToken && tokens.refreshToken){	
-			console.log('start')
+			log('AppView: start game')
 			this.startGame(tokens.accessToken);	
 		}
 		else{
