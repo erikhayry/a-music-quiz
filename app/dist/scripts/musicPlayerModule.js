@@ -68,27 +68,34 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
                     _this.onLoaded(this);
                 }                  
             }; 
-        
-        if(Settings.audioSupport !== 3){
+        if(!_this.state.isLoaded){
+            if(Settings.audioSupport !== 3){
 
-            if(audioElement.buffered.length > 0){
-                log('Musicplayer: audioElement buffered')
-                _onMetadataLoaded(); 
+                if(Settings.audioSupport === 1){
+                    log('Musicplayer: audioElement buffered')
+                    _onMetadataLoaded(); 
+                }
+                else{
+                    if(audioElement.buffered.length > 0){
+                        log('Musicplayer: buffered')
+                        _onMetadataLoaded();
+                    }
+                    else{
+                        log('Musicplayer: wait for loadedmetadata')
+                        audioElement.addEventListener('loadedmetadata', function(){
+                            log('Musicplayer: loadedmetadata')
+                            _onMetadataLoaded();                         
+                            this.removeEventListener('loadedmetadata', arguments.callee, false);
+                        }, false);                                            
+                    }
+                }          
             }
+            
             else{
-                log('Musicplayer: wait for loadedmetadata')
-                audioElement.addEventListener('loadedmetadata', function(){
-                    log('Musicplayer: loadedmetadata')
-                    _onMetadataLoaded();                         
-                    this.removeEventListener('loadedmetadata', arguments.callee, false);
-                }, false);                        
-            }          
+                log('Musicplayer: Settings.audioSupport = 3')
+                _this.onLoaded(this);            
+           }
         }
-        
-        else{
-            log('Musicplayer: Settings.audioSupport = 3')
-            _this.onLoaded(this);            
-       }
 
         audioElement.addEventListener('timeupdate', function(){
             if(!Settings.mute){
@@ -110,6 +117,7 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     },
 
     playerAction: function(){
+        log('playerAction')
         var _this = this,
             _audioElement = '';
 
@@ -146,11 +154,11 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
 
     render: function() {
         var _audioEl = '';
-        
+
         if(this.props.current && this.props.current.track){
             log('Musicplayer: render new track: ')
             log(this.props.current.track)
-            _audioEl = React.DOM.audio( {src:this.props.current.track.url, ref:"audio", type:"audio/mpeg"}  )
+            _audioEl = React.DOM.audio( {src:this.props.current.track.url, ref:"audio", type:"audio/mpeg", preload:"auto"} )
         }
         
         return (

@@ -273,6 +273,7 @@ describe("Game.answer()", function(){
 
     it("should add points if answer is correct and retrun answer object", function(){
         _game = new Game('erikportin', '123');
+       
         _game.next().then(function(options){
             _options = options;
         })

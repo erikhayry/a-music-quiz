@@ -123,13 +123,24 @@ var spotifyService = (function(id) {
              * @param  {Array} spotify api track data
              */
             _normaliseTrackData = function(items){
-                var _tracks = [];
+                log.groupCollapsed('_normaliseTrackData')
+                
+                var _tracks = [],
+                    _getArtistNames = function(artists){
+                        var artistNamesArr = [];
+                        
+                        for (var i = 0; i < artists.length; i++) {
+                            artistNamesArr.push(artists[i].name);
+                        };
+                        return artistNamesArr.join(', ');
+                    };
+
                 items.forEach(function(trackData) {
                     if(trackData.track.preview_url){
                         //TODO get all artist names
                         _tracks.push({
                             'artist': {
-                                'name': trackData.track.artists[0].name,
+                                'name': _getArtistNames(trackData.track.artists),
                                 'id': trackData.track.artists[0].id
                             },
                             'track': {
@@ -144,6 +155,8 @@ var spotifyService = (function(id) {
                     }
 
                 })
+                
+                log.groupEnd()
 
                 _spotifyTrackData[_url] = _tracks;
 

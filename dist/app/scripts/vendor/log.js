@@ -1,1 +1,1 @@
-window.log=function(){log.history=log.history||[],log.history.push(arguments),this.console&&console.log(Array.prototype.slice.call(arguments))};
+window.log=function(){var a=this;log.history=log.history||[],log.history.push(arguments),log.div=function(){Settings.debug&&a.log("------------------------------------")},log.groupCollapsed=function(a){Settings.debug&&console.groupCollapsed(a)},log.groupEnd=function(){Settings.debug&&console.groupEnd()},Settings.debug&&this.console&&console.log(Array.prototype.slice.call(arguments))};

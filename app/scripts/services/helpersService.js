@@ -80,8 +80,22 @@ var Helpers = (function(){
 		return _deferred.promise; 
 	}
 
+	function _getQueries(queryString){
+		var queriesArr = queryString.substring(1).split('&'),
+			queriesObj = {},
+			query = '';
+		
+		for (var i = 0; i < queriesArr.length; i++) {
+			query = queriesArr[i].split('=');
+			queriesObj[query[0]] = query[1];
+		};
+
+		return queriesObj;
+	}
+
 	return {
 		shuffle: _shuffle,
-		getAudioSupport: _getAudioSupport
+		getAudioSupport: _getAudioSupport,
+		getQueries: _getQueries
 	}
 })();

@@ -13,20 +13,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+        'scripts/services/settingsService.js',
+        'scripts/vendor/log.js',
+        'scripts/vendor/q.js',
+        'scripts/vendor/ajax.js',
         'test/utilities/**/*.js',
         'test_libs/react-with-addons.js',
         'app/build_jsx/**/*.js',        
         'app/scripts/**/*.js',
-        'test/**/*.js',
-        'scripts/vendor/q.js'
+        'test/**/*.js'
     ],
-
 
     // list of files to exclude
     exclude: [
-      'app/vendor/**/*.js'
+      'app/vendor/**/*.js',
+      'scripts/services/settingsService.js'
     ],
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'

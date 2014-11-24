@@ -44,6 +44,8 @@ var GameView = React.createClass({displayName: 'GameView',
 	},
 
 	next: function(round){
+		log.div()
+		log('gameModule: next')
 		if(!round){
 			this.gameOver();
 		}
@@ -60,7 +62,7 @@ var GameView = React.createClass({displayName: 'GameView',
 			
 		_game.next().then(function(round){
 			log('gameModule: setupNewRound: got data')
-			log(round)
+			log(round )
 			setTimeout(function(){
 				_this.next(round);
 			}, _delay)
@@ -71,7 +73,7 @@ var GameView = React.createClass({displayName: 'GameView',
 	},
 
 	startNewRound: function(round){
-
+		log('gameModule: startNewRound')
 		this.setState({
 			options: round.options,
 			current: round.current,
@@ -165,17 +167,23 @@ var GameView = React.createClass({displayName: 'GameView',
 
 				
 				if(!this.state.roundStarted && this.state.roundLoaded){
-					var _buttonTxt = 'Start';
+					var _messageTxt = '',
+						_buttonTxt = 'Start a new game';
 
 					if(this.state.isAnswerCorrect){
-						_buttonTxt = 'Right!';
+						_messageTxt = 'Right!';
+						_buttonTxt = 'Next';
 					}
 					
 					else if(this.state.isAnswerCorrect === false){
-						_buttonTxt = 'Wrong!';
+						_messageTxt = 'Wrong!';
+						_buttonTxt = 'Next';
 					}
 
-					_gameBottomLower = React.DOM.button( {onClick:_this.startRound}, _buttonTxt)
+					_gameBottomLower = 	React.DOM.div( {className:"m-game-message"}, 
+											React.DOM.p(null, _messageTxt),
+											React.DOM.button( {onClick:_this.startRound}, _buttonTxt)
+										)		
 				}
 				else if(this.state.roundLoaded && this.state.roundStarted){
 					_gameBottomLower = 	React.DOM.div(null, 

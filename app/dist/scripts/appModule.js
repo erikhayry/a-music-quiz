@@ -22,6 +22,13 @@ var AppView = React.createClass({displayName: 'AppView',
 
 		spotifyService.getUser(accessToken).then(function(userData){
 			spotifyService.getPlaylists(userData.id).then(function(playlists){
+				//TODO move to service 
+				var queries = Helpers.getQueries(sessionStorage.getItem("amq-queries"));
+				
+				if(queries.debug){
+					Settings.debug = queries.debug;
+				}
+
 				//Show playlists
 				React.renderComponent(PlaylistView( {playlists:playlists}), document.getElementById('app'));
 			
@@ -42,6 +49,7 @@ var AppView = React.createClass({displayName: 'AppView',
 			this.startGame(tokens.accessToken);	
 		}
 		else{
+			sessionStorage.setItem("amq-queries", window.location.search);			
 			this.login();
 		}
 

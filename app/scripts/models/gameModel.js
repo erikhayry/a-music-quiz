@@ -155,7 +155,7 @@ Game.prototype.answer = function(answer, points) {
         if (allTracks[_this._currentOptionsIndex].artist.id === answer) {
             _ret = {
                 isAnswerCorrect: true,
-                points: _this._points += points
+                points: parseInt(_this._points) + parseInt(points)
             }
         }
 
