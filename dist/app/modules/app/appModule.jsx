@@ -22,6 +22,7 @@ var AppView = React.createClass({
 
 		spotifyService.getUser(accessToken).then(function(userData){
 			spotifyService.getPlaylists(userData.id).then(function(playlists){
+				//TODO move to service 
 				var queries = Helpers.getQueries(sessionStorage.getItem("amq-queries"));
 				
 				if(queries.debug){
@@ -48,7 +49,6 @@ var AppView = React.createClass({
 			this.startGame(tokens.accessToken);	
 		}
 		else{
-			console.log(window.location.search)
 			sessionStorage.setItem("amq-queries", window.location.search);			
 			this.login();
 		}
