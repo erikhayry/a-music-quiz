@@ -143,6 +143,8 @@ Game.prototype.next = function() {
  * @return {external: Promise}
  */
 Game.prototype.answer = function(answer, points) {
+    log('Game Model: answer')
+    log(answer)
     var _this = this,
         _deferred = Q.defer(),
         _ret = {
@@ -150,12 +152,15 @@ Game.prototype.answer = function(answer, points) {
             points: _this._points
         };
 
+    //TODO error handling
     _getAllTracks(_this).then(function(allTracks) {
 
         if (allTracks[_this._currentOptionsIndex].artist.id === answer) {
+            _this._points += parseInt(points);
+            
             _ret = {
                 isAnswerCorrect: true,
-                points: parseInt(_this._points) + parseInt(points)
+                points: _this._points
             }
         }
 

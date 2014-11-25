@@ -29,6 +29,10 @@ var AppView = React.createClass({displayName: 'AppView',
 					Settings.debug = queries.debug;
 				}
 
+				if(queries.mute){
+					Settings.mute = queries.mute;
+				}
+
 				//Show playlists
 				React.renderComponent(PlaylistView( {playlists:playlists}), document.getElementById('app'));
 			

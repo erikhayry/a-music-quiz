@@ -281,13 +281,23 @@ describe("Game.answer()", function(){
 
         _game.answer('1', 20).then(function(answer){
             _answer = answer;
-        })        
-        
+        })                
         _clock.tick();
 
+        _game.next().then(function(options){
+            _options = options;
+        })
+        _clock.tick();
+
+        _game.answer('2', 30).then(function(answer){
+            _answer = answer;
+        })                
+        _clock.tick();                
+
         expect(_answer.isAnswerCorrect).toEqual(true);
-        expect(_answer.points).toEqual(20);
-        expect(_answer.rightAnswer).toEqual('1');
+        expect(_answer.points).toEqual(50);
+        expect(_answer.rightAnswer).toEqual('2');
+
     });
 
     it("should not add points if answer is wrong but retrun answer object", function(){
