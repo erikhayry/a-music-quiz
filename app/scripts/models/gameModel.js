@@ -11,6 +11,7 @@ var Game = function(playerId, playlistId, settings) {
     this._currentRound = [];
     this._allTracks = {},
     this._isValidPlaylist = true;
+    this._history = [];
 }
 
 function _containsId(arr, id) {
@@ -147,22 +148,38 @@ Game.prototype.answer = function(answer, points) {
     log(answer)
     var _this = this,
         _deferred = Q.defer(),
+        _history = {},
         _ret = {
             isAnswerCorrect: false,
             points: _this._points
         };
 
-    //TODO error handling
+    //TODO error handling and check potential race condition
     _getAllTracks(_this).then(function(allTracks) {
-
         if (allTracks[_this._currentOptionsIndex].artist.id === answer) {
             _this._points += parseInt(points);
+
+            _history = {
+                rightAnswer: true,
+                points: points,
+            };
             
             _ret = {
                 isAnswerCorrect: true,
                 points: _this._points
             }
         }
+
+        else{
+            _history = {
+                rightAnswer: false,
+                points: 0,
+            };
+        }
+
+        //Add to history
+        _history.data = allTracks[_this._currentOptionsIndex];
+        _this._history.push(_history);
 
         _ret.rightAnswer = allTracks[_this._currentOptionsIndex].artist.id
 
@@ -171,6 +188,16 @@ Game.prototype.answer = function(answer, points) {
 
     return _deferred.promise;
 }
+
+/**
+ * retrun game history
+ * @return {Array} history Array
+ */
+Game.prototype.getHistory = function() {
+    log('Game Model: getHistory')
+    log(this._history)
+    return this._history;
+};
 
 /**
  * reset game to initial state
