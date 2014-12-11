@@ -4,7 +4,7 @@
 
 'use strict';
 
-var GameView = React.createClass({
+/*var GameView = React.createClass({
 
 	getInitialState: function() {
     	return {
@@ -228,5 +228,108 @@ var GameView = React.createClass({
 			  	{_gameBottom}
 			  </div>
 			)
-	}    
+	} */ 
+
+
+var GameView = React.createClass({
+    getInitialState: function() {
+        return {
+            game: ''
+        };
+    },
+
+    onGameOver: function(){
+
+    },
+    
+    handleNextRound: function(points){        
+        this.setState({
+            game: {
+                points: this.state.game.points + points,
+                gameLength: 4,
+                current: this.state.game.current + 1,
+                options: [
+                    {name: "Option 1", id:"1"},
+                    {name: "Option 2", id:"2"},
+                    {name: "Option 3", id:"3"},
+                    {name: "Option 4", id:"4"}
+                ],    
+                question: {
+                    id: 2,
+                    url: "http://url.com"
+                },
+                history: [
+                    {
+                        name: 'Song 1',
+                        url: 'url1.com',
+                        id: "1",
+                        answer: "2"
+                    },
+                    {
+                        name: 'Song 2',
+                        url: 'url2.com',
+                        points: 29,
+                        id: "2",
+                        answer: "2"
+                    },
+                    {
+                        name: 'Song 1',
+                        url: 'url1.com',
+                        id: "1",
+                        answer: "1"
+                    },
+                    {
+                        name: 'Song 2',
+                        url: 'url2.com',
+                        points: 29,
+                        id: "2",
+                        answer: "2"
+                    }    
+                ]                
+            }            
+        });
+    },
+
+    getGame: function(user, playlistId){
+    	//var _game = new Game(user, playlistId, {gameLength: Settings.gameLength});
+    	//console.log(_game)
+    	setTimeout(function(){
+	    	this.setState({
+	    		game: true
+	    	})    		
+    	}.bind(this), 0)
+
+    },
+    
+	componentDidMount: function(){
+		log('GameView - componentDidMount')
+        if(!this.state.game){
+            this.getGame(this.props.user, this.props.playlistId)               
+        }
+	},
+
+    render: function(){
+        console.log('render Game')
+        var _view = <p>Loading game...</p>;
+        
+        //if current == -1
+/*        if(this.state.game.gameLength && this.state.game.gameLength < this.state.game.current){
+            _view = <p>Game Over</p>;
+        }*/
+
+        if(this.state.game){
+        	console.log('Round')
+            _view = <Round 
+                        game={this.state.game}
+                        onNextRound={this.handleNextRound}
+                        onGameOver={this.handleGameOver}
+                     />;
+        }
+        
+        return (
+            <div>
+                {_view}
+            </div>
+       )     
+    }
 });

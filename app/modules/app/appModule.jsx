@@ -6,7 +6,7 @@
 
 var AppView = React.createClass({
 
-	login: function(){
+/*	login: function(){
 		$.ajax('api/login', '').then(function(data){
 			var _loginUrl = data['redirect_url'];
 			if(document.getElementById('app')) {
@@ -58,5 +58,64 @@ var AppView = React.createClass({
 		}
 
 		return (<div className="m-app-loading">loading</div>)		
-	}
+	}*/
+
+    getInitialState: function() {
+        return {
+            user: '',
+            playlistId: '',
+            accessToken: ''
+        };
+    },
+
+    handleAuth: function(accessToken){
+        this.setState({
+            accessToken: accessToken
+        })
+    },
+
+    handleUnAuth: function(){
+        this.setState({
+            accessToken: ''
+        })
+    },   
+    
+    handlePlay: function(user, playlistId){
+        this.setState({
+            user: user,
+            playlistId: playlistId
+        })           
+    },
+
+    render: function(){
+        console.log('render App')
+        var _view = <p>Loading...</p>;
+
+		//Set app mode
+		Mode.set();        
+        
+        if(this.state.user && this.state.playlistId){
+            _view = <GameView 
+                        playlistId={this.state.playlistId} 
+                        user={this.state.user} 
+                    />;            
+        }
+        else if(this.state.accessToken){
+            _view = <PlaylistsView
+                        onPlay={this.handlePlay}
+                        accessToken={this.state.accessToken} 
+                        onUnAuth={this.handleUnAuth}
+                    />;
+        }
+        else{
+            _view = <LoginView onAuth={this.handleAuth} />;    
+        }
+        
+        return (
+            <div>
+                {_view}
+            </div>
+       )     
+    }
+
 })

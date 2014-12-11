@@ -46,8 +46,14 @@ var spotifyService = (function(id) {
                         deferred: _deferred
                     })
                 } else {
-                	//got all playlists. store playlists and resolve promise
-                    _spotifyPlaylistData[userId] = _playLists;
+                	//got all playlists. convert to array, store playlists and resolve promise
+                    var _playListArr = [];
+
+                    for(var playlist in _playLists){
+                        _playListArr.push(_playLists[playlist])
+                    }
+
+                    _spotifyPlaylistData[userId] = _playListArr;
                     _deferred.resolve(_spotifyPlaylistData[userId]);
                 }
             }, function(error) {
@@ -224,17 +230,28 @@ var spotifyService = (function(id) {
     }
 
     return {
+        login: function(){
+            return $.ajax('api/login', '')
+        },
+
         getTracks: function(userId, playListId) {
             return  _getPlaylistInfo(userId, playListId).then(function(info) {
                 return _getTracks(userId, playListId, info.total);
             });
         },
 
+        getPlaylists: function(accessToken){
+            return _getUser(accessToken).then(function(userData){
+                console.log(userData)
+                return _getPlaylists(userData.id);
+            });            
+        },      
+
         /**
          * get all playlists for user from spotify
          * @type {external:Promise}
          */
-        getPlaylists: _getPlaylists,
+        //getPlaylists: _getPlaylists,
 
         /**
          * get Spotify acces tokens

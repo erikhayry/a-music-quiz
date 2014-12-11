@@ -4,7 +4,7 @@
 
 'use strict';
 
-var GameView = React.createClass({displayName: 'GameView',
+/*var GameView = React.createClass({
 
 	getInitialState: function() {
     	return {
@@ -140,13 +140,13 @@ var GameView = React.createClass({displayName: 'GameView',
 	},
 
     restart: function(){
-		React.renderComponent(GameView( {game:this.props.game.reset()}), document.getElementById('app'));
+		React.renderComponent(<GameView game={this.props.game.reset()}/>, document.getElementById('app'));
     	this.replaceState(this.getInitialState())
     	this.componentDidMount();
     },
 
     goToPlaylist: function(){
-    	React.renderComponent(AppView(null ), document.getElementById('app'));
+    	React.renderComponent(<AppView />, document.getElementById('app'));
     },
 
 	render: function() {
@@ -157,10 +157,10 @@ var GameView = React.createClass({displayName: 'GameView',
 
 
 		if(this.state.error === 1){
-			_gameBottom = 	React.DOM.div( {class:"m-error"}, 
-								React.DOM.p(null, "Something is wrong with this playlist"),
-								React.DOM.button( {onClick:_this.goToPlaylist}, "Choose another playlist")
-							)	
+			_gameBottom = 	<div class="m-error">
+								<p>Something is wrong with this playlist</p>
+								<button onClick={_this.goToPlaylist}>Choose another playlist</button>
+							</div>	
 		}	
 		else{
 			if(!this.state.gameOver){
@@ -180,53 +180,156 @@ var GameView = React.createClass({displayName: 'GameView',
 						_buttonTxt = 'Next';
 					}
 
-					_gameBottomLower = 	React.DOM.div( {className:"m-game-message"}, 
-											React.DOM.p(null, _messageTxt),
-											React.DOM.button( {onClick:_this.startRound}, _buttonTxt)
-										)		
+					_gameBottomLower = 	<div className="m-game-message">
+											<p>{_messageTxt}</p>
+											<button onClick={_this.startRound}>{_buttonTxt}</button>
+										</div>		
 				}
 				else if(this.state.roundLoaded && this.state.roundStarted){
-					_gameBottomLower = 	React.DOM.div(null, 
-											RoundOptions( 
-												{options:this.state.options, 
-												answer:this.state.answer, 
-												rightAnswer:this.state.rightAnswer, 
-												onUserAnswer:this.onUserAnswer}
-											),
-											React.DOM.button( {onClick:_this.goToPlaylist}, "Back")
-										)	
+					_gameBottomLower = 	<div>
+											<RoundOptions 
+												options={this.state.options} 
+												answer={this.state.answer} 
+												rightAnswer={this.state.rightAnswer} 
+												onUserAnswer={this.onUserAnswer}
+											/>
+											<button onClick={_this.goToPlaylist}>Back</button>
+										</div>	
 
 				}
 
 
-				_gameBottom = 	React.DOM.div( {className:"m-app-bottom"}, 
-					    			MusicPlayer( 
-					    				{current:this.state.current, 
-					    				answer:this.state.answer, 
-					    				hasStarted:this.state.roundStarted,
-					    				isLoaded:this.state.roundLoaded,
-					    				onRoundOver:this.getAnswer,
-					    				onReady:this.onReady}				    			
-					    			),
-					    			_gameBottomLower
-					    		)
+				_gameBottom = 	<div className="m-app-bottom">
+					    			<MusicPlayer 
+					    				current={this.state.current} 
+					    				answer={this.state.answer} 
+					    				hasStarted={this.state.roundStarted}
+					    				isLoaded={this.state.roundLoaded}
+					    				onRoundOver={this.getAnswer}
+					    				onReady={this.onReady}				    			
+					    			/>
+					    			{_gameBottomLower}
+					    		</div>
 			}
 			
 			else{
-				_gameBottom = 	React.DOM.ul( {className:"m-app-bottom"}, 
-									React.DOM.li(null, React.DOM.button( {onClick:_this.restart}, "Play again")),
-									React.DOM.li(null, React.DOM.button( {onClick:_this.goToPlaylist}, "Choose another playlist"))
-								)
+				_gameBottom = 	<ul className="m-app-bottom">
+									<li><button onClick={_this.restart}>Play again</button></li>
+									<li><button onClick={_this.goToPlaylist}>Choose another playlist</button></li>
+								</ul>
 			}			
 		}
 
 		return (
-			  React.DOM.div( {className:"m-app"}, 
-			   	React.DOM.div( {className:"m-app-top"}, 
-			   		GameState( {points:this.state.points, round:this.state.round, gameLength:this.state.gameLength})
-			   	),
-			  	_gameBottom
-			  )
+			  <div className="m-app">
+			   	<div className="m-app-top">
+			   		<GameState points={this.state.points} round={this.state.round} gameLength={this.state.gameLength}/>
+			   	</div>
+			  	{_gameBottom}
+			  </div>
 			)
-	}    
+	} */ 
+
+
+var GameView = React.createClass({displayName: 'GameView',
+    getInitialState: function() {
+        return {
+            game: ''
+        };
+    },
+
+    onGameOver: function(){
+
+    },
+    
+    handleNextRound: function(points){        
+        this.setState({
+            game: {
+                points: this.state.game.points + points,
+                gameLength: 4,
+                current: this.state.game.current + 1,
+                options: [
+                    {name: "Option 1", id:"1"},
+                    {name: "Option 2", id:"2"},
+                    {name: "Option 3", id:"3"},
+                    {name: "Option 4", id:"4"}
+                ],    
+                question: {
+                    id: 2,
+                    url: "http://url.com"
+                },
+                history: [
+                    {
+                        name: 'Song 1',
+                        url: 'url1.com',
+                        id: "1",
+                        answer: "2"
+                    },
+                    {
+                        name: 'Song 2',
+                        url: 'url2.com',
+                        points: 29,
+                        id: "2",
+                        answer: "2"
+                    },
+                    {
+                        name: 'Song 1',
+                        url: 'url1.com',
+                        id: "1",
+                        answer: "1"
+                    },
+                    {
+                        name: 'Song 2',
+                        url: 'url2.com',
+                        points: 29,
+                        id: "2",
+                        answer: "2"
+                    }    
+                ]                
+            }            
+        });
+    },
+
+    getGame: function(user, playlistId){
+    	//var _game = new Game(user, playlistId, {gameLength: Settings.gameLength});
+    	//console.log(_game)
+    	setTimeout(function(){
+	    	this.setState({
+	    		game: true
+	    	})    		
+    	}.bind(this), 0)
+
+    },
+    
+	componentDidMount: function(){
+		log('GameView - componentDidMount')
+        if(!this.state.game){
+            this.getGame(this.props.user, this.props.playlistId)               
+        }
+	},
+
+    render: function(){
+        console.log('render Game')
+        var _view = React.DOM.p(null, "Loading game...");
+        
+        //if current == -1
+/*        if(this.state.game.gameLength && this.state.game.gameLength < this.state.game.current){
+            _view = <p>Game Over</p>;
+        }*/
+
+        if(this.state.game){
+        	console.log('Round')
+            _view = Round( 
+                        {game:this.state.game,
+                        onNextRound:this.handleNextRound,
+                        onGameOver:this.handleGameOver}
+                     );
+        }
+        
+        return (
+            React.DOM.div(null, 
+                _view
+            )
+       )     
+    }
 });
