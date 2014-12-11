@@ -366,7 +366,7 @@ var Playlists = React.createClass({displayName: 'Playlists',
     }
 });
 
-var Login = React.createClass({displayName: 'Login',
+/*var Login = React.createClass({
     handleLogin: function(){
         setTimeout(function(){
             this.props.onAuth(
@@ -383,14 +383,14 @@ var Login = React.createClass({displayName: 'Login',
     render: function(){
         console.log('render Login')
         return (
-            React.DOM.div(null, 
-                React.DOM.h1(null, "A Music Quiz"),
-                React.DOM.button( {onClick:this.handleLogin}, "Login"),
-                React.DOM.p(null, "Made by Erik Portin")
-            )
+            <div>
+                <h1>A Music Quiz</h1>
+                <button onClick={this.handleLogin}>Login</button>
+                <p>Made by Erik Portin</p>
+            </div>
        )     
     }
-});
+});*/
 
 var App = React.createClass({displayName: 'App',
     getInitialState: function() {

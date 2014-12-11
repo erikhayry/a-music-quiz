@@ -178,9 +178,26 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         };
     },
 
+    load: function(){
+        this.state.musicPlayer.load().then(function(){
+            console.log('loadedmetadata')
+            this.props.onMusicLoaded();
+        }.bind(this))        
+    },
+
+    play: function(){
+        var _pointsEl = this.refs.points.getDOMNode();
+        this.state.musicPlayer.play().then(function(){
+            console.log('done!')
+        }, function(){
+            console.log('error')
+        }, function(time){
+            _pointsEl.innerHTML = time;
+        });        
+    },
+
     componentDidMount: function() {
         console.log('Musicplayer: componentDidMount')
-        console.log(this.refs.audio.getDOMNode())
         
         if(!this.state.musicPlayer && !this.props.musicLoaded && !this.props.musicPlaying){
             this.setState({
@@ -191,24 +208,19 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
 
     componentDidUpdate: function(){
         console.log('Musicplayer: componentDidUpdate')
+        
         if(this.state.musicPlayer && !this.props.musicLoaded && !this.props.musicPlaying){
-            this.state.musicPlayer.onLoad().then(function(){
-                console.log('loadedmetadata')
-                this.props.onMusicLoaded();
-            }.bind(this))                       
-        }        
+            this.load();
+        }
+
+        else if(this.state.musicPlayer && this.props.musicLoaded && this.props.musicPlaying){
+            this.play();            
+        }       
     },
 
     render: function(){
-        console.log('Render MusicPlayer')
-        var _timer = '',
-            _audioEl = '';
-                        
-
-
-/*        if(this.props.musicLoaded && this.props.musicPlaying){
-            _timer = 30;
-        }*/
+        console.log('Musicplayer: render')
+        var _audioEl = '';                        
 
         if(!this.state.musicPlayer && !this.props.musicLoaded && !this.props.musicPlaying){
             log('Musicplayer: render new track: ')
@@ -218,7 +230,7 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         
         return (
             React.DOM.div(null, 
-                React.DOM.h1(null, _timer),
+                React.DOM.p( {ref:"points"}),
                 _audioEl
             )
        )     

@@ -366,7 +366,7 @@ var Playlists = React.createClass({
     }
 });
 
-var Login = React.createClass({
+/*var Login = React.createClass({
     handleLogin: function(){
         setTimeout(function(){
             this.props.onAuth(
@@ -390,7 +390,7 @@ var Login = React.createClass({
             </div>
        )     
     }
-});
+});*/
 
 var App = React.createClass({
     getInitialState: function() {
