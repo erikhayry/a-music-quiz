@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
+/*var MusicPlayer = React.createClass({
     
     getInitialState: function() {
         return {
@@ -158,14 +158,69 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         if(this.props.current && this.props.current.track){
             log('Musicplayer: render new track: ')
             log(this.props.current.track)
-            _audioEl = React.DOM.audio( {src:this.props.current.track.url, ref:"audio", type:"audio/mpeg", preload:"auto"} )
+            _audioEl = <audio src={this.props.current.track.url} ref="audio" type="audio/mpeg" preload="auto" />
         }
         
         return (
-            React.DOM.div( {className:"m-music-player"},   
-                React.DOM.p( {ref:"points"}, this.time),
+            <div className="m-music-player">  
+                <p ref="points">{this.time}</p>
+                {_audioEl}
+            </div>
+        );
+    }
+});*/
+
+
+var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
+    getInitialState: function() {
+        return {
+            musicPlayer: ''
+        };
+    },
+
+    componentDidMount: function() {
+        console.log('Musicplayer: componentDidMount')
+        console.log(this.refs.audio.getDOMNode())
+        
+        if(!this.state.musicPlayer && !this.props.musicLoaded && !this.props.musicPlaying){
+            this.setState({
+                musicPlayer: new MusicPlayerService(this.refs.audio.getDOMNode())
+            })            
+        }
+    },
+
+    componentDidUpdate: function(){
+        console.log('Musicplayer: componentDidUpdate')
+        if(this.state.musicPlayer && !this.props.musicLoaded && !this.props.musicPlaying){
+            this.state.musicPlayer.onLoad().then(function(){
+                console.log('loadedmetadata')
+                this.props.onMusicLoaded();
+            }.bind(this))                       
+        }        
+    },
+
+    render: function(){
+        console.log('Render MusicPlayer')
+        var _timer = '',
+            _audioEl = '';
+                        
+
+
+/*        if(this.props.musicLoaded && this.props.musicPlaying){
+            _timer = 30;
+        }*/
+
+        if(!this.state.musicPlayer && !this.props.musicLoaded && !this.props.musicPlaying){
+            log('Musicplayer: render new track: ')
+            log(this.props.url)
+            var _audioEl = React.DOM.audio( {src:this.props.url, ref:"audio", type:"audio/mpeg", preload:"auto"} )                      
+        }
+        
+        return (
+            React.DOM.div(null, 
+                React.DOM.h1(null, _timer),
                 _audioEl
             )
-        );
+       )     
     }
 });

@@ -81,7 +81,7 @@ var Helpers = (function(){
 	}
 
 	function _getQueries(queryString){
-		var queriesArr = queryString.substring(1).split('&'),
+		var queriesArr = (queryString) ? queryString.substring(1).split('&') : [],
 			queriesObj = {},
 			query = '';
 		

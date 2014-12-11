@@ -49,12 +49,14 @@ var PlaylistsView = React.createClass({
         this.props.onPlay(_user, _playlistId)
     },
  
-    getPlaylists: function(accessToken){
+    getPlaylists: function(userId){
     	console.log('accessToken')
-    	spotifyService.getPlaylists(accessToken).then(function(playlists){
+    	spotifyService.getPlaylists(userId).then(function(playlists){
     		this.setState({
-    			playlists: playlists
+    			playlists: playlists.arr
     		})
+    	}.bind(this), function(error){
+    		this.props.onUnAuth();
     	}.bind(this))
     },
 
@@ -63,9 +65,10 @@ var PlaylistsView = React.createClass({
         var _view = <p>Loading playlist</p>;
 
         if(this.state.playlists){
-			var _list = this.state.playlists.map(function(playlist) {
+        	var _list = {};
+			this.state.playlists.forEach(function(playlist) {
 							if(playlist.total >= Settings.minPlaylistSize){
-								return <li className='m-playlists-item' key={playlist.id}>
+								_list['playlist' + playlist.id] =  <li className='m-playlists-item' key={playlist.id}>
 											<a 
 												href={'/' + playlist.owner + '/' + playlist.id} 
 												data-user={playlist.owner} 
@@ -83,7 +86,7 @@ var PlaylistsView = React.createClass({
 	        		</ul>     	
         }
         else{
-        	this.getPlaylists(this.props.accessToken);
+        	this.getPlaylists(this.props.userId);
         }
 
         return ( <div>

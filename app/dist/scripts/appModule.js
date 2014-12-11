@@ -64,19 +64,21 @@ var AppView = React.createClass({displayName: 'AppView',
         return {
             user: '',
             playlistId: '',
-            accessToken: ''
+            userId: ''
         };
     },
 
-    handleAuth: function(accessToken){
+    handleAuth: function(userId){
         this.setState({
-            accessToken: accessToken
+            userId: userId
         })
     },
 
     handleUnAuth: function(){
         this.setState({
-            accessToken: ''
+            user: '',
+            playlistId: '',
+            userId: ''
         })
     },   
     
@@ -100,10 +102,10 @@ var AppView = React.createClass({displayName: 'AppView',
                         user:this.state.user} 
                     );            
         }
-        else if(this.state.accessToken){
+        else if(this.state.userId){
             _view = PlaylistsView(
                         {onPlay:this.handlePlay,
-                        accessToken:this.state.accessToken, 
+                        userId:this.state.userId, 
                         onUnAuth:this.handleUnAuth}
                     );
         }

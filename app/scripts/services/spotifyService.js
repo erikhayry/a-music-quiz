@@ -53,7 +53,11 @@ var spotifyService = (function(id) {
                         _playListArr.push(_playLists[playlist])
                     }
 
-                    _spotifyPlaylistData[userId] = _playListArr;
+                    _spotifyPlaylistData[userId] = {
+                                                        obj: _playLists,
+                                                        arr: _playListArr
+                                                    };
+
                     _deferred.resolve(_spotifyPlaylistData[userId]);
                 }
             }, function(error) {
@@ -71,7 +75,7 @@ var spotifyService = (function(id) {
 	 * @return {external: Promise}
 	 */
     function _getPlaylistInfo(userId, playListId) {
-        log('SpotifyService: _getPlaylistInfo')
+        log('SpotifyService: _getPlaylistInfo: ' + userId + ' | ' + playListId)
         var _deferred = Q.defer();
 
         //resolve with existing data if exists
@@ -81,11 +85,10 @@ var spotifyService = (function(id) {
 
         //get from local storage if exists
         else {
-            _getPlaylists(userId).then(function(playlists) {
-
+            _getPlaylists(userId).then(function(playlists) {                
                 //TODO playlists sometimes missing
-                if (playlists[playListId]) {
-                    _deferred.resolve(playlists[playListId])
+                if (playlists.obj[playListId]) {
+                    _deferred.resolve(playlists.obj[playListId])
                 
                 } else {
                     _deferred.reject(new Error('Failed loading playlist info'));
@@ -237,21 +240,16 @@ var spotifyService = (function(id) {
         getTracks: function(userId, playListId) {
             return  _getPlaylistInfo(userId, playListId).then(function(info) {
                 return _getTracks(userId, playListId, info.total);
+            }, function(){
+                console.log('error - _getPlaylistInfo')
             });
         },
-
-        getPlaylists: function(accessToken){
-            return _getUser(accessToken).then(function(userData){
-                console.log(userData)
-                return _getPlaylists(userData.id);
-            });            
-        },      
 
         /**
          * get all playlists for user from spotify
          * @type {external:Promise}
          */
-        //getPlaylists: _getPlaylists,
+        getPlaylists: _getPlaylists,
 
         /**
          * get Spotify acces tokens

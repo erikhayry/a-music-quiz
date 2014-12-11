@@ -11,28 +11,44 @@ var LoginView = React.createClass({displayName: 'LoginView',
         };
     },
 
-	login: function(){
-		console.log('login')
-
-		spotifyService.login().then(function(data){
+    login: function(){
+    	console.log('login')
+    	spotifyService.login().then(function(data){
 			this.setState({
 				loginUrl: data['redirect_url']
 			})
 		}.bind(this))
+    },
+
+	tryLogin: function(){
+		console.log('tryLogin')
+		var _tokens = spotifyService.getTokens(window.location.search);
+
+		if(_tokens.accessToken){
+			spotifyService.getUser(_tokens.accessToken).then(function(userData){
+				console.log('success')
+				this.props.onAuth(userData.id);
+			}.bind(this), function(){
+				console.log('fail')
+				this.login();
+			}.bind(this))
+		}
+		else{
+			this.login();
+		}
 	},
 
 	componentDidMount: function(){
-		var _tokens = spotifyService.getTokens(window.location.search);
+/*		var _tokens = spotifyService.getTokens(window.location.search);
 		if(_tokens.accessToken && _tokens.refreshToken){	
 			this.props.onAuth(_tokens.accessToken);
-		}
+		}*/
 	},
 
     render: function(){
         console.log('render Login')
 
-		var _tokens = spotifyService.getTokens(window.location.search),
-			_view = React.DOM.p(null, "Loading...");
+		var _view = React.DOM.p(null, "Loading...");
 
 		if(this.state.loginUrl){
 			_view = React.DOM.div( {className:"m-login"}, 
@@ -41,9 +57,9 @@ var LoginView = React.createClass({displayName: 'LoginView',
 				      	React.DOM.p(null, "made by Erik Portin")
 				    ) 	
 		}
-		else if(!_tokens.accessToken && !_tokens.refreshToken){	
+		else {	
 				sessionStorage.setItem("amq-queries", window.location.search);			
-				this.login();				
+				this.tryLogin();				
 			}		
 
         return (

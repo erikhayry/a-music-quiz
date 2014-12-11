@@ -37,6 +37,7 @@ var Round = React.createClass({
     },
     
     handleMusicLoaded: function(){
+        console.log('handleMusicLoaded')
         this.setState({
             musicLoaded: true
         })
@@ -73,17 +74,17 @@ var Round = React.createClass({
             _currentRoundIndex = this.props.game.current;
             _gameActions = <Options 
                             answer={this.state.answer}
-                            options={this.props.game.options}
+                            options={this.props.game.round.options}
                             onAnswer={this.handleAnswer}
                         />
         }
         
         else if(this.state.musicLoaded){
-            var _previous = _currentRoundIndex-1;
 
-            var _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,
-                _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].id : undefined
-                  
+            var _previous = _currentRoundIndex-1,
+                _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,
+                _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].id : undefined            
+
             _gameActions = <GameNav 
                             previousAnswer={_previousAnswer}
                             previousQuestion={_previousQuestion}
@@ -101,7 +102,7 @@ var Round = React.createClass({
                     
                     <div className="container">
                         <MusicPlayer 
-                            url={this.props.game.url}
+                            url={this.props.game.round.current.track.url}
                             musicPlaying={this.state.musicPlaying}
                             musicLoaded={this.state.musicLoaded}
                             onMusicLoaded={this.handleMusicLoaded}

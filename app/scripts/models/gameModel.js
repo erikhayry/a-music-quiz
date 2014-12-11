@@ -4,14 +4,14 @@ var Game = function(playerId, playlistId, settings) {
 
     this.playlistId = playlistId;
     this.playerId = playerId;
+    this.history = [];
+    this.round = [];
 
     this._gameLength = _settings.gameLength;
     this._points = 0,
     this._currentOptionsIndex = -1;
-    this._currentRound = [];
     this._allTracks = {},
     this._isValidPlaylist = true;
-    this._history = [];
 }
 
 function _containsId(arr, id) {
@@ -39,6 +39,8 @@ function _getAllTracks(game) {
         	else{
         		_deferred.reject(new Error('unable to get playlist'))
         	}
+        }, function(){
+            console.log('error getTracks')
         });
     }
 
@@ -90,9 +92,9 @@ function _setCurrentRound(game, allTracks, gameLength){
     //shuffle options
     _currentRound.options =  Helpers.shuffle(_currentRound.options)
 
-    game._currentRound = _currentRound;
-    game._currentRound.index = game._currentOptionsIndex + 1;
-    game._currentRound.gameLength = gameLength; 
+    game.round = _currentRound;
+    game.round.index = game._currentOptionsIndex + 1;
+    game.round.gameLength = gameLength; 
 }
 
 /**
@@ -104,7 +106,6 @@ Game.prototype.next = function() {
         _deferred = Q.defer();
 
     _getAllTracks(_this).then(function(allTracks) {
-        
         //check if playlist got enough tracks
         if(!_this._isValidPlaylist && !_isValidPlaylist(allTracks)){
             _this._isValidPlaylist = false;
@@ -126,7 +127,7 @@ Game.prototype.next = function() {
 		    //get next song
 		    else {
                 _setCurrentRound(_this, allTracks, _gameLength);
-		        _deferred.resolve(_this._currentRound);
+		        _deferred.resolve(_this);
 		    }
         }
 
@@ -179,7 +180,7 @@ Game.prototype.answer = function(answer, points) {
 
         //Add to history
         _history.data = allTracks[_this._currentOptionsIndex];
-        _this._history.push(_history);
+        _this.history.push(_history);
 
         _ret.rightAnswer = allTracks[_this._currentOptionsIndex].artist.id
 
@@ -195,8 +196,8 @@ Game.prototype.answer = function(answer, points) {
  */
 Game.prototype.getHistory = function() {
     log('Game Model: getHistory')
-    log(this._history)
-    return this._history;
+    log(this.history)
+    return this.history;
 };
 
 /**
@@ -207,7 +208,7 @@ Game.prototype.reset = function() {
     this._gameLength;
     this._points = 0,
     this._currentOptionsIndex = -1;
-    this._currentRound = [];
+    this.round = [];
     this._allTracks = {};
 
     return this;

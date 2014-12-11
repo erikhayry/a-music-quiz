@@ -291,14 +291,18 @@ var GameView = React.createClass({displayName: 'GameView',
     },
 
     getGame: function(user, playlistId){
-    	//var _game = new Game(user, playlistId, {gameLength: Settings.gameLength});
-    	//console.log(_game)
-    	setTimeout(function(){
-	    	this.setState({
-	    		game: true
-	    	})    		
-    	}.bind(this), 0)
+    	console.log('Get game')
+    	
+    	new Game(user, playlistId, {gameLength: Settings.gameLength}).next().then(function(game){
+    		console.log(game)
+		    
+		    this.setState({
+	    		game: game
+	    	})
 
+		}.bind(this), function(error){
+			console.error(error);
+		});   		
     },
     
 	componentDidMount: function(){
