@@ -241,79 +241,61 @@ var GameView = React.createClass({
     onGameOver: function(){
 
     },
+
+    next: function(game){
+    	log('GameView: next')
+		game.next().then(function(game){
+		    
+		    this.setState({
+	    		game: game
+	    	}); 
+
+	    }.bind(this), function(error){
+			console.error('GameView: next()')
+		}) 
+    },
     
-    handleNextRound: function(points){        
-        this.setState({
-            game: {
-                points: this.state.game.points + points,
-                gameLength: 4,
-                current: this.state.game.current + 1,
-                options: [
-                    {name: "Option 1", id:"1"},
-                    {name: "Option 2", id:"2"},
-                    {name: "Option 3", id:"3"},
-                    {name: "Option 4", id:"4"}
-                ],    
-                question: {
-                    id: 2,
-                    url: "http://url.com"
-                },
-                history: [
-                    {
-                        name: 'Song 1',
-                        url: 'url1.com',
-                        id: "1",
-                        answer: "2"
-                    },
-                    {
-                        name: 'Song 2',
-                        url: 'url2.com',
-                        points: 29,
-                        id: "2",
-                        answer: "2"
-                    },
-                    {
-                        name: 'Song 1',
-                        url: 'url1.com',
-                        id: "1",
-                        answer: "1"
-                    },
-                    {
-                        name: 'Song 2',
-                        url: 'url2.com',
-                        points: 29,
-                        id: "2",
-                        answer: "2"
-                    }    
-                ]                
-            }            
-        });
+    handleNextRound: function(answer, points){ 
+		log('GameView: handleNextRound')
+		log(answer)
+		log(points)
+
+		this.state.game.answer(answer, points).then(function(game){
+    		log('GameView: got next round');
+    		log(game)
+
+		    this.next(game);
+
+		}.bind(this), function(error){
+			console.error('GameView: failed to next round');
+		})
     },
 
     getGame: function(user, playlistId){
-    	console.log('Get game')
+    	log('GameView: getGame');
     	
     	new Game(user, playlistId, {gameLength: Settings.gameLength}).next().then(function(game){
-    		console.log(game)
+    		log('GameView: got new game');
+    		log(game)
 		    
 		    this.setState({
 	    		game: game
 	    	})
 
 		}.bind(this), function(error){
-			console.error(error);
+			console.error('GameView: failed to get game');
 		});   		
     },
     
 	componentDidMount: function(){
-		log('GameView - componentDidMount')
+		log('GameView: componentDidMount')
         if(!this.state.game){
             this.getGame(this.props.user, this.props.playlistId)               
         }
 	},
 
     render: function(){
-        console.log('render Game')
+        log('GameView: render')
         var _view = <p>Loading game...</p>;
         
         //if current == -1
@@ -322,7 +304,6 @@ var GameView = React.createClass({
         }*/
 
         if(this.state.game){
-        	console.log('Round')
             _view = <Round 
                         game={this.state.game}
                         onNextRound={this.handleNextRound}

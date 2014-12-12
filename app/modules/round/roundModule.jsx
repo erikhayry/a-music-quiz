@@ -27,7 +27,7 @@
 });*/
 
 var Round = React.createClass({
-    
+
     getInitialState: function() {
         return {
             answer: '',
@@ -35,69 +35,78 @@ var Round = React.createClass({
             musicPlaying: false
         };
     },
-    
-    handleMusicLoaded: function(){
-        console.log('handleMusicLoaded')
+
+    handleMusicLoaded: function() {
+        log('Round: handleMusicLoaded')
         this.setState({
             musicLoaded: true
         })
     },
 
-    handleMusicPlaying: function(){
+    handleMusicPlaying: function() {
+        log('Round: handleMusicPlaying')
         this.setState({
             answer: '',
             musicPlaying: true
         })
     },
 
-    handleAnswer: function(answer){
+    handleAnswer: function(answer) {
+        log('Round: handleAnswer')
         this.setState({
-            answer: answer
-        })    
-        
-        setTimeout(function(){
-            this.setState({
-                musicLoaded: false,
-                musicPlaying: false
-            })         
-            this.props.onNextRound(10);            
-        }.bind(this), 500);  
+            answer: answer,
+            musicLoaded: false,
+        })
     },
 
-    render: function () {
-        console.log('render Round')
-        console.log(this.state)
-        var _gameActions = <p>Loading round...</p>,
-            _currentRoundIndex = this.props.game.current-1;
+    handleEndRound: function(time) {
+        log('Round: handleEndRound', time);
+        var _answer = this.state.answer;
+
+        this.setState({
+            answer: '',
+            musicLoaded: false,
+            musicPlaying: false
+        })
+
+        this.props.onNextRound(_answer, time);
+    },
+
+    render: function() {
+        log('Round: render')
+        log(this.state)
         
+        var _gameActions = < p > Loading round... < /p>,
+            _currentRoundIndex = this.props.game.round.current.index-1;
+
         if(this.state.musicPlaying){
-            _currentRoundIndex = this.props.game.current;
+            
+            _currentRoundIndex = this.props.game.round.current.index;
             _gameActions = <Options 
-                            answer={this.state.answer}
-                            options={this.props.game.round.options}
-                            onAnswer={this.handleAnswer}
-                        />
-        }
-        
-        else if(this.state.musicLoaded){
+                                answer={this.state.answer}
+                                options={this.props.game.round.options}
+                                onAnswer={this.handleAnswer}
+                            />
+        } 
+        else if (this.state.musicLoaded) {
 
-            var _previous = _currentRoundIndex-1,
+            var _previous = _currentRoundIndex - 1,
                 _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,
-                _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].id : undefined            
+                _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].data.artist.id : undefined
 
-            _gameActions = <GameNav 
-                            previousAnswer={_previousAnswer}
-                            previousQuestion={_previousQuestion}
-                            onMusicPlay={this.handleMusicPlaying}
-                        />                  
+            _gameActions = <GameNav
+                                previousAnswer = {_previousAnswer}
+                                previousQuestion = {_previousQuestion}
+                                onMusicPlay = {this.handleMusicPlaying}
+                            />                  
         }
-    
-        return ( < div >
+
+        return ( <div>
                     <div className="container">
                         <ul className="nav nav-tabs nav-justified">
                             <li><button>x</button></li>
-                            <li><Points points={this.props.game.points}/></li>
-                        </ul>    
+                            <li><Points points={this.props.game.points} /></li>
+                        </ul >
                     </div>
                     
                     <div className="container">
@@ -106,20 +115,21 @@ var Round = React.createClass({
                             musicPlaying={this.state.musicPlaying}
                             musicLoaded={this.state.musicLoaded}
                             onMusicLoaded={this.handleMusicLoaded}
+                            onStop={this.handleEndRound}
                         />
                     </div>
                     
                     <div className="container">
                         {_gameActions}
                     </div>
-                    
-                    <div className="container">
-                        <Progress 
-                            gameLength={this.props.game.gameLength}  
-                            current={_currentRoundIndex}
+
+                    <div className = "container" >
+                        <Progress
+                            gameLength = {this.props.game.gameLength}
+                            // current = {_currentRoundIndex}
                         />
                     </div>
-            < /div>
+                </div>
         );
     }
 });

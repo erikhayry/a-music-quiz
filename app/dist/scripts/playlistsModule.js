@@ -36,41 +36,46 @@
 });*/
 
 var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
-	getInitialState: function() {
+    getInitialState: function() {
         return {
             playlists: ''
         };
     },
 
-    handlePlay: function(event){
+    handlePlay: function(event) {
     	event.preventDefault();
+        log('Playlist: handlePlay');    	
         var _user = event.target.dataset.user;
         var _playlistId = event.target.dataset.playlist;
         this.props.onPlay(_user, _playlistId)
     },
- 
-    getPlaylists: function(userId){
-    	console.log('accessToken')
-    	spotifyService.getPlaylists(userId).then(function(playlists){
-    		this.setState({
-    			playlists: playlists.arr
-    		})
-    	}.bind(this), function(error){
-    		this.props.onUnAuth();
-    	}.bind(this))
+
+    getPlaylists: function(userId) {
+        log('Playlist: getPlaylists ' + userId);
+        spotifyService.getPlaylists(userId).then(function(playlists) {
+        	log('Playlist: got playlists');
+        	log(playlists)
+            this.setState({
+                playlists: playlists.arr
+            })
+        }.bind(this), function(error) {
+        	log('Playlist: failed to get playlist');
+            this.props.onUnAuth();
+        }.bind(this))
     },
 
-    render: function () {
-        console.log('render Playlists')
+    render: function() {
+        log('Playlist: render');
         var _view = React.DOM.p(null, "Loading playlist");
 
         if(this.state.playlists){
         	var _list = {};
 			this.state.playlists.forEach(function(playlist) {
 							if(playlist.total >= Settings.minPlaylistSize){
-								_list['playlist' + playlist.id] =  React.DOM.li( {className:"m-playlists-item", key:playlist.id}, 
+								_list['playlist' + playlist.id] =  
+										React.DOM.li( {className:"m-playlists-item", key:playlist.id}, 
 											React.DOM.a( 
-												{href:'/' + playlist.owner + '/' + playlist.id, 
+												{href:'/' + playlist.owner + ' / ' + playlist.id, 
 												'data-user':playlist.owner, 
 												'data-playlist':playlist.id, 
 												onClick:this.handlePlay}
@@ -93,5 +98,5 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
         			_view
             	)
         );
-    }
+	}
 });

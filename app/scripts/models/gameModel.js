@@ -180,11 +180,13 @@ Game.prototype.answer = function(answer, points) {
 
         //Add to history
         _history.data = allTracks[_this._currentOptionsIndex];
+        _history.answer = answer;
+        
         _this.history.push(_history);
 
         _ret.rightAnswer = allTracks[_this._currentOptionsIndex].artist.id
 
-        _deferred.resolve(_ret);
+        _deferred.resolve(_this);
     });
 
     return _deferred.promise;

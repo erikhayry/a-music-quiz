@@ -7,7 +7,7 @@ var MusicPlayerService = function(element){
 };
 
 MusicPlayerService.prototype.load = function(){
-	log('Musicplayer: isLoaded')
+	log('MusicPlayerService: isLoaded')
 
 	var _deferred = Q.defer(),
 		
@@ -16,25 +16,26 @@ MusicPlayerService.prototype.load = function(){
                 Settings.audioSupport = 2;                    
             }
             this.isLoaded = true;
+            log('MusicPlayerService: audioSupport ' + Settings.audioSupport);
             _deferred.resolve(Settings.audioSupport);             
         }.bind(this);
 
     if(!this.isLoaded){
         if(Settings.audioSupport !== 3){
             if(Settings.audioSupport === 1){
-                log('Musicplayer: audioElement buffered')
+                log('MusicPlayerService: audioElement buffered')
                 _onMetadataLoaded(); 
             }
 
             else{
                 if(this.element.buffered.length > 0){
-                    log('Musicplayer: buffered')
+                    log('MusicPlayerService: buffered')
                     _onMetadataLoaded();
                 }
                 else{
-                    log('Musicplayer: wait for loadedmetadata')
+                    log('MusicPlayerService: wait for loadedmetadata')
                     this.element.addEventListener('loadedmetadata', function(){
-                        log('Musicplayer: loadedmetadata')
+                        log('MusicPlayerService: loadedmetadata')
                         _onMetadataLoaded();                         
                         this.removeEventListener('loadedmetadata', arguments.callee, false);
                     }, false);                                            
@@ -43,7 +44,7 @@ MusicPlayerService.prototype.load = function(){
         }
         
         else{
-            log('Musicplayer: Settings.audioSupport = 3')
+            log('MusicPlayerService: Settings.audioSupport = 3')
             this.onLoaded(this);            
        }
     }
@@ -52,14 +53,14 @@ MusicPlayerService.prototype.load = function(){
 };
 
 MusicPlayerService.prototype.play = function(){
-	log('Musicplayer: isLoaded')
 	var _deferred = Q.defer();
 
 	if(!this.isPlaying){
-        log('Musicplayer: startPlayer')
+        log('MusicPlayerService: startPlayer')
 
         this.element.play();
         this.element.volume = 0;
+        this.isPlaying = true;
         
         this.element.addEventListener('timeupdate', function(){
             if(!Settings.mute){
@@ -73,18 +74,32 @@ MusicPlayerService.prototype.play = function(){
         }.bind(this), false);
 
         this.element.addEventListener('ended', function(){
-/*            if(this.isPlaying){
-                _deferred.resolve();
-            }*/
-            _deferred.resolve();
+        	log('MusicPlayerService: ended')
+            _deferred.resolve(this.time);
             this.element.removeEventListener('ended', arguments.callee, false);
         }.bind(this), false);  
         
         this.interval = window.setInterval(function(){
+        	log('MusicPlayerService: interval')
 	        this.time = parseInt(this.element.duration - this.element.currentTime) || 30;       
 	        _deferred.notify(this.time);        	
         }.bind(this), 1000) 
 	}
 
 	return _deferred.promise;
+};
+
+MusicPlayerService.prototype.stop = function(){
+	var _deferred = Q.defer();
+
+	if(this.isPlaying){
+        log('MusicPlayerService: stopPlayer')
+        this.element.pause();
+        if(this.interval){
+            window.clearInterval(this.interval);    
+        }   
+        _deferred.resolve(this.time);
+    }
+
+    return _deferred.promise;
 };

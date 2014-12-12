@@ -6,7 +6,7 @@
 
 var AppView = React.createClass({
 
-/*	login: function(){
+    /*	login: function(){
 		$.ajax('api/login', '').then(function(data){
 			var _loginUrl = data['redirect_url'];
 			if(document.getElementById('app')) {
@@ -69,37 +69,40 @@ var AppView = React.createClass({
     },
 
     handleAuth: function(userId){
+        log('AppView: handleAuth');
         this.setState({
             userId: userId
         })
     },
 
-    handleUnAuth: function(){
+    handleUnAuth: function() {
+        log('AppView: handleUnAuth');
         this.setState({
             user: '',
             playlistId: '',
             userId: ''
         })
-    },   
-    
-    handlePlay: function(user, playlistId){
+    },
+
+    handlePlay: function(user, playlistId) {
+        log('AppView: handlePlay');
         this.setState({
             user: user,
             playlistId: playlistId
-        })           
+        })
     },
 
-    render: function(){
-        console.log('render App')
-        var _view = <p>Loading...</p>;
+    render: function() {
+        log('AppView: render');
+        var _view = <p> Loading... </p>;
 
 		//Set app mode
-		Mode.set();        
-        
-        if(this.state.user && this.state.playlistId){
-            _view = <GameView 
-                        playlistId={this.state.playlistId} 
-                        user={this.state.user} 
+        Mode.set();
+
+        if (this.state.user && this.state.playlistId) {
+            _view = <GameView
+                        playlistId = {this.state.playlistId}
+                        user = {this.state.user}
                     />;            
         }
         else if(this.state.userId){
@@ -107,17 +110,16 @@ var AppView = React.createClass({
                         onPlay={this.handlePlay}
                         userId={this.state.userId} 
                         onUnAuth={this.handleUnAuth}
-                    />;
-        }
-        else{
-            _view = <LoginView onAuth={this.handleAuth} />;    
+                    /> ;
+        } else {
+            _view = <LoginView onAuth={this.handleAuth}/>;    
         }
         
         return (
             <div>
                 {_view}
-            </div>
-       )     
+            </div >
+        )
     }
 
 })
