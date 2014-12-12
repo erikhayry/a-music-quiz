@@ -64,7 +64,8 @@ var AppView = React.createClass({displayName: 'AppView',
         return {
             user: '',
             playlistId: '',
-            userId: ''
+            userId: '',
+            history: ''
         };
     },
 
@@ -92,6 +93,12 @@ var AppView = React.createClass({displayName: 'AppView',
         })
     },
 
+    handleGameOver: function(history){
+        this.setState({
+            history: history
+        })
+    },
+
     render: function() {
         log('AppView: render');
         var _view = React.DOM.p(null,  " Loading... " );
@@ -99,10 +106,15 @@ var AppView = React.createClass({displayName: 'AppView',
 		//Set app mode
         Mode.set();
 
-        if (this.state.user && this.state.playlistId) {
+        if(this.state.history){
+            _view = GameOverView( {history:this.state.history} );
+        }
+
+        else if (this.state.user && this.state.playlistId) {
             _view = GameView(
                         {playlistId:  this.state.playlistId,
-                        user:  this.state.user}
+                        user:  this.state.user,
+                        onGameOver:this.handleGameOver}
                     );            
         }
         else if(this.state.userId){

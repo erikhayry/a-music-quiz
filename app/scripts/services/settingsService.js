@@ -1,7 +1,7 @@
 var Settings = (function(){
 	return {
 		minPlaylistSize: 20,
-		gameLength: 15,
+		gameLength: 3,
 		userDelay: 2000,
 		audioSupport: null,
 		mute: false,

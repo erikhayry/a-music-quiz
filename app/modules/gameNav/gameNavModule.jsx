@@ -6,7 +6,8 @@
 
 var GameNav = React.createClass({
     render: function(){
-        var _buttonTxt = '',
+        var _buttonEl = '',
+            _buttonTxt = '',
             _navCopy = '';
 
         if(this.props.previousQuestion){
@@ -25,11 +26,22 @@ var GameNav = React.createClass({
             _buttonTxt = 'Start';
 
         }
+
+        
+        if(!this.props.isGameOver){
+            _buttonEl = <button onClick={this.props.onMusicPlay}>{_buttonTxt}</button>; 
+        }
+
+        else{
+            setTimeout(function(){
+                this.props.onGameOver();
+            }.bind(this), 2000)            
+        }
     
         return (
             <div>
                 <p>{_navCopy}</p>
-               <button onClick={this.props.onMusicPlay}>{_buttonTxt}</button>
+                {_buttonEl}
             </div>
        )     
     }

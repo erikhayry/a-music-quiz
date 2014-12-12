@@ -6,9 +6,10 @@ var Game = function(playerId, playlistId, settings) {
     this.playerId = playerId;
     this.history = [];
     this.round = [];
+    this.points = 0,
+    this.gameLength = _settings.gameLength;
+    this.isGameOver = false;
 
-    this._gameLength = _settings.gameLength;
-    this._points = 0,
     this._currentOptionsIndex = -1;
     this._allTracks = {},
     this._isValidPlaylist = true;
@@ -115,13 +116,15 @@ Game.prototype.next = function() {
 			var _gameLength = allTracks.length;
 
 		    //set game length
-		    if (_this._gameLength && _this._gameLength <= allTracks.length) {
-		        _gameLength = _this._gameLength
+		    if (_this.gameLength && _this.gameLength <= allTracks.length) {
+		        _gameLength = _this.gameLength
 		    }
 
-		    //game over
-		    if (_this._currentOptionsIndex + 1 >= _gameLength) {
-		        _deferred.resolve(undefined);
+
+
+            if (_this._currentOptionsIndex >= _gameLength-1) {
+                _this.isGameOver = true;
+		        _deferred.resolve(_this);
 		    } 
 
 		    //get next song
@@ -152,13 +155,13 @@ Game.prototype.answer = function(answer, points) {
         _history = {},
         _ret = {
             isAnswerCorrect: false,
-            points: _this._points
+            points: _this.points
         };
 
     //TODO error handling and check potential race condition
     _getAllTracks(_this).then(function(allTracks) {
         if (allTracks[_this._currentOptionsIndex].artist.id === answer) {
-            _this._points += parseInt(points);
+            _this.points += parseInt(points);
 
             _history = {
                 rightAnswer: true,
@@ -167,7 +170,7 @@ Game.prototype.answer = function(answer, points) {
             
             _ret = {
                 isAnswerCorrect: true,
-                points: _this._points
+                points: _this.points
             }
         }
 
@@ -207,10 +210,11 @@ Game.prototype.getHistory = function() {
  * @return {Game}
  */
 Game.prototype.reset = function() {
-    this._gameLength;
-    this._points = 0,
-    this._currentOptionsIndex = -1;
+    this.gameLength;
+    this.points = 0,
     this.round = [];
+    this.isGameOver = false;
+    this._currentOptionsIndex = -1;
     this._allTracks = {};
 
     return this;

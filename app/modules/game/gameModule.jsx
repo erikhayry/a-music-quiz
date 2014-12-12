@@ -238,14 +238,17 @@ var GameView = React.createClass({
         };
     },
 
-    onGameOver: function(){
-
+    handleGameOver: function(){
+    	log('GameView: handleGameOver')
+    	this.props.onGameOver(this.state.game.history);
     },
 
     next: function(game){
     	log('GameView: next')
 		game.next().then(function(game){
-		    
+    		log('GameView: got next round');
+    		log(game)
+
 		    this.setState({
 	    		game: game
 	    	}); 
@@ -261,7 +264,7 @@ var GameView = React.createClass({
 		log(points)
 
 		this.state.game.answer(answer, points).then(function(game){
-    		log('GameView: got next round');
+    		log('GameView: answered');
     		log(game)
 
 		    this.next(game);
@@ -298,12 +301,7 @@ var GameView = React.createClass({
         log('GameView: render')
         var _view = <p>Loading game...</p>;
         
-        //if current == -1
-/*        if(this.state.game.gameLength && this.state.game.gameLength < this.state.game.current){
-            _view = <p>Game Over</p>;
-        }*/
-
-        if(this.state.game){
+		if(this.state.game){
             _view = <Round 
                         game={this.state.game}
                         onNextRound={this.handleNextRound}

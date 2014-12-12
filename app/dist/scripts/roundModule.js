@@ -36,6 +36,10 @@ var Round = React.createClass({displayName: 'Round',
         };
     },
 
+    handleGameOver: function(){
+        this.props.onGameOver();
+    },
+
     handleMusicLoaded: function() {
         log('Round: handleMusicLoaded')
         this.setState({
@@ -76,7 +80,7 @@ var Round = React.createClass({displayName: 'Round',
         log('Round: render')
         log(this.state)
         
-        var _gameActions = React.DOM.p(null ,  " Loading round... " ),
+        var _gameActions = React.DOM.p(null, "Loading round..."),
             _currentRoundIndex = this.props.game.round.current.index-1;
 
         if(this.state.musicPlaying){
@@ -88,17 +92,19 @@ var Round = React.createClass({displayName: 'Round',
                                 onAnswer:this.handleAnswer}
                             )
         } 
-        else if (this.state.musicLoaded) {
+        else if (this.state.musicLoaded || this.props.game.isGameOver) {
 
             var _previous = _currentRoundIndex - 1,
                 _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,
                 _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].data.artist.id : undefined
 
-            _gameActions = GameNav(
-                                {previousAnswer:  _previousAnswer,
-                                previousQuestion:  _previousQuestion,
-                                onMusicPlay:  this.handleMusicPlaying}
-                            )                  
+                _gameActions = GameNav(
+                                    {previousAnswer:_previousAnswer,
+                                    previousQuestion:_previousQuestion,
+                                    isGameOver:this.props.game.isGameOver,
+                                    onGameOver:this.handleGameOver,
+                                    onMusicPlay:this.handleMusicPlaying}
+                                )  
         }
 
         return ( React.DOM.div(null, 
@@ -125,8 +131,8 @@ var Round = React.createClass({displayName: 'Round',
 
                     React.DOM.div( {className:  "container"} , 
                         Progress(
-                            {gameLength:  this.props.game.gameLength}
-                            // current = {_currentRoundIndex}
+                            {gameLength:  this.props.game.gameLength,
+                            current:  _currentRoundIndex}
                         )
                     )
                 )

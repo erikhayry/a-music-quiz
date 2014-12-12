@@ -36,6 +36,10 @@ var Round = React.createClass({
         };
     },
 
+    handleGameOver: function(){
+        this.props.onGameOver();
+    },
+
     handleMusicLoaded: function() {
         log('Round: handleMusicLoaded')
         this.setState({
@@ -76,7 +80,7 @@ var Round = React.createClass({
         log('Round: render')
         log(this.state)
         
-        var _gameActions = < p > Loading round... < /p>,
+        var _gameActions = <p>Loading round...</p>,
             _currentRoundIndex = this.props.game.round.current.index-1;
 
         if(this.state.musicPlaying){
@@ -88,17 +92,19 @@ var Round = React.createClass({
                                 onAnswer={this.handleAnswer}
                             />
         } 
-        else if (this.state.musicLoaded) {
+        else if (this.state.musicLoaded || this.props.game.isGameOver) {
 
             var _previous = _currentRoundIndex - 1,
                 _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,
                 _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].data.artist.id : undefined
 
-            _gameActions = <GameNav
-                                previousAnswer = {_previousAnswer}
-                                previousQuestion = {_previousQuestion}
-                                onMusicPlay = {this.handleMusicPlaying}
-                            />                  
+                _gameActions = <GameNav
+                                    previousAnswer={_previousAnswer}
+                                    previousQuestion={_previousQuestion}
+                                    isGameOver={this.props.game.isGameOver}
+                                    onGameOver={this.handleGameOver}
+                                    onMusicPlay={this.handleMusicPlaying}
+                                />  
         }
 
         return ( <div>
@@ -126,7 +132,7 @@ var Round = React.createClass({
                     <div className = "container" >
                         <Progress
                             gameLength = {this.props.game.gameLength}
-                            // current = {_currentRoundIndex}
+                            current = {_currentRoundIndex}
                         />
                     </div>
                 </div>
