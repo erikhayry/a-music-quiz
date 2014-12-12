@@ -39,7 +39,7 @@ var GameNav = React.createClass({displayName: 'GameNav',
         }
     
         return (
-            React.DOM.div(null, 
+            React.DOM.div( {className:"container"}, 
                 React.DOM.p(null, _navCopy),
                 _buttonEl
             )

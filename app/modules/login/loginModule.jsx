@@ -24,6 +24,8 @@ var LoginView = React.createClass({
         log('Login: tryLogin');
         var _tokens = spotifyService.getTokens(window.location.search);
 
+        sessionStorage.setItem("amq-queries", window.location.search);			
+
         if (_tokens.accessToken) {
             spotifyService.getUser(_tokens.accessToken).then(function(userData) {
                 log('Login: got user');
@@ -51,7 +53,6 @@ var LoginView = React.createClass({
            			</div> 	
 		}
 		else {	
-				sessionStorage.setItem("amq-queries", window.location.search);			
 				this.tryLogin();				
 			}		
 

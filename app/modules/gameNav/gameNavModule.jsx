@@ -39,7 +39,7 @@ var GameNav = React.createClass({
         }
     
         return (
-            <div>
+            <div className="container">
                 <p>{_navCopy}</p>
                 {_buttonEl}
             </div>

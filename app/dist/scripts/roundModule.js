@@ -1,30 +1,8 @@
-/** @jsx React.DOM */
+/**
+ * @jsx React.DOM
+ */
 
-/*var RoundOption = React.createClass({
-    
-	handleClick: function(){
-        var _this = this;
-        
-        _this.props.onUserAnswer(
-            _this.getDOMNode().value
-        );        
-	},
-
-    render: function() { 
-        var _className = '';
-
-        if(this.props.answer == this.props.option.id){
-            _className += 'is-selected';
-        }
-    
-        return (<button
-        			disabled={this.props.answer}
-        			value={this.props.option.id}
-                    className={_className}
-        			onClick={this.handleClick}
-        		>{this.props.option.name}</button>);
-    }
-});*/
+'use strict';
 
 var Round = React.createClass({displayName: 'Round',
 
@@ -47,8 +25,8 @@ var Round = React.createClass({displayName: 'Round',
         })
     },
 
-    handleMusicPlaying: function() {
-        log('Round: handleMusicPlaying')
+    handleMusicPlay: function() {
+        log('Round: handleMusicPlay')
         this.setState({
             answer: '',
             musicPlaying: true
@@ -80,33 +58,6 @@ var Round = React.createClass({displayName: 'Round',
         log('Round: render')
         log(this.state)
         
-        var _gameActions = React.DOM.p(null, "Loading round..."),
-            _currentRoundIndex = this.props.game.round.current.index-1;
-
-        if(this.state.musicPlaying){
-            
-            _currentRoundIndex = this.props.game.round.current.index;
-            _gameActions = Options( 
-                                {answer:this.state.answer,
-                                options:this.props.game.round.options,
-                                onAnswer:this.handleAnswer}
-                            )
-        } 
-        else if (this.state.musicLoaded || this.props.game.isGameOver) {
-
-            var _previous = _currentRoundIndex - 1,
-                _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,
-                _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].data.artist.id : undefined
-
-                _gameActions = GameNav(
-                                    {previousAnswer:_previousAnswer,
-                                    previousQuestion:_previousQuestion,
-                                    isGameOver:this.props.game.isGameOver,
-                                    onGameOver:this.handleGameOver,
-                                    onMusicPlay:this.handleMusicPlaying}
-                                )  
-        }
-
         return ( React.DOM.div(null, 
                     React.DOM.div( {className:"container"}, 
                         React.DOM.ul( {className:"nav nav-tabs nav-justified"}, 
@@ -115,25 +66,30 @@ var Round = React.createClass({displayName: 'Round',
                         )
                     ),
                     
-                    React.DOM.div( {className:"container"}, 
-                        MusicPlayer( 
-                            {url:this.props.game.round.current.track.url,
-                            musicPlaying:this.state.musicPlaying,
-                            musicLoaded:this.state.musicLoaded,
-                            onMusicLoaded:this.handleMusicLoaded,
-                            onStop:this.handleEndRound}
-                        )
-                    ),
-                    
-                    React.DOM.div( {className:"container"}, 
-                        _gameActions
+                    MusicPlayer( 
+                        {url:this.props.game.round.current.track.url,
+                        musicPlaying:this.state.musicPlaying,
+                        musicLoaded:this.state.musicLoaded,
+                        
+                        onMusicLoaded:this.handleMusicLoaded,
+                        onStop:this.handleEndRound}
                     ),
 
-                    React.DOM.div( {className:  "container"} , 
-                        Progress(
-                            {gameLength:  this.props.game.gameLength,
-                            current:  _currentRoundIndex}
-                        )
+                    RoundAction(
+                        {game:this.props.game,
+                        musicPlaying:this.state.musicPlaying,
+                        musicLoaded:this.state.musicLoaded,
+                        answer:this.props.answer,
+                        isGameOver:this.props.game.isGameOver,
+                        
+                        onMusicPlay:this.handleMusicPlay,
+                        onAnswer:this.handleAnswer,
+                        onGameOver:this.handleGameOver}
+                    ),
+                    
+                    Progress(
+                        {gameLength:this.props.game.gameLength,
+                        current:this.props.game.round.current.index-1}
                     )
                 )
         );

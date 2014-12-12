@@ -86,7 +86,7 @@ var PlaylistsView = React.createClass({
 							}
 						}.bind(this));
 
-	        _view = <ul> 
+	        _view = <ul className='m-playlists'> 
 	        			{_list}
 	        		</ul>     	
         }
