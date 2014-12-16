@@ -6,25 +6,27 @@
 
 var RoundAction = React.createClass({
     handleAnswer: function(answer) {
-        log('GameAction: handleAnswer')
+        log('RoundAction: handleAnswer')
         this.props.onAnswer(answer);
     },    
 
     handleGameOver: function(){
+        log('RoundAction: handleGameOver')
         this.props.onGameOver();
     }, 
 
     handleMusicPlay: function(){
+        log('RoundAction: handleMusicPlay')
         this.props.onMusicPlay();
     },
 
     render: function() {
-        log('GameAction: render')
+        log('RoundAction: render')
         
         var _roundAction = <p>Loading game actions...</p>,
             _currentRoundIndex = this.props.game.round.current.index-1;
 
-        if(this.props.musicPlaying){            
+        if(this.props.musicPlaying || this.props.answer){            
             _currentRoundIndex = this.props.game.round.current.index;
             _roundAction = <Options 
                                 answer={this.props.answer}
@@ -32,7 +34,7 @@ var RoundAction = React.createClass({
                                 onAnswer={this.handleAnswer}
                             />
         } 
-        else if (this.props.musicLoaded || this.props.game.isGameOver) {
+        else if ((!this.props.musicPlaying && !this.props.answer) || this.props.game.isGameOver) {
 
             var _previous = _currentRoundIndex - 1,
                 _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,

@@ -5,6 +5,13 @@
 'use strict';
 
 var GameNav = React.createClass({
+    componentDidUpdate: function() {
+        if(this.props.isGameOver){
+            log('GameNav: game over');
+            Delay.f(this.props.onGameOver);
+        }
+    },
+
     render: function(){
         var _buttonEl = '',
             _buttonTxt = '',
@@ -32,12 +39,6 @@ var GameNav = React.createClass({
             _buttonEl = <button onClick={this.props.onMusicPlay}>{_buttonTxt}</button>; 
         }
 
-        else{
-            setTimeout(function(){
-                this.props.onGameOver();
-            }.bind(this), 2000)            
-        }
-    
         return (
             <div className="container">
                 <p>{_navCopy}</p>

@@ -66,7 +66,7 @@ var GameView = React.createClass({displayName: 'GameView',
 	componentDidMount: function(){
 		log('GameView: componentDidMount')
         if(!this.state.game){
-            this.getGame(this.props.user, this.props.playlistId)               
+            this.getGame(this.props.playlistOwner, this.props.playlistId)               
         }
 	},
 

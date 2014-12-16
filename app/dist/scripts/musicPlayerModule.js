@@ -60,7 +60,7 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         }
 
         //stop current round
-        else if (this.state.musicPlayer && !this.props.musicLoaded && this.props.musicPlaying) {
+        else if (this.state.musicPlayer && this.props.musicLoaded && !this.props.musicPlaying) {
             this.stop();
         }
 

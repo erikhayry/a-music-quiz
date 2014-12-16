@@ -15,6 +15,7 @@ var Round = React.createClass({
     },
 
     handleGameOver: function(){
+        log('Round: handleGameOver')
         this.props.onGameOver();
     },
 
@@ -35,23 +36,27 @@ var Round = React.createClass({
 
     handleAnswer: function(answer) {
         log('Round: handleAnswer')
+
         this.setState({
             answer: answer,
-            musicLoaded: false,
+            musicPlaying: false,
         })
     },
 
     handleEndRound: function(time) {
         log('Round: handleEndRound', time);
-        var _answer = this.state.answer;
 
-        this.setState({
-            answer: '',
-            musicLoaded: false,
-            musicPlaying: false
-        })
+        Delay.f(function(){
+            var _answer = this.state.answer;
+            this.setState({
+                answer: '',
+                musicLoaded: false,
+                musicPlaying: false
+            })
 
-        this.props.onNextRound(_answer, time);
+            this.props.onNextRound(_answer, time);            
+        }.bind(this, time))
+
     },
 
     render: function() {
@@ -79,7 +84,7 @@ var Round = React.createClass({
                         game={this.props.game}
                         musicPlaying={this.state.musicPlaying}
                         musicLoaded={this.state.musicLoaded}
-                        answer={this.props.answer}
+                        answer={this.state.answer}
                         isGameOver={this.props.game.isGameOver}
                         
                         onMusicPlay={this.handleMusicPlay}
@@ -89,7 +94,7 @@ var Round = React.createClass({
                     
                     <Progress
                         gameLength={this.props.game.gameLength}
-                        current={this.props.game.round.current.index-1}
+                        current={this.props.game.round.current.index}
                     />
                 </div>
         );

@@ -7,38 +7,46 @@
 var AppView = React.createClass({
     getInitialState: function() {
         return {
-            user: '',
+            player: '',
+            playListOwner: '',
             playlistId: '',
-            userId: '',
             history: ''
         };
     },
 
-    handleAuth: function(userId){
+    handleAuth: function(player){
         log('AppView: handleAuth');
         this.setState({
-            userId: userId
+            player: player
         })
     },
 
     handleUnAuth: function() {
         log('AppView: handleUnAuth');
         this.setState({
-            user: '',
+            playListOwner: '',
             playlistId: '',
-            userId: ''
+            player: ''
         })
     },
 
-    handlePlay: function(user, playlistId) {
+    handlePlay: function(playListOwner, playlistId) {
         log('AppView: handlePlay');
         this.setState({
-            user: user,
+            playListOwner: playListOwner,
             playlistId: playlistId
         })
     },
 
+    handleReplay: function() {
+        log('AppView: handleReplay');
+
+        this.handlePlay(this.state.playListOwner, this.sate.playlistId);
+    },
+
     handleGameOver: function(history){
+        log('AppView: handleGameOver');
+        log(history);
         this.setState({
             history: history
         })
@@ -52,20 +60,25 @@ var AppView = React.createClass({
         Mode.set();
 
         if(this.state.history){
-            _view = <GameOverView history={this.state.history} />;
+            _view = <GameOverView 
+                        history={this.state.history} 
+                        onReplay={this.handleReplay}
+                    />;
         }
 
-        else if (this.state.user && this.state.playlistId) {
+        else if (this.state.playListOwner && this.state.playlistId) {
             _view = <GameView
                         playlistId = {this.state.playlistId}
-                        user = {this.state.user}
+                        playlistOwner = {this.state.playListOwner}
+                        
                         onGameOver={this.handleGameOver}
                     />;            
         }
-        else if(this.state.userId){
+        else if(this.state.player){
             _view = <PlaylistsView
+                        player={this.state.player} 
+                        
                         onPlay={this.handlePlay}
-                        userId={this.state.userId} 
                         onUnAuth={this.handleUnAuth}
                     /> ;
         } else {
