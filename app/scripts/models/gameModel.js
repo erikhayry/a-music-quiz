@@ -198,6 +198,7 @@ Game.prototype.answer = function(answer, points) {
  * @return {Game}
  */
 Game.prototype.reset = function() {
+    log('Game Model: reset')
     this.history = [];
     this.round = [];
     this.points = 0,

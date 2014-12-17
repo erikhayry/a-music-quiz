@@ -65,15 +65,32 @@ var GameView = React.createClass({
     
 	componentDidMount: function(){
 		log('GameView: componentDidMount')
-        if(!this.state.game){
+
+        //reset game by calling onPlay from parent
+        if(this.props.replay){
+            this.props.onPlay(this.props.playlistOwner, this.props.playlistId)
+        }
+
+        //if not resetting and no game, start new game
+        else if(!this.state.game){
             this.getGame(this.props.playlistOwner, this.props.playlistId)               
         }
 	},
+
+    componentDidUpdate: function(){
+        log('GameView: componentDidUpdate')
+
+        //restarts game after being reset in componentDidMount
+        if(!this.props.replay && !this.state.game){
+            this.getGame(this.props.playlistOwner, this.props.playlistId)               
+        }        
+    },
 
     render: function(){
         log('GameView: render')
         var _view = <p>Loading game...</p>;
         
+        //only render round if not in the middle of setting up a game or resetting
 		if(this.state.game){
             _view = <Round 
                         game={this.state.game}

@@ -11,6 +11,15 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
         };
     },
 
+    handleShare: function(event) {
+        event.preventDefault();
+        log('Playlist: handleShare');        
+        var _user = event.target.dataset.user;
+        var _playlistId = event.target.dataset.playlist;
+        
+        this.props.onShare(_user, _playlistId)
+    },
+
     handlePlay: function(event) {
     	event.preventDefault();
         log('Playlist: handlePlay');    	
@@ -44,13 +53,20 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
 								_list['playlist' + playlist.id] =  
 										React.DOM.li( {className:"m-playlists-item"}, 
 											React.DOM.a( 
-												{href:'/' + playlist.owner + ' / ' + playlist.id, 
+												{href:'?owner=' + playlist.owner + '&id=' + playlist.id, 
 												'data-user':playlist.owner, 
 												'data-playlist':playlist.id, 
 												onClick:this.handlePlay}
 											, 
 												playlist.name
-											)
+											),
+                                            React.DOM.button( 
+                                                {'data-user':playlist.owner, 
+                                                'data-playlist':playlist.id,                                            
+                                                onClick:this.handleShare}
+                                            , 
+                                                " Share "
+                                            )
 										);		    		
 							}
 						}.bind(this));

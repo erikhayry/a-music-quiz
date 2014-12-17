@@ -26,6 +26,8 @@ var GameOverView = React.createClass({
         return (
 		            <div>
 		            <button onClick={this.props.onReplay}>Play again</button>
+		            <button onClick={this.props.onBackToPlaylists}>Choose another</button>
+		            <button onClick={this.props.onShare}>Share</button>
 		            	{_view}
 		            </div >
 		    	)
