@@ -389,7 +389,7 @@ describe("Game.reset()", function() {
         expect(_game.playerId).toEqual('erikportin');
 
         expect(_game.points).toEqual(0);
-        expect(_game.gameLength).toEqual(0);
+        expect(_game.gameLength).toEqual(6);
         expect(_game.round).toEqual([]);
         expect(_game.isGameOver).toEqual(false);
         expect(_game.history).toEqual([]);

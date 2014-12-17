@@ -198,14 +198,14 @@ Game.prototype.answer = function(answer, points) {
  * @return {Game}
  */
 Game.prototype.reset = function() {
-    this.gameLength = 0;
     this.history = [];
-    this.points = 0,
     this.round = [];
+    this.points = 0,
     this.isGameOver = false;
-    this.isGameOver = false;
+
     this._currentOptionsIndex = -1;
-    this._allTracks = {};
+    this._allTracks = {},
+    this._isValidPlaylist = true;
 
     return this;
 }

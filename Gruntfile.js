@@ -81,7 +81,7 @@ module.exports = function(grunt) {
                         'test/utilities/**/*.js',
                         'scripts/vendor/q.js',
                         'app/scripts/**/*.js',
-                        'test/models/*.js'
+                        'test/**/*.js'
                     ],
                     exclude: [
                         'test/jsx/**/*.js',
@@ -190,7 +190,7 @@ module.exports = function(grunt) {
                     break;
             }
         } else {
-            grunt.task.run('build-assets', 'karma:react', 'karma:unit');
+            grunt.task.run('build-assets', 'karma:unit');
         }
     })
 

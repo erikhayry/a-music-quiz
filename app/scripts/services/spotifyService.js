@@ -57,7 +57,8 @@ var spotifyService = (function(id) {
                                                         obj: _playLists,
                                                         arr: _playListArr
                                                     };
-
+                                                    console.log('resolve!')
+                                                    console.log(_spotifyPlaylistData[userId])
                     _deferred.resolve(_spotifyPlaylistData[userId]);
                 }
             }, function(error) {
