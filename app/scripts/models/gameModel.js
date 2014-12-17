@@ -41,7 +41,7 @@ function _getAllTracks(game) {
         		_deferred.reject(new Error('unable to get playlist'))
         	}
         }, function(){
-            console.log('error getTracks')
+            console.error('error getTracks')
         });
     }
 
@@ -95,7 +95,7 @@ function _setCurrentRound(game, allTracks, gameLength){
 
     game.round = _currentRound;
     game.round.index = game._currentOptionsIndex + 1;
-    game.round.gameLength = gameLength; 
+    game.gameLength = gameLength; 
 }
 
 /**
@@ -108,7 +108,7 @@ Game.prototype.next = function() {
 
     _getAllTracks(_this).then(function(allTracks) {
         //check if playlist got enough tracks
-        if(!_this._isValidPlaylist && !_isValidPlaylist(allTracks)){
+        if(!_isValidPlaylist(allTracks)){
             _this._isValidPlaylist = false;
         	_deferred.reject(new Error('not valid playlist'))
         }
@@ -116,11 +116,9 @@ Game.prototype.next = function() {
 			var _gameLength = allTracks.length;
 
 		    //set game length
-		    if (_this.gameLength && _this.gameLength <= allTracks.length) {
+		    if (_this.gameLength <= allTracks.length) {
 		        _gameLength = _this.gameLength
 		    }
-
-
 
             if (_this._currentOptionsIndex >= _gameLength-1) {
                 _this.isGameOver = true;
@@ -196,23 +194,15 @@ Game.prototype.answer = function(answer, points) {
 }
 
 /**
- * retrun game history
- * @return {Array} history Array
- */
-Game.prototype.getHistory = function() {
-    log('Game Model: getHistory')
-    log(this.history)
-    return this.history;
-};
-
-/**
  * reset game to initial state
  * @return {Game}
  */
 Game.prototype.reset = function() {
-    this.gameLength;
+    this.gameLength = 0;
+    this.history = [];
     this.points = 0,
     this.round = [];
+    this.isGameOver = false;
     this.isGameOver = false;
     this._currentOptionsIndex = -1;
     this._allTracks = {};

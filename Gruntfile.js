@@ -81,7 +81,7 @@ module.exports = function(grunt) {
                         'test/utilities/**/*.js',
                         'scripts/vendor/q.js',
                         'app/scripts/**/*.js',
-                        'test/**/*.js'
+                        'test/models/*.js'
                     ],
                     exclude: [
                         'test/jsx/**/*.js',
