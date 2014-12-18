@@ -7,8 +7,8 @@
 var Points = React.createClass({displayName: 'Points',
     render: function(){
         return (
-            React.DOM.div(null, 
-                " Points: ", this.props.points
+            React.DOM.div( {className:"m-points"}, 
+                this.props.points, " pts "
             )
        )     
     }

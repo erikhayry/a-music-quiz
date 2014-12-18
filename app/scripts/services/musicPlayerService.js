@@ -7,7 +7,7 @@ var MusicPlayerService = function(element){
 };
 
 MusicPlayerService.prototype.load = function(){
-	log('MusicPlayerService: isLoaded')
+	log('MusicPlayerService: loading')
 
 	var _deferred = Q.defer(),
 		
@@ -60,6 +60,11 @@ MusicPlayerService.prototype.play = function(){
 
         this.element.play();
         this.element.volume = 0;
+        
+        if(this.element.duration >= Settings.roundLength){
+            this.element.currentTime = this.element.duration - Settings.roundLength;      
+        }
+
         this.isPlaying = true;
         
         this.element.addEventListener('timeupdate', function(){
@@ -75,13 +80,14 @@ MusicPlayerService.prototype.play = function(){
 
         this.element.addEventListener('ended', function(){
         	log('MusicPlayerService: ended')
-            _deferred.resolve(this.time);
+            this.stop();
             this.element.removeEventListener('ended', arguments.callee, false);
         }.bind(this), false);  
         
         this.interval = window.setInterval(function(){
         	log('MusicPlayerService: interval')
-	        this.time = parseInt(this.element.duration - this.element.currentTime) || 30;       
+	        this.time = parseInt(this.element.duration - this.element.currentTime) || '';    
+
 	        _deferred.notify(this.time);        	
         }.bind(this), 1000) 
 	}

@@ -11,6 +11,7 @@ var Options = React.createClass({
 
     render: function(){
         var _options = [],
+            _className='m-options-btn ',
             _activeClassName = '',
             _disabled = (this.props.answer) ? 'disabled' : '';
         
@@ -18,7 +19,7 @@ var Options = React.createClass({
             _activeClassName = (option.id == this.props.answer) ? 'is-active' : '';
             _options.push(<button 
                                 disabled={_disabled} 
-                                className={_activeClassName}
+                                className={_className + _activeClassName}
                                 onClick={this.handleAnswer}
                                 data-answer={option.id}
                                 key={option.id}
@@ -27,7 +28,7 @@ var Options = React.createClass({
         }.bind(this));
         
         return (
-            <div>
+            <div className="m-options">
                {_options}
             </div>
        )     

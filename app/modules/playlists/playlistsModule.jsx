@@ -44,23 +44,25 @@ var PlaylistsView = React.createClass({
 
     render: function() {
         log('Playlist: render');
-        var _view = <p>Loading playlist</p>;
+        var _view = <Loading module="Playlist" />;
 
         if(this.state.playlists){
         	var _list = {};
 			this.state.playlists.forEach(function(playlist) {
 							if(playlist.total >= Settings.minPlaylistSize){
 								_list['playlist' + playlist.id] =  
-										<li className='m-playlists-item'>
-											<a 
-												href={'?owner=' + playlist.owner + '&id=' + playlist.id} 
-												data-user={playlist.owner} 
-												data-playlist={playlist.id} 
-												onClick={this.handlePlay}
-											>
-												{playlist.name}
-											</a>
-                                            <button 
+										<li className='m-playlists-list-item'>                                            
+                                            <button
+                                                className="m-playlists-play-btn"
+                                                data-user={playlist.owner} 
+                                                data-playlist={playlist.id} 
+                                                onClick={this.handlePlay}
+                                            >
+                                                {playlist.name}
+                                            </button>                                            
+
+                                            <button
+                                                className="m-playlists-share-btn" 
                                                 data-user={playlist.owner} 
                                                 data-playlist={playlist.id}                                            
                                                 onClick={this.handleShare}
@@ -71,7 +73,7 @@ var PlaylistsView = React.createClass({
 							}
 						}.bind(this));
 
-	        _view = <ul className='m-playlists'> 
+	        _view = <ul className='m-playlists-list'> 
 	        			{_list}
 	        		</ul>     	
         }
@@ -79,7 +81,8 @@ var PlaylistsView = React.createClass({
         	this.getPlaylists(this.props.player);
         }
 
-        return ( <div>
+        return ( <div className="m-playlist l-view">
+                    <h1>Choose a playlist to play</h1>
         			{_view}
             	</div>
         );

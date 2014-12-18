@@ -26,7 +26,15 @@ var LoginView = React.createClass({
         var _queries = Helpers.getQueries(window.location.search),
             _tokens = sessionStorage.getItem('amq-user') || spotifyService.getTokens(window.location.search).accessToken;
 
-        sessionStorage.setItem('amq-queries', window.location.search);
+        
+        //TODO automate
+        if(_queries.debug){
+            localStorage.setItem('amq-debug', _queries.debug);
+        }
+
+        if(_queries.mute){
+            localStorage.setItem('amq-mute', _queries.mute);
+        }
 
         if(_queries.owner && _queries.id){
             sessionStorage.setItem('amq-game', JSON.stringify({
@@ -54,7 +62,7 @@ var LoginView = React.createClass({
 
             }.bind(this), function() {
                 log('Login: failed to get user');
-                localStorage.removeItem(userData.id);
+                sessionStorage.removeItem('amq-user');
                 this.login();
             }.bind(this))
         } else {
@@ -65,13 +73,13 @@ var LoginView = React.createClass({
     render: function() {
         log('Login: render');
 
-        var _view = <p>Loading...</p>;
+        var _view = <Loading module="Login"/>;
 
 		if(this.state.loginUrl){
 			_view = <div className='m-login'>
 				    	<h1>a music quiz</h1 >
-           				<a href={this.state.loginUrl}> login with Spotify </a>
-				      	<p>made by Erik Portin</p >
+           				<a className='m-login-link' href={this.state.loginUrl}> login with Spotify </a>
+				      	<p className='m-login-cred'>made by Erik Portin</p >
            			</div> 	
 		}
 		else {	

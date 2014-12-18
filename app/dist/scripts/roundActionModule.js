@@ -23,7 +23,7 @@ var RoundAction = React.createClass({displayName: 'RoundAction',
     render: function() {
         log('RoundAction: render')
         
-        var _roundAction = React.DOM.p(null, "Loading game actions..."),
+        var _roundAction = Loading( {module:"RoundAction"}),
             _currentRoundIndex = this.props.game.round.current.index-1;
 
         if(this.props.musicPlaying || this.props.answer){            
@@ -31,6 +31,7 @@ var RoundAction = React.createClass({displayName: 'RoundAction',
             _roundAction = Options( 
                                 {answer:this.props.answer,
                                 options:this.props.game.round.options,
+                                
                                 onAnswer:this.handleAnswer}
                             )
         } 
@@ -44,13 +45,15 @@ var RoundAction = React.createClass({displayName: 'RoundAction',
                                     {previousAnswer:_previousAnswer,
                                     previousQuestion:_previousQuestion,
                                     isGameOver:this.props.game.isGameOver,
+                                    isMusicLoaded:this.props.musicLoaded,
+                                    
                                     onGameOver:this.handleGameOver,
                                     onMusicPlay:this.handleMusicPlay}
                                 )  
         }
 
         return ( 
-                React.DOM.div( {className:"container"}, 
+                React.DOM.div( {className:"m-round-action"}, 
                     _roundAction
                 )
                 );

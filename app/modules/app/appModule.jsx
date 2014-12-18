@@ -9,9 +9,7 @@ var AppView = React.createClass({
         return {
             player: '',
             playListOwner: '',
-            playlistId: '',
-            history: '',
-            replay: false,
+            playlistId: ''
         };
     },
 
@@ -51,18 +49,8 @@ var AppView = React.createClass({
     handlePlay: function(playListOwner, playlistId) {
         log('AppView: handlePlay');
         this.setState({
-            replay: false,
             playListOwner: playListOwner,
             playlistId: playlistId
-        })
-    },
-
-    handleReplay: function() {
-        log('AppView: handleReplay');
-
-        this.setState({
-            replay: true,
-            history: ''
         })
     },
 
@@ -71,22 +59,13 @@ var AppView = React.createClass({
 
         this.setState({
             playListOwner: '',
-            playlistId: '',
-            history: ''
+            playlistId: ''
         })
-    },    
-
-    handleGameOver: function(history){
-        log('AppView: handleGameOver');
-        log(history);
-        this.setState({
-            history: history
-        })
-    },
+    }, 
 
     render: function() {
         log('AppView: render');
-        var _view = <p> Loading... </p>,
+        var _view = <Loading module="AppView"/>,
             _popup = '';
 
 		//Set app mode
@@ -101,25 +80,15 @@ var AppView = React.createClass({
         }
 
         //View
-        if(this.state.history){
-            history.pushState({ login: this.state.player }, 'GameOverView', '?owner=' + this.state.playListOwner + '&id=' + this.state.playlistId);
-            _view = <GameOverView 
-                        history={this.state.history} 
-                        onReplay={this.handleReplay}
-                        onBackToPlaylists={this.handleBackToPlaylists}
-                        onShare={this.handleShare}
-                    />;
-        }
-
-        else if (this.state.playListOwner && this.state.playlistId) {
+        if (this.state.playListOwner && this.state.playlistId) {
             history.pushState({ login: this.state.player }, 'GameView', '?owner=' + this.state.playListOwner + '&id=' + this.state.playlistId);
             _view = <GameView
                         playlistId={this.state.playlistId}
                         playlistOwner={this.state.playListOwner}
-                        replay={this.state.replay}
                         
                         onPlay={this.handlePlay}
-                        onGameOver={this.handleGameOver}
+                        onShare={this.handleShare}
+                        onBackToPlaylists={this.handleBackToPlaylists}
                     />;            
         }
         else if(this.state.player){
@@ -139,7 +108,7 @@ var AppView = React.createClass({
         }
         
         return (
-            <div>
+            <div className="l-app-inner">
                 {_popup}
                 {_view}
             </div >

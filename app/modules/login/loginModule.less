@@ -1,17 +1,26 @@
-.m-login{
-	padding: 20px;
-	text-align: center;
-	h1{
-		font-size: 1.5em;
-		margin-bottom: 20px;
-	}
+.m-login {
+  padding: @gap;
+  text-align: center;
+  h1 {
+    margin-bottom: @gap;
+    font-size: @font-lg;
+  }
 
-	a{
-		margin: 40px 0;
-		display: block;
-		color: #84bd00;
-	}
-	p{
-		font-size: 0.6em;
-	}
+  a {
+    display: inline-block;
+    width: 50%;
+    padding: @gap 0;
+    margin: @gap-lg*2 0;
+    color: @bg;
+    background-color: @primary;
+    border-radius: @radius;
+  }
+
+  &-cred {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: @gap-sm 0;
+    font-size: @font-sm;
+  }
 }

@@ -30,11 +30,14 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
     play: function() {
         log('Musicplayer: play')
         var _pointsEl = this.refs.points.getDOMNode();
-        this.state.musicPlayer.play().then(function() {
-            log('Musicplayer: paused')
-        }, function() {
+        
+        this.state.musicPlayer.play().then(function(time) {
+            log('Musicplayer: ended')
+            this.props.onStop(time);
+        }.bind(this), function() {
             console.error('Musicplayer: play()');
         }, function(time) {
+            log('Musicplayer: update time ' + time);
             _pointsEl.innerHTML = time;
         });
     },
@@ -103,7 +106,7 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         }
 
         return ( 
-                React.DOM.div( {className:"container"}, 
+                React.DOM.div( {className:"m-music-player"}, 
                     React.DOM.p( {ref:"points"}),
                     _audioEl
                 )

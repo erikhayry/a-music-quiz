@@ -26,7 +26,15 @@ var LoginView = React.createClass({displayName: 'LoginView',
         var _queries = Helpers.getQueries(window.location.search),
             _tokens = sessionStorage.getItem('amq-user') || spotifyService.getTokens(window.location.search).accessToken;
 
-        sessionStorage.setItem('amq-queries', window.location.search);
+        
+        //TODO automate
+        if(_queries.debug){
+            localStorage.setItem('amq-debug', _queries.debug);
+        }
+
+        if(_queries.mute){
+            localStorage.setItem('amq-mute', _queries.mute);
+        }
 
         if(_queries.owner && _queries.id){
             sessionStorage.setItem('amq-game', JSON.stringify({
@@ -54,7 +62,7 @@ var LoginView = React.createClass({displayName: 'LoginView',
 
             }.bind(this), function() {
                 log('Login: failed to get user');
-                localStorage.removeItem(userData.id);
+                sessionStorage.removeItem('amq-user');
                 this.login();
             }.bind(this))
         } else {
@@ -65,13 +73,13 @@ var LoginView = React.createClass({displayName: 'LoginView',
     render: function() {
         log('Login: render');
 
-        var _view = React.DOM.p(null, "Loading...");
+        var _view = Loading( {module:"Login"});
 
 		if(this.state.loginUrl){
 			_view = React.DOM.div( {className:"m-login"}, 
 				    	React.DOM.h1(null, "a music quiz"),
-           				React.DOM.a( {href:this.state.loginUrl},  " login with Spotify " ),
-				      	React.DOM.p(null, "made by Erik Portin")
+           				React.DOM.a( {className:"m-login-link", href:this.state.loginUrl},  " login with Spotify " ),
+				      	React.DOM.p( {className:"m-login-cred"}, "made by Erik Portin")
            			) 	
 		}
 		else {	

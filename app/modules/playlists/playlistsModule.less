@@ -1,13 +1,31 @@
-.m-playlists{
-	width: 100%;
-	text-align: left;
-	&-item{
-		padding: 15px 25px;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;		
-		a{
-			text-decoration: none;
-		}
-	}
+@share-btn-width: 100px;
+
+.m-playlists {
+  &-list {
+    width: 100%;
+    text-align: left;
+    &-item {
+      position: relative;
+      padding-right: @share-btn-width;
+      overflow: hidden;
+    }
+  }
+
+  &-play-btn {
+    display: inline-block;
+    width: 100%;
+    padding: @gap-sm;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-share-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: @share-btn-width;
+    padding: @gap-sm;
+  }
 }

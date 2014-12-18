@@ -1,16 +1,14 @@
 var Mode = (function(){
 	return {
-		set: function(){
-			var queries = Helpers.getQueries(sessionStorage.getItem("amq-queries"));
-			
-			if(queries.debug){
+		set: function(){			
+			if(localStorage.getItem('amq-debug')){
 				log('Debug mode: On');
-				Settings.debug = queries.debug;
+				Settings.debug = localStorage.getItem('amq-debug');
 			}
 
-			if(queries.mute){
+			if(localStorage.getItem('amq-mute')){
 				log('Mute mode: On');
-				Settings.mute = queries.mute;
+				Settings.mute = localStorage.getItem('amq-mute');
 			}			
 		}
 	}

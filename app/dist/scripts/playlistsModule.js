@@ -44,24 +44,26 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
 
     render: function() {
         log('Playlist: render');
-        var _view = React.DOM.p(null, "Loading playlist");
+        var _view = Loading( {module:"Playlist"} );
 
         if(this.state.playlists){
         	var _list = {};
 			this.state.playlists.forEach(function(playlist) {
 							if(playlist.total >= Settings.minPlaylistSize){
 								_list['playlist' + playlist.id] =  
-										React.DOM.li( {className:"m-playlists-item"}, 
-											React.DOM.a( 
-												{href:'?owner=' + playlist.owner + '&id=' + playlist.id, 
-												'data-user':playlist.owner, 
-												'data-playlist':playlist.id, 
-												onClick:this.handlePlay}
-											, 
-												playlist.name
-											),
-                                            React.DOM.button( 
-                                                {'data-user':playlist.owner, 
+										React.DOM.li( {className:"m-playlists-list-item"},                                             
+                                            React.DOM.button(
+                                                {className:"m-playlists-play-btn",
+                                                'data-user':playlist.owner, 
+                                                'data-playlist':playlist.id, 
+                                                onClick:this.handlePlay}
+                                            , 
+                                                playlist.name
+                                            ),                                            
+
+                                            React.DOM.button(
+                                                {className:"m-playlists-share-btn", 
+                                                'data-user':playlist.owner, 
                                                 'data-playlist':playlist.id,                                            
                                                 onClick:this.handleShare}
                                             , 
@@ -71,7 +73,7 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
 							}
 						}.bind(this));
 
-	        _view = React.DOM.ul( {className:"m-playlists"},  
+	        _view = React.DOM.ul( {className:"m-playlists-list"},  
 	        			_list
 	        		)     	
         }
@@ -79,7 +81,8 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
         	this.getPlaylists(this.props.player);
         }
 
-        return ( React.DOM.div(null, 
+        return ( React.DOM.div( {className:"m-playlist l-view"}, 
+                    React.DOM.h1(null, "Choose a playlist to play"),
         			_view
             	)
         );

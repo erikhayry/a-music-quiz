@@ -11,11 +11,6 @@ var GameView = React.createClass({
         };
     },
 
-    handleGameOver: function(){
-    	log('GameView: handleGameOver')
-    	this.props.onGameOver(this.state.game.history);
-    },
-
     next: function(game){
     	log('GameView: next')
 		game.next().then(function(game){
@@ -62,45 +57,58 @@ var GameView = React.createClass({
 			console.error('GameView: failed to get game');
 		});   		
     },
-    
+
+
+    handleReplay: function() {
+        log('GameView: handleReplay');
+
+        this.state.game.reset().next().then(function(game){
+            log('GameView: got new game');
+            log(game)
+            
+            this.setState({
+                game: game
+            })
+
+        }.bind(this), function(error){
+            console.error('GameView: failed to get game');
+        }); 
+
+    },
+
 	componentDidMount: function(){
 		log('GameView: componentDidMount')
 
-        //reset game by calling onPlay from parent
-        if(this.props.replay){
-            this.props.onPlay(this.props.playlistOwner, this.props.playlistId)
-        }
-
-        //if not resetting and no game, start new game
-        else if(!this.state.game){
+        if(!this.state.game){
             this.getGame(this.props.playlistOwner, this.props.playlistId)               
         }
 	},
 
-    componentDidUpdate: function(){
-        log('GameView: componentDidUpdate')
-
-        //restarts game after being reset in componentDidMount
-        if(!this.props.replay && !this.state.game){
-            this.getGame(this.props.playlistOwner, this.props.playlistId)               
-        }        
-    },
-
     render: function(){
         log('GameView: render')
-        var _view = <p>Loading game...</p>;
+        var _view = <Loading module="GameView"/>;
         
-        //only render round if not in the middle of setting up a game or resetting
 		if(this.state.game){
-            _view = <Round 
-                        game={this.state.game}
-                        onNextRound={this.handleNextRound}
-                        onGameOver={this.handleGameOver}
-                     />;
+            if(this.state.game.isGameOver){
+                _view = <GameOverView 
+                            history={this.state.game.history} 
+                            onReplay={this.handleReplay}
+                            onBackToPlaylists={this.props.onBackToPlaylists}
+                            onShare={this.props.onShare}
+                        />;
+            }
+            else{
+                _view = <Round 
+                            game={this.state.game}
+
+                            onNextRound={this.handleNextRound}
+                            onBackToPlaylists={this.props.onBackToPlaylists}
+                         />;                
+            }
         }
         
         return (
-            <div>
+            <div className="m-game l-view">
                 {_view}
             </div>
        )     

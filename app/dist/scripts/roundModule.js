@@ -63,11 +63,16 @@ var Round = React.createClass({displayName: 'Round',
         log('Round: render')
         log(this.state)
         
-        return ( React.DOM.div(null, 
-                    React.DOM.div( {className:"container"}, 
-                        React.DOM.ul( {className:"nav nav-tabs nav-justified"}, 
-                            React.DOM.li(null, React.DOM.button(null, "x")),
-                            React.DOM.li(null, Points( {points:this.props.game.points} ))
+        return ( React.DOM.div( {className:"m-round"}, 
+                    React.DOM.ul( {className:"m-round-nav"}, 
+                        React.DOM.li( {className:"m-round-nav-item"}, 
+                            React.DOM.button( 
+                                {className:"m-round-cancel-btn",
+                                onClick:this.props.onBackToPlaylists}
+                            , "x")
+                        ),
+                        React.DOM.li( {className:"m-round-nav-item m-round-points"}, 
+                            Points( {points:this.props.game.points} )
                         )
                     ),
                     

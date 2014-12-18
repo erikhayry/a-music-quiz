@@ -1,0 +1,35 @@
+.m-round {
+  position: relative;
+  height: 100%;
+  padding-bottom: @progress-height;
+  &-nav {
+    width: 100%;
+    margin-bottom: @gap;
+    overflow: hidden;
+
+    &-item {
+      float: left;
+      width: 50%;
+      &:nth-child(even) {
+        text-align: right;
+      }
+    }
+  }
+
+  &-cancel-btn {
+    display: inline-block;
+    width: @process-item-height;
+    margin: 0 @gap-sm;
+    margin-top: @gap-sm;
+    font-size: @font-sm;
+    line-height: @process-item-height;
+    color: @bg;
+    text-align: center;
+    background-color: white;
+    border-radius: 50%;
+  }
+
+  &-points {
+    padding: @gap-sm;
+  }
+}

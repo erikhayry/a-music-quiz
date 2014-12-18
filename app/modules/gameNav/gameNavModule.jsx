@@ -14,6 +14,7 @@ var GameNav = React.createClass({
 
     render: function(){
         var _buttonEl = '',
+            _disabled = '',
             _buttonTxt = '',
             _navCopy = '';
 
@@ -34,13 +35,16 @@ var GameNav = React.createClass({
 
         }
 
+        if(!this.props.isMusicLoaded){
+            _disabled = 'disabled';
+        }
         
         if(!this.props.isGameOver){
-            _buttonEl = <button onClick={this.props.onMusicPlay}>{_buttonTxt}</button>; 
+            _buttonEl = <button className="m-game-nav-button" disabled={_disabled} onClick={this.props.onMusicPlay}>{_buttonTxt}</button>; 
         }
 
         return (
-            <div className="container">
+            <div className="m-game-nav">
                 <p>{_navCopy}</p>
                 {_buttonEl}
             </div>

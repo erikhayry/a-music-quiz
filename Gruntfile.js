@@ -13,6 +13,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-filerev');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-csscomb');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -33,7 +34,7 @@ module.exports = function(grunt) {
         },
 
         concurrent: {
-            dev: ['nodemon:dev', 'watch:jsx'],
+            dev: ['nodemon:dev', 'watch'],
             options: {
                 logConcurrentOutput: true
             }
@@ -60,6 +61,24 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        csscomb: {
+            options: {
+                config: 'app/styles/.csscomb.json'
+            },
+            style: {
+                expand: true,
+                cwd: 'app/styles/',
+                src: ['*.less', '!*.min.css'],
+                dest: 'app/styles/'
+            },
+            views: {
+                expand: true,
+                cwd: 'app/modules/',
+                src: ['**/*.less', '!*.min.css'],
+                dest: 'app/modules/'
+            }
+        },        
 
         react: {
             dynamic_mappings: {
@@ -208,6 +227,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('serve', ['build-assets', 'concurrent:dev']);
     grunt.registerTask('serve-dist', ['build', 'nodemon:dist']);
-    grunt.registerTask('build-assets', ['react', 'less']);
+    grunt.registerTask('build-assets', ['react', 'csscomb', 'less']);
 
 };
