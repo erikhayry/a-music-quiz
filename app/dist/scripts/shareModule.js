@@ -6,7 +6,7 @@
 
 var Share = React.createClass({displayName: 'Share',
 	componentDidMount: function(){
-		log('Share: render')
+		log('Share: componentDidMount')
 /*		var _shareEl = this.refs.twitter.getDOMNode(),
 			_text = this.props.text || 'Play a Music Quiz';
 
