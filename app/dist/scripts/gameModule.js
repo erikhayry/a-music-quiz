@@ -14,7 +14,7 @@ var GameView = React.createClass({displayName: 'GameView',
     next: function(game){
     	log('GameView: next')
 		game.next().then(function(game){
-    		log('GameView: got next round');
+    		log('GameView: got next round ' + game.round.current.artist.name);
     		log(game)
 
 		    this.setState({
@@ -46,7 +46,7 @@ var GameView = React.createClass({displayName: 'GameView',
     	log('GameView: getGame');
     	
     	new Game(user, playlistId, {gameLength: Settings.gameLength}).next().then(function(game){
-    		log('GameView: got new game');
+    		log('GameView: got new game ' + game.round.current.artist.name);
     		log(game)
 		    
 		    this.setState({
@@ -91,7 +91,8 @@ var GameView = React.createClass({displayName: 'GameView',
 		if(this.state.game){
             if(this.state.game.isGameOver){
                 _view = GameOverView( 
-                            {history:this.state.game.history, 
+                            {game:this.state.game,
+                             
                             onReplay:this.handleReplay,
                             onBackToPlaylists:this.props.onBackToPlaylists,
                             onShare:this.props.onShare}

@@ -14,7 +14,7 @@ var GameView = React.createClass({
     next: function(game){
     	log('GameView: next')
 		game.next().then(function(game){
-    		log('GameView: got next round');
+    		log('GameView: got next round ' + game.round.current.artist.name);
     		log(game)
 
 		    this.setState({
@@ -46,7 +46,7 @@ var GameView = React.createClass({
     	log('GameView: getGame');
     	
     	new Game(user, playlistId, {gameLength: Settings.gameLength}).next().then(function(game){
-    		log('GameView: got new game');
+    		log('GameView: got new game ' + game.round.current.artist.name);
     		log(game)
 		    
 		    this.setState({
@@ -86,12 +86,13 @@ var GameView = React.createClass({
 
     render: function(){
         log('GameView: render')
-        var _view = <Loading module="GameView"/>;
+        var _view = <Loading module='GameView'/>;
         
 		if(this.state.game){
             if(this.state.game.isGameOver){
                 _view = <GameOverView 
-                            history={this.state.game.history} 
+                            game={this.state.game}
+                             
                             onReplay={this.handleReplay}
                             onBackToPlaylists={this.props.onBackToPlaylists}
                             onShare={this.props.onShare}
@@ -108,7 +109,7 @@ var GameView = React.createClass({
         }
         
         return (
-            <div className="m-game l-view">
+            <div className='m-game l-view'>
                 {_view}
             </div>
        )     

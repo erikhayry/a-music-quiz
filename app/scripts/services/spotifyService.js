@@ -154,7 +154,8 @@ var spotifyService = (function(id) {
                             },
                             'track': {
                                 'name': trackData.track.name,
-                                'url': trackData.track.preview_url
+                                'url': trackData.track.preview_url,
+                                'id': trackData.track.id
                             }
                         })                        
                     }

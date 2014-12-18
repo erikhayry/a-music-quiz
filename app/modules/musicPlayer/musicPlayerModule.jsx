@@ -32,7 +32,7 @@ var MusicPlayer = React.createClass({
         var _pointsEl = this.refs.points.getDOMNode();
         
         this.state.musicPlayer.play().then(function(time) {
-            log('Musicplayer: ended')
+            log('Musicplayer: ended ' + time)
             this.props.onStop(time);
         }.bind(this), function() {
             console.error('Musicplayer: play()');

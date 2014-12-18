@@ -80,7 +80,10 @@ MusicPlayerService.prototype.play = function(){
 
         this.element.addEventListener('ended', function(){
         	log('MusicPlayerService: ended')
-            this.stop();
+             _deferred.resolve(0);
+            if(this.interval){
+                window.clearInterval(this.interval);    
+            }               
             this.element.removeEventListener('ended', arguments.callee, false);
         }.bind(this), false);  
         

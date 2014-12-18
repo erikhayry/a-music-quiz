@@ -1,0 +1,25 @@
+.m-share {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: @gap;
+  color: @bg;
+  text-align: center;
+  background-color: rgba(256, 256, 256, .95);
+
+  p {
+    margin: @gap 0;
+    text-align: left;
+  }
+
+  &-close-btn {
+    display: inline-block;
+    padding: @gap;
+    margin: @gap-lg 0;
+    background-color: @bg;
+    border-radius: @radius;
+  }
+}

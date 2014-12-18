@@ -76,7 +76,7 @@ var LoginView = React.createClass({displayName: 'LoginView',
         var _view = Loading( {module:"Login"});
 
 		if(this.state.loginUrl){
-			_view = React.DOM.div( {className:"m-login"}, 
+			_view = React.DOM.div( {className:"m-login-inner"}, 
 				    	React.DOM.h1(null, "a music quiz"),
            				React.DOM.a( {className:"m-login-link", href:this.state.loginUrl},  " login with Spotify " ),
 				      	React.DOM.p( {className:"m-login-cred"}, "made by Erik Portin")
@@ -87,7 +87,7 @@ var LoginView = React.createClass({displayName: 'LoginView',
 			}		
 
         return (
-		            React.DOM.div(null, 
+		            React.DOM.div( {className:"m-login l-view"}, 
 		            	_view
 		            )
 		    	)
