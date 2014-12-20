@@ -85,6 +85,11 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
 
         return ( React.DOM.div( {ref:"view", className:"m-playlist l-view"}, 
                     React.DOM.h1(null, "Choose a playlist to play"),
+
+                    PlaylistInput( 
+                        {onPlay:this.props.onPlay,
+                        onUnvalidPlaylistUrl:this.props.onError}
+                    ),
                     _view,
                     React.DOM.button( {onClick:this.props.onChangeUser}, "Change user")
             	)

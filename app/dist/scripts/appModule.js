@@ -9,7 +9,8 @@ var AppView = React.createClass({displayName: 'AppView',
         return {
             player: '',
             playListOwner: '',
-            playlistId: ''
+            playlistId: '',
+            error: ''
         };
     },
 
@@ -41,6 +42,20 @@ var AppView = React.createClass({displayName: 'AppView',
         this.setState({
             share: ''
         })
+    }, 
+
+    handleError: function(error) {
+        log('AppView: handleError' + error);
+        this.setState({
+            error: error
+        })
+    }, 
+
+    handleResetError: function() {
+        log('AppView: handleResetError');
+        this.setState({
+            error: ''
+        })
     },   
 
     handlePlay: function(playListOwner, playlistId) {
@@ -60,7 +75,8 @@ var AppView = React.createClass({displayName: 'AppView',
         
         this.setState({
             playListOwner: '',
-            playlistId: ''
+            playlistId: '',
+            error: ''
         })
     }, 
 
@@ -80,7 +96,8 @@ var AppView = React.createClass({displayName: 'AppView',
     render: function() {
         log('AppView: render');
         var _view = Loading( {module:"AppView"}),
-            _popup = '';
+            _popup = '',
+            _error = '';
 
 
 		//Set app mode
@@ -94,6 +111,16 @@ var AppView = React.createClass({displayName: 'AppView',
                     );
         }
 
+        //Error
+        if(this.state.error){               
+            _error = Error(
+                        {error:this.state.error,
+
+                        onResetError:this.handleResetError,
+                        onBackToPlaylists:this.handleBackToPlaylists}
+                    );
+        }        
+
         //View
         if (this.state.playListOwner && this.state.playlistId) {
 
@@ -104,6 +131,7 @@ var AppView = React.createClass({displayName: 'AppView',
                         
                         onPlay:this.handlePlay,
                         onShare:this.handleShare,
+                        onError:this.handleError,
                         onBackToPlaylists:this.handleBackToPlaylists}
                     );            
         }
@@ -115,6 +143,7 @@ var AppView = React.createClass({displayName: 'AppView',
                         onPlay:this.handlePlay,
                         onUnAuth:this.handleUnAuth,
                         onShare:this.handleShare,
+                        onError:this.handleError,
                         onChangeUser:this.handleChangeUser}
                     ) ;
         } else {
@@ -127,6 +156,7 @@ var AppView = React.createClass({displayName: 'AppView',
         return (
             React.DOM.div( {className:"l-app-inner"}, 
                 _popup,
+                _error,
                 _view
             )
         )
