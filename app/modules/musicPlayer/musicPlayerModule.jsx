@@ -62,6 +62,9 @@ var MusicPlayer = React.createClass({
 
         //start new round
         if (!this.state.musicPlayer && !this.props.musicLoaded && !this.props.musicPlaying) {
+            //reset points
+            this.refs.points.getDOMNode().innerHTML = '';
+
             this.setState({
                 musicPlayer: new MusicPlayerService(this.refs.audio.getDOMNode())
             })

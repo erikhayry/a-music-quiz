@@ -10,16 +10,6 @@ var RoundAction = React.createClass({displayName: 'RoundAction',
         this.props.onAnswer(answer);
     },    
 
-    handleGameOver: function(){
-        log('RoundAction: handleGameOver')
-        this.props.onGameOver();
-    }, 
-
-    handleMusicPlay: function(){
-        log('RoundAction: handleMusicPlay')
-        this.props.onMusicPlay();
-    },
-
     render: function() {
         log('RoundAction: render')
         
@@ -47,8 +37,8 @@ var RoundAction = React.createClass({displayName: 'RoundAction',
                                     isGameOver:this.props.game.isGameOver,
                                     isMusicLoaded:this.props.musicLoaded,
                                     
-                                    onGameOver:this.handleGameOver,
-                                    onMusicPlay:this.handleMusicPlay}
+                                    onGameOver:this.props.onGameOver,
+                                    onMusicPlay:this.props.onMusicPlay}
                                 )  
         }
 

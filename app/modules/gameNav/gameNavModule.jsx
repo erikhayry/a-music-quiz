@@ -40,12 +40,12 @@ var GameNav = React.createClass({
         }
         
         if(!this.props.isGameOver){
-            _buttonEl = <button className="m-game-nav-button" disabled={_disabled} onClick={this.props.onMusicPlay}>{_buttonTxt}</button>; 
+            _buttonEl = <button className='m-game-nav-button' disabled={_disabled} onClick={this.props.onMusicPlay}>{_buttonTxt}</button>; 
         }
 
         return (
-            <div className="m-game-nav">
-                <p>{_navCopy}</p>
+            <div className='m-game-nav'>
+                <p className='m-game-nav-result'>{_navCopy}</p>
                 {_buttonEl}
             </div>
        )     
