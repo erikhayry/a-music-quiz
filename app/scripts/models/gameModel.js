@@ -1,9 +1,9 @@
 "use strict";
-var Game = function(playerId, playlistId, settings) {
+var Game = function(playlistOwner, playlistId, settings) {
     var _settings = settings || {};
 
     this.playlistId = playlistId;
-    this.playerId = playerId;
+    this.playlistOwner = playlistOwner;
     this.history = [];
     this.round = [];
     this.points = 0,
@@ -31,7 +31,7 @@ function _getAllTracks(game) {
     if (Object.keys(game._allTracks).length !== 0) {
         _deferred.resolve(game._allTracks);
     } else {
-        spotifyService.getTracks(game.playerId, game.playlistId).then(function(tracks){
+        spotifyService.getTracks(game.playlistOwner, game.playlistId).then(function(tracks){
         	//TODO better error handling
         	if(tracks){
 	            game._allTracks = tracks;

@@ -52,6 +52,11 @@ var MusicPlayer = React.createClass({displayName: 'MusicPlayer',
         }
     },
 
+    componentWillUnmount: function(){
+        log('Musicplayer: componentWillUnmount');
+        this.state.musicPlayer.stop();
+    },
+
     componentDidUpdate: function() {
         log('Musicplayer: componentDidUpdate')
 

@@ -59,6 +59,12 @@ var Round = React.createClass({
 
     },
 
+    handleBackToPlaylists: function(){
+        log('Round: handleBackToPlaylists');
+
+        this.props.onBackToPlaylists();
+    },    
+
     render: function() {
         log('Round: render')
         log(this.state)
@@ -68,7 +74,7 @@ var Round = React.createClass({
                         <li className="m-round-nav-item">
                             <button 
                                 className="m-round-cancel-btn"
-                                onClick={this.props.onBackToPlaylists}
+                                onClick={this.handleBackToPlaylists}
                             >x</button>
                         </li>
                         <li className="m-round-nav-item m-round-points">

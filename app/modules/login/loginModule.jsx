@@ -53,10 +53,12 @@ var LoginView = React.createClass({
                 var _gameUrl = JSON.parse(sessionStorage.getItem('amq-game'));
 
                 if(_gameUrl){
+                    log('Login: using stored game')
                     sessionStorage.removeItem('amq-game')
                     this.props.onPlay(_gameUrl.owner, _gameUrl.id);
                 }
                 else{
+                    log('Login: auth')
                     this.props.onAuth(userData.id);                    
                 }
 

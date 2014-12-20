@@ -29,13 +29,10 @@ var AppView = React.createClass({displayName: 'AppView',
         })
     },
 
-    handleShare: function(playListOwner, playlistId) {
+    handleShare: function(share) {
         log('AppView: handleShare');
         this.setState({
-            share: {
-                playListOwner: playListOwner,
-                playlistId: playlistId
-            }
+            share: share
         })
     }, 
 
@@ -56,23 +53,41 @@ var AppView = React.createClass({displayName: 'AppView',
 
     handleBackToPlaylists: function() {
         log('AppView: handleBackToPlaylists');
-
+        
+        //TODO needed so login module dosen/'t start a new game
+        sessionStorage.removeItem('amq-game');
+        history.pushState({ handleBackToPlaylists: this.state.player }, 'AppView', '?user=' + this.state.player);
+        
         this.setState({
             playListOwner: '',
             playlistId: ''
         })
     }, 
 
+    handleChangeUser: function(){
+        log('AppView: handleChangeUser');
+        sessionStorage.removeItem('amq-user');
+        history.pushState({ handleChangeUser: '' }, 'AppView', '');
+
+        this.setState({
+            playListOwner: '',
+            playlistId: '',
+            player: ''
+        })        
+    },
+
+
     render: function() {
         log('AppView: render');
         var _view = Loading( {module:"AppView"}),
             _popup = '';
 
+
 		//Set app mode
         Mode.set();
 
         //Popup
-        if(this.state.share){
+        if(this.state.share){               
             _popup = Share(
                         {share:this.state.share,
                         onResetShare:this.handleResetShare}
@@ -81,6 +96,7 @@ var AppView = React.createClass({displayName: 'AppView',
 
         //View
         if (this.state.playListOwner && this.state.playlistId) {
+
             history.pushState({ login: this.state.player }, 'GameView', '?owner=' + this.state.playListOwner + '&id=' + this.state.playlistId);
             _view = GameView(
                         {playlistId:this.state.playlistId,
@@ -93,12 +109,13 @@ var AppView = React.createClass({displayName: 'AppView',
         }
         else if(this.state.player){
             history.pushState({ login: this.state.player }, 'PlaylistsView', '?user=' + this.state.player);
-            _view = PlaylistsView(
+            _view = PlaylistsView(                       
                         {player:this.state.player, 
                         
                         onPlay:this.handlePlay,
                         onUnAuth:this.handleUnAuth,
-                        onShare:this.handleShare}
+                        onShare:this.handleShare,
+                        onChangeUser:this.handleChangeUser}
                     ) ;
         } else {
             _view = LoginView( 

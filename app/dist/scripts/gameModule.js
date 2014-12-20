@@ -42,10 +42,10 @@ var GameView = React.createClass({displayName: 'GameView',
 		})
     },
 
-    getGame: function(user, playlistId){
+    getGame: function(playlistOwner, playlistId){
     	log('GameView: getGame');
     	
-    	new Game(user, playlistId, {gameLength: Settings.gameLength}).next().then(function(game){
+    	new Game(playlistOwner, playlistId, {gameLength: Settings.gameLength}).next().then(function(game){
     		log('GameView: got new game ' + game.round.current.artist.name);
     		log(game)
 		    
@@ -109,7 +109,7 @@ var GameView = React.createClass({displayName: 'GameView',
         }
         
         return (
-            React.DOM.div( {className:"m-game l-view"}, 
+            React.DOM.div( {ref:"view", className:"m-game l-view"}, 
                 _view
             )
        )     

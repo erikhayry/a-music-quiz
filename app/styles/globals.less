@@ -28,14 +28,16 @@ a {
 
 button {
   display: block;
-  padding: 0;
+  padding: @gap;
+  margin: @gap 0;
   font-family: 'Varela Round', sans-serif;
   font-size: 1em;
-  color: @primary;
   cursor: pointer;
-  background: transparent;
   border: none;
+  border-radius: @radius;
   outline: none;
+
+  .color-inverse();
 }
 
 button[disabled="disabled"], button[disabled] {
