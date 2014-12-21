@@ -66,6 +66,8 @@ var $ = (function() {
     }
 
     return {
-    	ajax : _ajax
+    	ajax : function(url, config, callbackFunction){
+            return new _ajax(url, config, callbackFunction);
+        }
     }
 })();

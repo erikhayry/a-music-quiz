@@ -101,6 +101,8 @@ var spotifyService = (function(id) {
         return _deferred.promise;
     }
 
+
+
     /**
      * get slice of tracks of playlist from spotify
      * @param  {String} userId
@@ -113,11 +115,14 @@ var spotifyService = (function(id) {
         var _deferred = Q.defer(),
             _limit = 100, //max number of tracks spotify allow for a request
             _total = total || 0, //total number of tracks in playlist
+            _calls = 5, //number of different calls to make. only make one if playlist is small
 
             //set random offset 
-            _offset = (_limit >= _total) ? 0 : Math.floor(Math.random() * (_total - _limit)),
+            _offset = 0,
 
-            _url = _apiUrl + '/users/' + userId + '/playlists/' + playListId + '/tracks?limit=' + _limit + '&offset=' + _offset,
+            _urls = [],
+
+            _returnData = [], //playlist data
             
             /**
              * shuffle tracks and resolve
@@ -173,19 +178,28 @@ var spotifyService = (function(id) {
                 _resolve(_spotifyTrackData[_url]);
             };
 
-        //get stored data if available
-        if (_spotifyTrackData[_url]) {
-            _resolve(_spotifyTrackData[_url]);
-        } 
+        //make only one call if playlist is small
+        if(_total < _limit*2){
+            _calls = 1;
+        }    
 
-        //get from local storage if exists
-        else {
-            $.ajax(_url, _config).then(function(res) {
-            	_normaliseTrackData(res.items)
-            }, function(error) {
-            	_deferred.reject(error);
-            });
-        }
+        for (var i = 0; i < _calls; i++) {
+            _offset = (_limit >= _total) ? 0 : Math.floor(Math.random() * (_total - _limit));
+            _url = _apiUrl + '/users/' + userId + '/playlists/' + playListId + '/tracks?limit=' + _limit + '&offset=' + _offset;
+            _urls.push($.ajax(_url, _config))
+        };    
+
+        Q.all(_urls)
+        .then(function(data){
+            data.forEach(function(playlistData){
+                _returnData = _returnData.concat(playlistData.items)
+            })
+
+            _normaliseTrackData(_returnData)
+
+        }, function(){
+            _deferred.reject(error);
+        })
 
         return _deferred.promise;
     }
@@ -242,7 +256,7 @@ var spotifyService = (function(id) {
             return  _getPlaylistInfo(userId, playListId).then(function(info) {
                 return _getTracks(userId, playListId, info.total);
             }, function(){
-                console.log('error - _getPlaylistInfo')
+                console.error('error - _getPlaylistInfo')
             });
         },
 
