@@ -1,38 +1,45 @@
-*{
-	box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
 
-html{
-	height: 100%;
-	min-height: 100%;	
+html {
+  height: 100%;
+  min-height: 100%;
 }
 
-body{
-	font-family: 'Varela Round', sans-serif;
-	background-color: #222;
-	font-size: 1.5em;
-	height: 100%;
-	color: #FFF;
+body {
+  position: relative;
+  height: 100%;
+  padding: @gap;
+  font-family: 'Varela Round', sans-serif;
+  font-size: 1.5em;
+  color: @primary;
+  background-color: @primary;
 }
 
-a{
-	color: #FFF;
-	text-decoration: none;
-	&:hover{
+a {
+  color: @primary;
+  text-decoration: none;
 
-	}
+  &:focus {
+    outline: none;
+  }
 }
 
-button{
-	font-family: 'Varela Round', sans-serif;
-	width: 100%;
-	padding: 20px;
-	border: none;
-	background: transparent;
-	color: #FFF;
-	font-size: 1em;
-	height: 25%;
-	display: block;
-	cursor: pointer;
-	outline:none;
+button {
+  display: block;
+  padding: @gap;
+  margin: @gap 0;
+  font-family: 'Varela Round', sans-serif;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  border-radius: @radius;
+  outline: none;
+
+  .color-inverse();
+}
+
+button[disabled="disabled"], button[disabled] {
+  opacity: .5;
 }

@@ -8,10 +8,11 @@ var GameOverView = React.createClass({displayName: 'GameOverView',
     handleShare: function(event) {
         event.preventDefault();
         log('GameOverView: handleShare');        
-        var _user = event.target.dataset.user;
-        var _playlistId = event.target.dataset.playlist;
         
-        this.props.onShare(_user, _playlistId)
+        this.props.onShare({
+            url: window.location.origin + '?owner=' + event.target.dataset.owner + '&id=' + event.target.dataset.playlistid,
+            text: 'I just scored ' + event.target.dataset.points + ' on aMusicQuiz.com' 
+        })
     },
 
     render: function() {
@@ -63,8 +64,9 @@ var GameOverView = React.createClass({displayName: 'GameOverView',
 			            	React.DOM.li( {className:"m-game-over-nav-item"}, 
 			            		React.DOM.button( 
 			            			{className:"m-game-over-btn",
-                                  	'data-user':this.props.game.playerId, 
-                                  	'data-playlist':this.props.game.playlistId,  			            			
+			            			'data-points':_total + _points,
+                                  	'data-owner':this.props.game.playlistOwner, 
+                                  	'data-playlistid':this.props.game.playlistId,  			            			
 			            			onClick:this.handleShare}
 			            		, "Share "
 			            		)

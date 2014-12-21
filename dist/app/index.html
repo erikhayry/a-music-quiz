@@ -9,9 +9,54 @@
 </head>
 <body>
 	<div id="app" class="m-app">
+        <div class="m-loading">
+			<div class="m-loading-loader">
+				<div class="m-loading-loader-bar"></div>
+				<div class="m-loading-loader-bar"></div>
+				<div class="m-loading-loader-bar"></div>
+			</div>
+        </div>	
 	</div>
 
-	<script src="amq.js"></script>
+	<!-- build:js amq.js -->
+	<!-- scripts -->
+	<script type="text/javascript" src="scripts/services/settingsService.js"></script>
+	<script type="text/javascript" src="scripts/vendor/log.js"></script>
+	<script type="text/javascript" src="scripts/vendor/q.js"></script>
+	<script type="text/javascript" src="scripts/vendor/ajax.js"></script>
+	<script type="text/javascript" src="bower_components/react/react-with-addons.js"></script>
+
+	<!-- components -->
+	<script type="text/javascript" src="dist/scripts/gameModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/pointsModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/progressModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/gameNavModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/optionsModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/roundModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/gameStateModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/musicPlayerModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/loginModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/appModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/playlistsModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/gameOverModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/roundActionModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/shareModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/loadingModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/playlistInputModule.js"></script>
+	<script type="text/javascript" src="dist/scripts/errorModule.js"></script>
+
+	<!-- models -->
+	<script type="text/javascript" src="scripts/models/gameModel.js"></script>
+
+	<!-- services -->
+	<script type="text/javascript" src="scripts/services/spotifyService.js"></script>
+	<script type="text/javascript" src="scripts/services/helpersService.js"></script>
+	<script type="text/javascript" src="scripts/services/musicPlayerService.js"></script>
+	<script type="text/javascript" src="scripts/services/modeService.js"></script>
+	<script type="text/javascript" src="scripts/services/delayService.js"></script>
 	
+	<!-- the app -->
+	<script type="text/javascript" src="scripts/app.js"></script>
+	<!-- endbuild -->	
 </body>
 </html>

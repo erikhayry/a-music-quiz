@@ -1,0 +1,24 @@
+@process-item-height: 30px;
+
+.m-progress {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: @progress-height;
+  padding: @gap-sm 0;
+  text-align: center;
+  text-align: center;
+  &-item {
+    display: inline-block;
+    width: @process-item-height;
+    margin: 0 @gap-sm;
+    font-size: @font-sm;
+    line-height: @process-item-height;
+    text-align: center;
+    border-radius: 50%;
+    &.is-active {
+      color: @bg;
+      background-color: white;
+    }
+  }
+}

@@ -24,9 +24,7 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
     handlePlay: function(event) {
     	event.preventDefault();
         log('Playlist: handlePlay');    	
-        var _owner = event.target.dataset.owner;
-        var _playlistId = event.target.dataset.playlistid;
-        this.props.onPlay(_owner, _playlistId)
+        this.props.onPlay(event.target.dataset.owner, event.target.dataset.playlistid)
     },
 
     getPlaylists: function(userId) {
@@ -83,15 +81,17 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
         	this.getPlaylists(this.props.player);
         }
 
-        return ( React.DOM.div( {ref:"view", className:"m-playlist l-view"}, 
-                    React.DOM.h1(null, "Choose a playlist to play"),
+        return ( React.DOM.div( {ref:"view", className:"m-playlists l-view"}, 
+                    React.DOM.h1(null, "Play"),
 
                     PlaylistInput( 
                         {onPlay:this.props.onPlay,
                         onUnvalidPlaylistUrl:this.props.onError}
                     ),
+                    React.DOM.p(null, "Or choose one of your playlists"),
+
                     _view,
-                    React.DOM.button( {onClick:this.props.onChangeUser}, "Change user")
+                    React.DOM.button( {className:"m-playlists-change-btn", onClick:this.props.onChangeUser}, "Change user")
             	)
         );
 	}

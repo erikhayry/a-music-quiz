@@ -5,58 +5,161 @@
 'use strict';
 
 var AppView = React.createClass({
+    getInitialState: function() {
+        return {
+            player: '',
+            playListOwner: '',
+            playlistId: '',
+            error: ''
+        };
+    },
 
-	login: function(){
-		$.ajax('api/login', '').then(function(data){
-			var _loginUrl = data['redirect_url'];
-			if(document.getElementById('app')) {
-				React.renderComponent(<LoginLink url={_loginUrl}/>, document.getElementById('app'));
-			}
-		}, function(error){
-			console.error('Failed to login')
-		})		
-	},
+    handleAuth: function(player){
+        log('AppView: handleAuth');
+        this.setState({
+            player: player
+        })
+    },
 
-	startGame: function(accessToken){
-		var _this = this;
+    handleUnAuth: function() {
+        log('AppView: handleUnAuth');
+        this.setState({
+            playListOwner: '',
+            playlistId: '',
+            player: ''
+        })
+    },
 
-		spotifyService.getUser(accessToken).then(function(userData){
-			spotifyService.getPlaylists(userData.id).then(function(playlists){
-				//TODO move to service 
-				var queries = Helpers.getQueries(sessionStorage.getItem("amq-queries"));
-				
-				if(queries.debug){
-					Settings.debug = queries.debug;
-				}
+    handleShare: function(share) {
+        log('AppView: handleShare');
+        this.setState({
+            share: share
+        })
+    }, 
 
-				if(queries.mute){
-					Settings.mute = queries.mute;
-				}
+    handleResetShare: function() {
+        log('AppView: handleResetShare');
+        this.setState({
+            share: ''
+        })
+    }, 
 
-				//Show playlists
-				React.renderComponent(<PlaylistView playlists={playlists}/>, document.getElementById('app'));
-			
-			}).fail(function(failed){
-				//Failed
-			})
+    handleError: function(error) {
+        log('AppView: handleError' + error);
+        this.setState({
+            error: error
+        })
+    }, 
 
-		}, function(error){
-			_this.login();
-		});	
-	},
+    handleResetError: function() {
+        log('AppView: handleResetError');
+        this.setState({
+            error: ''
+        })
+    },   
 
-	render: function(){
-		var tokens = spotifyService.getTokens(window.location.search);
+    handlePlay: function(playListOwner, playlistId) {
+        log('AppView: handlePlay');
+        this.setState({
+            playListOwner: playListOwner,
+            playlistId: playlistId
+        })
+    },
 
-		if(tokens.accessToken && tokens.refreshToken){	
-			log('AppView: start game')
-			this.startGame(tokens.accessToken);	
-		}
-		else{
-			sessionStorage.setItem("amq-queries", window.location.search);			
-			this.login();
-		}
+    handleBackToPlaylists: function() {
+        log('AppView: handleBackToPlaylists');
+        
+        //TODO needed so login module dosen/'t start a new game
+        sessionStorage.removeItem('amq-game');
+        history.pushState({ handleBackToPlaylists: this.state.player }, 'AppView', '?user=' + this.state.player);
+        
+        this.setState({
+            playListOwner: '',
+            playlistId: '',
+            error: ''
+        })
+    }, 
 
-		return (<div className="m-app-loading">loading</div>)		
-	}
+    handleChangeUser: function(){
+        log('AppView: handleChangeUser');
+        sessionStorage.removeItem('amq-user');
+        history.pushState({ handleChangeUser: '' }, 'AppView', '');
+
+        this.setState({
+            playListOwner: '',
+            playlistId: '',
+            player: ''
+        })        
+    },
+
+
+    render: function() {
+        log('AppView: render');
+        var _view = <Loading module="AppView"/>,
+            _popup = '',
+            _error = '';
+
+
+		//Set app mode
+        Mode.set();
+
+        //Popup
+        if(this.state.share){               
+            _popup = <Share
+                        share={this.state.share}
+                        onResetShare={this.handleResetShare}
+                    />;
+        }
+
+        //Error
+        if(this.state.error){               
+            _error = <Error
+                        error={this.state.error}
+
+                        onResetError={this.handleResetError}
+                        onBackToPlaylists={this.handleBackToPlaylists}
+                    />;
+        }        
+
+        //View
+        if (this.state.playListOwner && this.state.playlistId) {
+
+            history.pushState({ login: this.state.player }, 'GameView', '?owner=' + this.state.playListOwner + '&id=' + this.state.playlistId);
+            _view = <GameView
+                        playlistId={this.state.playlistId}
+                        playlistOwner={this.state.playListOwner}
+                        
+                        onPlay={this.handlePlay}
+                        onShare={this.handleShare}
+                        onError={this.handleError}
+                        onBackToPlaylists={this.handleBackToPlaylists}
+                    />;            
+        }
+        else if(this.state.player){
+            history.pushState({ login: this.state.player }, 'PlaylistsView', '?user=' + this.state.player);
+            _view = <PlaylistsView                       
+                        player={this.state.player} 
+                        
+                        onPlay={this.handlePlay}
+                        onUnAuth={this.handleUnAuth}
+                        onShare={this.handleShare}
+                        onError={this.handleError}
+                        onChangeUser={this.handleChangeUser}
+                    /> ;
+        } else {
+            _view = <LoginView 
+                        onAuth={this.handleAuth} 
+                        onPlay={this.handlePlay}
+                    />;    
+        }
+        
+        return (
+            <div className="l-app-inner">
+                {_popup}
+                {_error}
+                {_view}
+            </div >
+        )
+    }
+
 })

@@ -24,9 +24,7 @@ var PlaylistsView = React.createClass({
     handlePlay: function(event) {
     	event.preventDefault();
         log('Playlist: handlePlay');    	
-        var _owner = event.target.dataset.owner;
-        var _playlistId = event.target.dataset.playlistid;
-        this.props.onPlay(_owner, _playlistId)
+        this.props.onPlay(event.target.dataset.owner, event.target.dataset.playlistid)
     },
 
     getPlaylists: function(userId) {
@@ -83,15 +81,17 @@ var PlaylistsView = React.createClass({
         	this.getPlaylists(this.props.player);
         }
 
-        return ( <div ref='view' className="m-playlist l-view">
-                    <h1>Choose a playlist to play</h1>
+        return ( <div ref='view' className="m-playlists l-view">
+                    <h1>Play</h1>
 
                     <PlaylistInput 
                         onPlay={this.props.onPlay}
                         onUnvalidPlaylistUrl={this.props.onError}
                     />
+                    <p>Or choose one of your playlists</p>
+
                     {_view}
-                    <button onClick={this.props.onChangeUser}>Change user</button>
+                    <button className="m-playlists-change-btn" onClick={this.props.onChangeUser}>Change user</button>
             	</div>
         );
 	}

@@ -120,6 +120,7 @@ var spotifyService = (function(id) {
             //set random offset 
             _offset = 0,
 
+            _url = '',
             _urls = [],
 
             _returnData = [], //playlist data
@@ -178,11 +179,12 @@ var spotifyService = (function(id) {
                 _resolve(_spotifyTrackData[_url]);
             };
 
+
         //make only one call if playlist is small
         if(_total < _limit*2){
             _calls = 1;
         }    
-
+        
         for (var i = 0; i < _calls; i++) {
             _offset = (_limit >= _total) ? 0 : Math.floor(Math.random() * (_total - _limit));
             _url = _apiUrl + '/users/' + userId + '/playlists/' + playListId + '/tracks?limit=' + _limit + '&offset=' + _offset;
@@ -195,9 +197,12 @@ var spotifyService = (function(id) {
                 _returnData = _returnData.concat(playlistData.items)
             })
 
-            _normaliseTrackData(_returnData)
+            _normaliseTrackData(_returnData);
+
+            console.log('all')
 
         }, function(){
+            console.log('error')
             _deferred.reject(error);
         })
 
@@ -247,6 +252,33 @@ var spotifyService = (function(id) {
         };
     }
 
+
+    function _getUrl(str){
+        var _ret = '';
+
+        if(str.indexOf('spotify:user') > -1){
+            var _arr = str.split(':')
+            if(_arr.length === 5){
+                _ret = {
+                        owner: _arr[2], 
+                        id: _arr[4]
+                    };                
+            }
+        }
+
+        else if(str.indexOf('http://open.spotify.com/user/') > -1){
+            var _arr = str.split('/')
+            if(_arr.length === 7){
+                _ret = {
+                        owner: _arr[4], 
+                        id: _arr[6]
+                    };                            
+            }
+        } 
+
+        return _ret;     
+    }
+
     return {
         login: function(){
             return $.ajax('api/login', '')
@@ -277,6 +309,8 @@ var spotifyService = (function(id) {
          * @param  {String} accessToken Spotify access token
          * @return {external:Promise}   User promise
          */
-        getUser: _getUser
+        getUser: _getUser,
+
+        getUrl: _getUrl
     }
 })();

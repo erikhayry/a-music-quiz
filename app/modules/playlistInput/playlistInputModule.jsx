@@ -18,41 +18,16 @@ var PlaylistInput = React.createClass({
         //http://open.spotify.com/user/eportin/playlist/5L5SPmBNR3VMGQVGLJfIDL
         //spotify:user:eportin:playlist:3vz4y2C9dYDFivKP79QorS
 
-        if(this.state.input.indexOf('spotify:user') > -1){
-            console.log('1')
-            var _arr = this.state.input.split(':')
+        var _playlistUrl = spotifyService.getUrl(this.state.input);
 
-            if(_arr.length === 5){
-                this.props.onPlay(_arr[2], _arr[4]);
-            }
-            else{
-                this.props.onUnvalidPlaylistUrl({
-                    text: "Not a valid playlist url"
-                });
-            }
-
-        }
-
-        else if(this.state.input.indexOf('http://open.spotify.com/user/') > -1){
-            console.log('2')
-            var _arr = this.state.input.split('/')
-            
-            if(_arr.length === 7){
-                this.props.onPlay(_arr[4], _arr[6]);
-            }
-            else{
-                this.props.onUnvalidPlaylistUrl({
-                    text: "Not a valid playlist url"
-                });
-            }
-
+        if(_playlistUrl){
+            this.props.onPlay(_playlistUrl.owner, _playlistUrl.id);
         }
         else{
             this.props.onUnvalidPlaylistUrl({
                 text: "Not a valid playlist url"
             });
-        }        
-
+        }
     },
 
     componentDidMount: function(){
@@ -77,7 +52,6 @@ var PlaylistInput = React.createClass({
         });
 
         _input.addEventListener('paste', function(){
-            console.log('paste')
            _handleInput(this);
         });
 
@@ -92,7 +66,7 @@ var PlaylistInput = React.createClass({
         }
 
         return (
-            <div className="m-playlist-inout">
+            <div className="m-playlist-input">
                 <input ref="input"  type="text" placeholder="Use HTTP Link or Spotify URI" />
                 <button onClick={this.handlePlay} disabled={_disabled}>Play</button>
             </div>

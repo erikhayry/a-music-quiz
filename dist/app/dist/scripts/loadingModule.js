@@ -1,0 +1,1 @@
+"use strict";var Loading=React.createClass({displayName:"Loading",render:function(){return log("Loading: "+this.props.module),React.DOM.div({className:"m-loading"},React.DOM.div({className:"m-loading-loader"},React.DOM.div({className:"m-loading-loader-bar"}),React.DOM.div({className:"m-loading-loader-bar"}),React.DOM.div({className:"m-loading-loader-bar"})))}});
