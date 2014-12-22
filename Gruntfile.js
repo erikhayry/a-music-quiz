@@ -14,6 +14,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-csscomb');
+    grunt.loadNpmTasks('grunt-autoprefixer');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -78,7 +79,15 @@ module.exports = function(grunt) {
                 src: ['**/*.less', '!*.min.css'],
                 dest: 'app/modules/'
             }
-        },        
+        },
+
+        autoprefixer: {
+            css: {
+                src: 'app/dist/styles/style.css',
+                dest: 'app/dist/styles/style.css'
+            }
+
+        },
 
         react: {
             dynamic_mappings: {
@@ -180,7 +189,7 @@ module.exports = function(grunt) {
 
         useminPrepare: {
             html: 'app/index.html',
-                        options: {
+            options: {
                 dest: 'dist/app/'
             }
         },
@@ -227,6 +236,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('serve', ['build-assets', 'concurrent:dev']);
     grunt.registerTask('serve-dist', ['build', 'nodemon:dist']);
-    grunt.registerTask('build-assets', ['react', 'csscomb', 'less']);
+    grunt.registerTask('build-assets', ['react', 'csscomb', 'less', 'autoprefixer']);
 
 };

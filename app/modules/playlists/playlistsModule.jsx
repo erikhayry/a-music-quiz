@@ -43,7 +43,8 @@ var PlaylistsView = React.createClass({
 
     render: function() {
         log('Playlist: render');
-        var _view = <Loading module="Playlist" />;
+        var _view =  '',
+            _loader = '';
 
         if(this.state.playlists){
         	var _list = {};
@@ -78,21 +79,26 @@ var PlaylistsView = React.createClass({
 	        		</ul>     	
         }
         else{
+            _loader = <Loading module="Playlist" />;
         	this.getAllPlaylists(this.props.player);
         }
 
-        return ( <div ref='view' className="m-playlists l-view">
-                    <h1>Play</h1>
+        return ( 
+                <div className="l-view-outer">
+                    <div ref='view' className="m-playlists l-view">
+                        <h1>Play</h1>
 
-                    <PlaylistInput 
-                        onPlay={this.props.onPlay}
-                        onUnvalidPlaylistUrl={this.props.onError}
-                    />
-                    <p>Or choose one of your playlists</p>
+                        <PlaylistInput 
+                            onPlay={this.props.onPlay}
+                            onUnvalidPlaylistUrl={this.props.onError}
+                        />
+                        <h2>Or choose one of your playlists</h2>
 
-                    {_view}
-                    <button className="m-playlists-change-btn" onClick={this.props.onChangeUser}>Change user</button>
-            	</div>
+                        {_view}
+                        <button className="m-playlists-change-btn" onClick={this.props.onChangeUser}>Change user</button>
+                	</div>
+                    {_loader}
+                </div>  
         );
 	}
 });

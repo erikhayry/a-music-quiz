@@ -1,20 +1,21 @@
 .m-playlist-input {
   position: relative;
-  padding-right: 100px + @gap;
+  padding: @gap-sm 100+@gap-sm @gap-sm @gap-sm;
   margin-bottom: @gap;
   overflow: hidden;
   input {
     width: 100%;
     height: 50px;
-    padding: 10px;
+    padding: @gap-sm;
     font-size: @font-md;
   }
   button {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: @gap-sm;
+    right: @gap-sm;
     width: 100px;
-    padding: 10px;
+    height: 50px;
+    padding: @gap-sm;
     margin: 0;
   }
 }

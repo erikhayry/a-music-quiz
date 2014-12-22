@@ -75,7 +75,8 @@ var LoginView = React.createClass({displayName: 'LoginView',
     render: function() {
         log('Login: render');
 
-        var _view = Loading( {module:"Login"});
+        var _view = '',
+            _loader = '';
 
 		if(this.state.loginUrl){
 			_view = React.DOM.div( {className:"m-login-inner"}, 
@@ -85,13 +86,17 @@ var LoginView = React.createClass({displayName: 'LoginView',
            			) 	
 		}
 		else {	
+                _loader = Loading( {module:"Login"});
 				this.tryLogin();				
 			}		
 
         return (
+                 React.DOM.div( {className:"l-view-outer"}, 
 		            React.DOM.div( {className:"m-login l-view"}, 
 		            	_view
-		            )
+		            ),
+                    _loader
+                )
 		    	)
 }
 

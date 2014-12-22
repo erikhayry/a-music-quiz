@@ -43,7 +43,8 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
 
     render: function() {
         log('Playlist: render');
-        var _view = Loading( {module:"Playlist"} );
+        var _view =  '',
+            _loader = '';
 
         if(this.state.playlists){
         	var _list = {};
@@ -78,21 +79,26 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
 	        		)     	
         }
         else{
+            _loader = Loading( {module:"Playlist"} );
         	this.getAllPlaylists(this.props.player);
         }
 
-        return ( React.DOM.div( {ref:"view", className:"m-playlists l-view"}, 
-                    React.DOM.h1(null, "Play"),
+        return ( 
+                React.DOM.div( {className:"l-view-outer"}, 
+                    React.DOM.div( {ref:"view", className:"m-playlists l-view"}, 
+                        React.DOM.h1(null, "Play"),
 
-                    PlaylistInput( 
-                        {onPlay:this.props.onPlay,
-                        onUnvalidPlaylistUrl:this.props.onError}
-                    ),
-                    React.DOM.p(null, "Or choose one of your playlists"),
+                        PlaylistInput( 
+                            {onPlay:this.props.onPlay,
+                            onUnvalidPlaylistUrl:this.props.onError}
+                        ),
+                        React.DOM.h2(null, "Or choose one of your playlists"),
 
-                    _view,
-                    React.DOM.button( {className:"m-playlists-change-btn", onClick:this.props.onChangeUser}, "Change user")
-            	)
+                        _view,
+                        React.DOM.button( {className:"m-playlists-change-btn", onClick:this.props.onChangeUser}, "Change user")
+                	),
+                    _loader
+                )  
         );
 	}
 });

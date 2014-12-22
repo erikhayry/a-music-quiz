@@ -1,5 +1,4 @@
 .m-login {
-  padding: @gap;
   text-align: center;
   h1 {
     margin-bottom: @gap;
@@ -11,9 +10,15 @@
     width: 50%;
     padding: @gap 0;
     margin: @gap-lg*2 0;
-    color: @bg;
-    background-color: @primary;
+    color: @primary;
+    background-color: @fade-lt;
     border-radius: @radius;
+    &:hover {
+      .hover;
+    }
+    &:active {
+      .click;
+    }
   }
 
   &-cred {
@@ -22,5 +27,6 @@
     width: 100%;
     padding: @gap-sm 0;
     font-size: @font-sm;
+    color: @bg-2;
   }
 }

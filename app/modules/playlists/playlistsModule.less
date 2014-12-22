@@ -1,38 +1,48 @@
 @share-btn-width: 100px;
 
 .m-playlists {
+  h2 {
+    color: @primary;
+  }
   &-list {
     width: 100%;
+    padding: 10px;
     text-align: left;
+
+
     &-item {
       position: relative;
-      padding-right: @share-btn-width;
-      margin-bottom: @gap;
+      padding-right: 100px;
       overflow: hidden;
+      border-bottom: 1px solid @c13;
     }
   }
 
   &-play-btn {
     display: inline-block;
     width: 100%;
-    padding: @gap-sm;
+    padding: 10px;
+    margin: 10px;
     overflow: hidden;
+    color: @primary;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    .color();
+    background-color: transparent;
   }
 
   &-share-btn {
     position: absolute;
-    top: 0;
+    top: 3px;
     right: 0;
-    width: @share-btn-width;
-    padding: @gap-sm;
+    width: 60px;
+    padding: 5px;
+    font-size: 12px;
+    text-transform: uppercase;
   }
 
   &-change-btn {
     float: right;
+    margin: 10px;
   }
 }

@@ -95,7 +95,7 @@ var AppView = React.createClass({displayName: 'AppView',
 
     render: function() {
         log('AppView: render');
-        var _view = Loading( {module:"AppView"}),
+        var _view = '',
             _popup = '',
             _error = '';
 
