@@ -1,9 +1,7 @@
 "use strict";
 
 var spotifyService = (function(id) {
-    var _spotifyTrackData = {},
-        _spotifyPlaylistData = {},
-        _apiUrl = 'https://api.spotify.com/v1',
+    var _apiUrl = 'https://api.spotify.com/v1',
         _config = {};
 
 
@@ -13,94 +11,120 @@ var spotifyService = (function(id) {
      * @param  {Object} settings
      * @return {[type]}
      */
-    function _getPlaylists(userId, settings) {
-        log('SpotifyService: _getPlaylists')
+    function _getAllPlaylists(userId, settings) {
+        log('SpotifyService: _getAllPlaylists')
 
         var _settings = settings || {},
             _deferred = _settings.deferred || Q.defer(),
             _playLists = _settings.playlist || {},
             _url = _settings.url || _apiUrl + '/users/' + userId + '/playlists?limit=50&offest=0';
 
-        //get from local storage if exists
-        if (_spotifyPlaylistData[userId]) {
-            _deferred.resolve(_spotifyPlaylistData[userId]);
-        } 
 
-        //get from api
-        else {
-            $.ajax(_url, _config).then(function(res) {
-                res.items.forEach(function(playlist) {
-                    _playLists[playlist.id] = {
-                        'name': playlist.name,
-                        'id': playlist.id,
-                        'total': playlist.tracks.total,
-                        'owner': playlist.owner.id
-                    }
-                });
-
-                //keep requesting playlists if more exists
-                if (res.next) {
-                    _getPlaylists(userId, {
-                        playlist: _playLists,
-                        url: res.next,
-                        deferred: _deferred
-                    })
-                } else {
-                	//got all playlists. convert to array, store playlists and resolve promise
-                    var _playListArr = [];
-
-                    for(var playlist in _playLists){
-                        _playListArr.push(_playLists[playlist])
-                    }
-
-                    _spotifyPlaylistData[userId] = {
-                                                        obj: _playLists,
-                                                        arr: _playListArr
-                                                    };
-
-                    _deferred.resolve(_spotifyPlaylistData[userId]);
+        $.ajax(_url, _config).then(function(res) {
+            res.items.forEach(function(playlist) {
+                _playLists[playlist.id] = {
+                    'name': playlist.name,
+                    'id': playlist.id,
+                    'total': playlist.tracks.total,
+                    'owner': playlist.owner.id
                 }
-            }, function(error) {
-                _deferred.reject(new Error('Unable to get playlists'));
             });
-        }
+
+            //keep requesting playlists if more exists
+            if (res.next) {
+                _getAllPlaylists(userId, {
+                    playlist: _playLists,
+                    url: res.next,
+                    deferred: _deferred
+                })
+            } else {
+                //got all playlists. convert to array, store playlists and resolve promise
+                var _playListArr = [];
+
+                for (var playlist in _playLists) {
+                    _playListArr.push(_playLists[playlist])
+                }
+
+                _deferred.resolve({
+                    obj: _playLists,
+                    arr: _playListArr
+                });
+            }
+        }, function(error) {
+            _deferred.reject(new Error('Unable to get playlists'));
+        });
 
         return _deferred.promise;
     }
 
-	/**
-	 * get playlist info from spotify api
-	 * @param  {String} userId
-	 * @param  {String} playListId
-	 * @return {external: Promise}
-	 */
-    function _getPlaylistInfo(userId, playListId) {
-        log('SpotifyService: _getPlaylistInfo: ' + userId + ' | ' + playListId)
+    /**
+     * get playlist info from spotify api
+     * @param  {String} owner
+     * @param  {String} playListId
+     * @return {external: Promise}
+     */
+    function _getPlaylistInfo(owner, playListId) {
+        log('SpotifyService: _getPlaylistInfo: ' + owner + ' | ' + playListId)
         var _deferred = Q.defer();
 
-        //resolve with existing data if exists
-        if (_spotifyPlaylistData[userId] && _spotifyPlaylistData[userId][playListId]) {
-            _deferred.resolve(_spotifyPlaylistData[userId][playListId]);
-        } 
+        _getAllPlaylists(owner).then(function(playlists) {
+            //TODO playlists sometimes missing
+            if (playlists.obj[playListId]) {
+                _deferred.resolve(playlists.obj[playListId])
 
-        //get from local storage if exists
-        else {
-            _getPlaylists(userId).then(function(playlists) {                
-                //TODO playlists sometimes missing
-                if (playlists.obj[playListId]) {
-                    _deferred.resolve(playlists.obj[playListId])
-                
-                } else {
-                    _deferred.reject(new Error('Failed loading playlist info'));
-                }
-            }, function(error) {
-            	_deferred.reject(new Error('Failed loading playlist info'));
-            })
-        }
+            } else {
+                _deferred.reject(new Error('Failed loading playlist info'));
+            }
+        }, function(error) {
+            _deferred.reject(new Error('Failed loading playlist info'));
+        })
 
         return _deferred.promise;
     }
 
+
+    /**
+     * normalise data from spotify
+     * @param  {Array} spotify api track data
+     */
+    function _normaliseTrackData(items) {
+        log.groupCollapsed('_normaliseTrackData')
+
+        var _tracks = [],
+            _getArtistNames = function(artists) {
+                var artistNamesArr = [];
+
+                for (var i = 0; i < artists.length; i++) {
+                    artistNamesArr.push(artists[i].name);
+                };
+                return artistNamesArr.join(', ');
+            };
+
+        items.forEach(function(trackData) {
+            if (trackData.track.preview_url) {
+                //TODO get all artist names
+                _tracks.push({
+                    'artist': {
+                        'name': _getArtistNames(trackData.track.artists),
+                        'id': trackData.track.artists[0].id
+                    },
+                    'track': {
+                        'name': trackData.track.name,
+                        'url': trackData.track.preview_url,
+                        'id': trackData.track.id
+                    }
+                })
+            } else {
+                //TODO return error if playlist to short
+                log('preview_url missing for ' + trackData.track.name)
+            }
+
+        })
+
+        log.groupEnd()
+
+        return _tracks;
+    }
 
 
     /**
@@ -123,88 +147,44 @@ var spotifyService = (function(id) {
             _url = '',
             _urls = [],
 
-            _returnData = [], //playlist data
-            
-            /**
-             * shuffle tracks and resolve
-             * @param  {Array} tracks
-             */
-            _resolve = function(tracks) {
-                _deferred.resolve(Helpers.shuffle(tracks));
-            },
-
-            /**
-             * normalise data from spotify
-             * @param  {Array} spotify api track data
-             */
-            _normaliseTrackData = function(items){
-                log.groupCollapsed('_normaliseTrackData')
-                
-                var _tracks = [],
-                    _getArtistNames = function(artists){
-                        var artistNamesArr = [];
-                        
-                        for (var i = 0; i < artists.length; i++) {
-                            artistNamesArr.push(artists[i].name);
-                        };
-                        return artistNamesArr.join(', ');
-                    };
-
-                items.forEach(function(trackData) {
-                    if(trackData.track.preview_url){
-                        //TODO get all artist names
-                        _tracks.push({
-                            'artist': {
-                                'name': _getArtistNames(trackData.track.artists),
-                                'id': trackData.track.artists[0].id
-                            },
-                            'track': {
-                                'name': trackData.track.name,
-                                'url': trackData.track.preview_url,
-                                'id': trackData.track.id
-                            }
-                        })                        
-                    }
-                    else{
-                        //TODO return error if playlist to short
-                        log('preview_url missing for ' + trackData.track.name)
-                    }
-
-                })
-                
-                log.groupEnd()
-
-                _spotifyTrackData[_url] = _tracks;
-
-                _resolve(_spotifyTrackData[_url]);
-            };
-
+            _tracks = []; //playlist data
 
         //make only one call if playlist is small
-        if(_total < _limit*2){
+        if (_total < _limit) {
             _calls = 1;
-        }    
-        
+        }
+
+        log.groupCollapsed('playlist calls')
         for (var i = 0; i < _calls; i++) {
             _offset = (_limit >= _total) ? 0 : Math.floor(Math.random() * (_total - _limit));
             _url = _apiUrl + '/users/' + userId + '/playlists/' + playListId + '/tracks?limit=' + _limit + '&offset=' + _offset;
+            log(_url);
             _urls.push($.ajax(_url, _config))
-        };    
+        };
+        log.groupEnd()
+
 
         Q.all(_urls)
-        .then(function(data){
-            data.forEach(function(playlistData){
-                _returnData = _returnData.concat(playlistData.items)
+            .then(function(data) {
+                var _total = 0;
+
+                data.forEach(function(playlistData) {
+                    _total = playlistData.total;
+                    _tracks = _tracks.concat(playlistData.items)
+                })
+
+                var _normalisedTracks = _normaliseTrackData(_tracks),
+                    _shuffledTracks = Helpers.shuffle(_normalisedTracks);
+
+                _deferred.resolve({
+                    tracks: _shuffledTracks,
+                    total: _total
+                });
+
+            }, function() {
+                console.error('error')
+                _deferred.reject(error);
             })
-
-            _normaliseTrackData(_returnData);
-
-            console.log('all')
-
-        }, function(){
-            console.log('error')
-            _deferred.reject(error);
-        })
 
         return _deferred.promise;
     }
@@ -252,42 +232,46 @@ var spotifyService = (function(id) {
         };
     }
 
-
-    function _getUrl(str){
+    /**
+     * Get playlist owner and id from url string
+     * @param  {String} url
+     * @return {Object} owner and id if valid url
+     */
+    function _getUrl(str) {
         var _ret = '';
 
-        if(str.indexOf('spotify:user') > -1){
+        if (str.indexOf('spotify:user') > -1) {
             var _arr = str.split(':')
-            if(_arr.length === 5){
+            if (_arr.length === 5) {
                 _ret = {
-                        owner: _arr[2], 
-                        id: _arr[4]
-                    };                
+                    owner: _arr[2],
+                    id: _arr[4]
+                };
+            }
+        } else if (str.indexOf('http://open.spotify.com/user/') > -1) {
+            var _arr = str.split('/')
+            if (_arr.length === 7) {
+                _ret = {
+                    owner: _arr[4],
+                    id: _arr[6]
+                };
             }
         }
 
-        else if(str.indexOf('http://open.spotify.com/user/') > -1){
-            var _arr = str.split('/')
-            if(_arr.length === 7){
-                _ret = {
-                        owner: _arr[4], 
-                        id: _arr[6]
-                    };                            
-            }
-        } 
-
-        return _ret;     
+        return _ret;
     }
 
     return {
-        login: function(){
-            return $.ajax('api/login', '')
+        login: function() {
+            return $.ajax('api/login', {
+                refresh: true
+            })
         },
 
         getTracks: function(userId, playListId) {
-            return  _getPlaylistInfo(userId, playListId).then(function(info) {
-                return _getTracks(userId, playListId, info.total);
-            }, function(){
+            return _getTracks(userId, playListId).then(function(data) {
+                return _getTracks(userId, playListId, data.total);
+            }, function() {
                 console.error('error - _getPlaylistInfo')
             });
         },
@@ -296,7 +280,7 @@ var spotifyService = (function(id) {
          * get all playlists for user from spotify
          * @type {external:Promise}
          */
-        getPlaylists: _getPlaylists,
+        getAllPlaylists: _getAllPlaylists,
 
         /**
          * get Spotify acces tokens
@@ -311,6 +295,11 @@ var spotifyService = (function(id) {
          */
         getUser: _getUser,
 
+        /**
+         * Get playlist owner and id from url string
+         * @param  {String} url
+         * @return {Object} owner and id if valid url
+         */
         getUrl: _getUrl
     }
 })();

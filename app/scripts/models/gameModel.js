@@ -31,10 +31,10 @@ function _getAllTracks(game) {
     if (Object.keys(game._allTracks).length !== 0) {
         _deferred.resolve(game._allTracks);
     } else {
-        spotifyService.getTracks(game.playlistOwner, game.playlistId).then(function(tracks){
+        spotifyService.getTracks(game.playlistOwner, game.playlistId).then(function(data){
         	//TODO better error handling
-        	if(tracks){
-	            game._allTracks = tracks;
+        	if(data){
+	            game._allTracks = data.tracks;
 	            _deferred.resolve(game._allTracks);        		
         	}
         	else{

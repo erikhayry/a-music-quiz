@@ -27,9 +27,9 @@ var PlaylistsView = React.createClass({
         this.props.onPlay(event.target.dataset.owner, event.target.dataset.playlistid)
     },
 
-    getPlaylists: function(userId) {
-        log('Playlist: getPlaylists ' + userId);
-        spotifyService.getPlaylists(userId).then(function(playlists) {
+    getAllPlaylists: function(userId) {
+        log('Playlist: getAllPlaylists ' + userId);
+        spotifyService.getAllPlaylists(userId).then(function(playlists) {
         	log('Playlist: got playlists');
         	log(playlists)
             this.setState({
@@ -78,7 +78,7 @@ var PlaylistsView = React.createClass({
 	        		</ul>     	
         }
         else{
-        	this.getPlaylists(this.props.player);
+        	this.getAllPlaylists(this.props.player);
         }
 
         return ( <div ref='view' className="m-playlists l-view">

@@ -21,8 +21,12 @@ THE SOFTWARE.
 */
 
 var $ = (function() {
+    var _storage = {};
+
     function _ajax(url, config, callbackFunction) {
-        var _deferred = Q.defer();
+        var _deferred = Q.defer(),  
+            _config = config || {};
+            _config.refresh = _config.refresh || false; 
 
         this.bindFunction = function(caller, object) {
             return function() {
@@ -34,7 +38,14 @@ var $ = (function() {
             if (this.request.status == 401) {
                 _deferred.reject(new Error(this.request.responseURL + ' : ' + this.request.statusText));
             } else if (this.request.readyState == 4 && this.request.status == 200 && this.request.responseText) {
-                _deferred.resolve(JSON.parse(this.request.responseText));
+                var _data = JSON.parse(this.request.responseText);
+
+                if(!_config.refresh){
+                    log('Ajax: storing')
+                    _storage[this.url] = _data;
+                    log(_storage)
+                }
+                _deferred.resolve(_data);
             }
         };
 
@@ -46,21 +57,33 @@ var $ = (function() {
             return false;
         };
 
-        this.postBody = (arguments[2] || "");
         this.url = url;
-        this.request = this.getRequest();
 
-        if (this.request) {
-            var req = this.request;
-            req.onreadystatechange = this.bindFunction(this.stateChange, this);
-            req.open("GET", url, true);
-            for (var header in config.headers) {
-                req.setRequestHeader(header, config.headers[header]);
-            }
-
-            req.send(this.postBody)
-
+        if(!_config.refresh && _storage[this.url]){
+            log('Ajax: from storage')
+            _deferred.resolve(_storage[this.url]);
         }
+
+        else{
+            log('Ajax: refresh')
+            this.postBody = (arguments[2] || "");
+            this.request = this.getRequest();
+
+            if (this.request) {
+                var req = this.request;
+                req.onreadystatechange = this.bindFunction(this.stateChange, this);
+                req.open("GET", url, true);
+                for (var header in _config.headers) {
+                    req.setRequestHeader(header, _config.headers[header]);
+                }
+
+                req.send(this.postBody)
+
+            }            
+        }
+
+
+
 
         return _deferred.promise;
     }
