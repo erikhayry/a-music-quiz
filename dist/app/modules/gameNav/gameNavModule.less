@@ -8,8 +8,11 @@
   }
 
   &-result {
-    margin: @gap-lg 0;
+    margin: 0;
     font-size: @font-lg;
     text-transform: uppercase;
+    @media (min-height: @bp-h-sm) {
+      margin: @gap-lg 0;
+    }
   }
 }

@@ -15,7 +15,7 @@
       padding-right: 110px;
       overflow: hidden;
       font-size: @font-sm;
-      border-bottom: 1px solid @c13;
+      border-bottom: 1px solid darken(@red, 5);
     }
   }
 
@@ -30,13 +30,10 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     background-color: transparent;
+    transition: .1s all;
 
     &:hover {
-      .hover;
-    }
-
-    &:active {
-      .click;
+      background-color: darken(@red, 5);
     }
   }
 
@@ -51,7 +48,8 @@
   }
 
   &-change-btn {
-    float: right;
-    margin: @gap-sm;
+    display: block;
+    margin: @gap-sm auto;
+    font-size: @font-sm;
   }
 }

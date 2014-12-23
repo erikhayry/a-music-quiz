@@ -15,7 +15,6 @@
     opacity: 1;
     animation-name: fadin;
     animation-duration: 1s;
-    //animation-delay: 6s;
     animation-iteration-count: 1;
 
     animation-fill-mode: forwards;
@@ -35,22 +34,14 @@
     }
     h2 {
       padding: @gap;
-      font-size: @font-md;
+      font-size: @font-sm;
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 4px;
+
+      @media (min-height: 340px) {
+        font-size: @font-md;
+      }
     }
-  }
-}
-
-
-
-@keyframes fadin {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
   }
 }

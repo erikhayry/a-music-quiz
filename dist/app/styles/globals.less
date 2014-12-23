@@ -10,10 +10,10 @@ html {
 body {
   position: relative;
   height: 100%;
-  padding: @gap;
-  font-family: 'Varela Round', sans-serif;
+  padding: 0;
   font-family: 'Lato', sans-serif;
   font-size: 1.5em;
+  line-height: 1.5em;
   color: @primary;
   letter-spacing: 2px;
   background-color: @bg;
@@ -33,18 +33,30 @@ button {
   padding: @gap;
   margin: @gap 0;
   font-family: 'Lato', sans-serif;
-  font-size: 1em;
+  font-size: @font-md;
   letter-spacing: 2px;
   cursor: pointer;
   border: none;
   border-radius: @radius;
   outline: none;
+  transition: .2s all;
 
   .color();
-}
 
-button[disabled="disabled"], button[disabled] {
-  opacity: .5;
+  &:hover {
+    .hover;
+  }
+
+  &[disabled="disabled"], &[disabled] {
+    opacity: .5;
+
+    .color();
+    &:hover {
+      opacity: .5;
+
+      .color();
+    }
+  }
 }
 
 input {
