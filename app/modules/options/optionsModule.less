@@ -8,6 +8,9 @@
     margin: 0 0 5px;
     font-size: @font-sm;
     text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;   
+    overflow: hidden; 
     &:nth-child(1) {
       .button(#7eb867);
     }
@@ -21,18 +24,18 @@
       .button(#8eb2c5);
     }
 
-    @media (min-height: @bp-h-sm) {
+    @media (min-height: @bp-h-sm) and (min-width: @bp-sm){
       height: 22%;
       margin: 0 0 3%;
       font-size: @font-md;
     } 
 
-    @media (min-height: @bp-h-md) {
+    @media (min-height: @bp-h-md)  and (min-width: @bp-sm) {
       padding: 30px;
-    }    
+    }   
   }
 
-     @media (min-height: @bp-h-sm) {
-      padding: @gap;
-    }  
+  @media (min-height: @bp-h-sm) {
+    padding: @gap;
+  }  
 }

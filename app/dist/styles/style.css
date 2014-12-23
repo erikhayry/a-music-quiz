@@ -568,6 +568,9 @@ input {
   margin: 0 0 5px;
   font-size: 0.6em;
   text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .m-options-btn:nth-child(1) {
   position: relative;
@@ -849,14 +852,14 @@ input {
   background-color: #8eb2c5;
   opacity: 1;
 }
-@media (min-height: 380px) {
+@media (min-height: 380px) and (min-width: 400px) {
   .m-options-btn {
     height: 22%;
     margin: 0 0 3%;
     font-size: 1em;
   }
 }
-@media (min-height: 600px) {
+@media (min-height: 600px) and (min-width: 400px) {
   .m-options-btn {
     padding: 30px;
   }
@@ -976,7 +979,7 @@ input {
 }
 .m-game-over-btn {
   display: inline-block;
-  width: 50%;
+  min-width: 70%;
   padding: 10px;
   margin: 20px 0;
   border-radius: 0px;

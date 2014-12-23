@@ -53,6 +53,7 @@
     "grunt-contrib-cssmin": "~0.10.0",
     "grunt-filerev": "~2.1.2",
     "grunt-csscomb": "~3.0.0",
-    "grunt-autoprefixer": "~2.0.0"
+    "grunt-autoprefixer": "~2.0.0",
+    "grunt-anonymous": "~0.1.2"
   }
 }

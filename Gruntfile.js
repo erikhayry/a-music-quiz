@@ -15,6 +15,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-csscomb');
     grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-anonymous');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -158,7 +159,7 @@ module.exports = function(grunt) {
                         'app.js'
                     ]
                 }]
-            }
+            }           
         },
 
         clean: {
@@ -170,7 +171,19 @@ module.exports = function(grunt) {
                         'dist/{,*/}*'
                     ]
                 }]
-            }
+            },
+            forLive: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    dest: 'dist',
+                    src: [
+                        'dist/app/scripts/{,*/}*',
+                        'dist/app/styles/{,*/}*',
+                        'dist/app/modules/{,*/}*',
+                    ]
+                }]
+            }             
         },
 
         uglify: {
@@ -199,7 +212,16 @@ module.exports = function(grunt) {
             options: {
                 assetsDirs: ['dist']
             }
-        }
+        },
+
+anonymous: {
+    dist: {
+      options: {},
+      files: {
+        'dist/app/amq.js': ['dist/app/amq.js'],
+      },
+    }
+  }        
 
     });
 
@@ -224,13 +246,15 @@ module.exports = function(grunt) {
 
     //build dist
     grunt.registerTask('build', [
-        'clean',
+        'clean:dist',
         'build-assets',
         'useminPrepare',
         'concat',
         'copy',
         'uglify',
-        'usemin'
+        'usemin',
+        'anonymous',
+        'clean:forLive'
     ]);
 
 
