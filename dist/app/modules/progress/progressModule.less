@@ -7,18 +7,52 @@
   height: @progress-height;
   padding: @gap-sm 0;
   text-align: center;
-  text-align: center;
+
+
   &-item {
-    display: inline-block;
+    display: none;
     width: @process-item-height;
     margin: 0 @gap-sm;
     font-size: @font-sm;
     line-height: @process-item-height;
     text-align: center;
     border-radius: 50%;
+
+    &:nth-last-child(2) {
+      position: relative;
+      display: inline-block;
+      text-indent: -999px;
+      &:after {
+        position: absolute;
+        top: 0;
+        display: block;
+        width: 100%;
+        text-align: center;
+        text-indent: 0;
+        content: '...';
+      }
+    }
+
     &.is-active {
+      display: inline-block;
       color: @bg;
+      text-indent: 0;
       background-color: white;
+      &:after {
+        display: none;
+      }
+
+      & + li {
+        display: inline-block;
+      }
+
+      & + li + li {
+        display: inline-block;
+      }
+    }
+
+    &:last-child {
+      display: inline-block;
     }
   }
 }

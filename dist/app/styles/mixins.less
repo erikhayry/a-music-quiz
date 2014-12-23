@@ -1,9 +1,18 @@
 .color() {
   color: @primary;
-  background-color: @bg;
+  background-color: @bg-2;
 }
 
 .color-inverse() {
-  color: @bg;
+  color: @bg-2;
   background-color: @primary;
+}
+
+
+.hover() {
+  background-color: rgba(0, 0, 0, .1);
+}
+
+.click() {
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .3);
 }

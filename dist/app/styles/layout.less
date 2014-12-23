@@ -3,32 +3,54 @@
     height: 100%;
   }
 
+  &view-outer {
+    height: 100%;
+  }
+
   &view {
     position: relative;
-    //left: 100%;
     height: 100%;
-    padding: 0 @gap-sm;
+    overflow-x: hidden;
     overflow-y: scroll;
-    //opacity: 0;
-    //transition: all .5s ease-in;
+    opacity: 1;
+    animation-name: fadin;
+    animation-duration: 1s;
+    //animation-delay: 6s;
+    animation-iteration-count: 1;
 
-    &.is-rendered {
-      /*      left: 0;
-      opacity: 1;*/
-    }
+    animation-fill-mode: forwards;
 
 
     h1 {
-      padding: @gap;
-      font-size: @font-lg;
+      position: relative;
+      left: 0;
+      width: 101%; //hack for gap after aniamtion
+      padding: @gap-lg;
+      font-size: 1.5em;
+      color: @primary;
       text-align: center;
       text-transform: uppercase;
+      letter-spacing: 4px;
+      background-color: @bg-2;
     }
     h2 {
       padding: @gap;
       font-size: @font-md;
       text-align: center;
       text-transform: uppercase;
+      letter-spacing: 4px;
     }
+  }
+}
+
+
+
+@keyframes fadin {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }

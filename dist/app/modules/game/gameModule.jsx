@@ -90,7 +90,8 @@ var GameView = React.createClass({
 
     render: function(){
         log('GameView: render')
-        var _view = <Loading module='GameView'/>;
+        var _view = '',
+            _loader = '';
         
 		if(this.state.game){
             if(this.state.game.isGameOver){
@@ -111,11 +112,17 @@ var GameView = React.createClass({
                          />;                
             }
         }
+        else{
+            _loader = <Loading module='GameView'/>;
+        }
         
         return (
-            <div ref='view' className='m-game l-view'>
-                {_view}
-            </div>
+            <div className="l-view-outer">
+                <div ref='view' className='m-game l-view'>
+                    {_view}
+                </div>
+                {_loader}
+            </div>  
        )     
     }
 });

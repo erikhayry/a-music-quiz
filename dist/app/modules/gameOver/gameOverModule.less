@@ -1,33 +1,38 @@
 .m-game-over {
+  p {
+    padding: @gap-sm;
+  }
+  &-history {
+    width: 100%;
+    padding: @gap-sm;
+    text-align: left;
+  }
   &-history-item {
     position: relative;
     width: 100%;
-    padding: @gap 100px @gap @gap-sm*3;
+    padding: @gap 110px @gap @gap+@gap-sm;
     overflow: hidden;
+    font-size: @font-sm;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border-bottom: 1px solid @c13;
 
 
     &:after {
       position: absolute;
-      top: 25px;
-      left: 0;
-      width: 10px;
-      height: 10px;
-      content: '';
-      background-color: @right;
-      border: 3px solid @primary;
-      border-radius: 50%;
+      top: 20px;
+      left: 10px;
+      content: '\2714';
     }
 
     &.is-answer-false:after {
-      background-color: @wrong;
+      content: '\2718';
     }
 
     &-listen {
       position: absolute;
-      top: 15px;
+      top: 10px;
       right: 0;
       width: 100px;
       height: 36px;

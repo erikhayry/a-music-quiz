@@ -1,1 +1,1 @@
-"use strict";var Points=React.createClass({displayName:"Points",render:function(){return React.DOM.div({className:"m-points"},this.props.points," pts ")}});
+"use strict";var Points=React.createClass({displayName:"Points",getInitialState:function(){return{added:""}},componentWillReceiveProps:function(a){var b=a.points-this.props.points;b>0&&this.setState({added:b})},render:function(){return log("Points: render"),React.DOM.div({className:"m-points","data-added":this.state.added},this.props.points," pts ")}});

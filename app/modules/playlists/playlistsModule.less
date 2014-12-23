@@ -6,14 +6,15 @@
   }
   &-list {
     width: 100%;
-    padding: 10px;
+    padding: @gap-sm;
     text-align: left;
 
 
     &-item {
       position: relative;
-      padding-right: 100px;
+      padding-right: 110px;
       overflow: hidden;
+      font-size: @font-sm;
       border-bottom: 1px solid @c13;
     }
   }
@@ -21,20 +22,28 @@
   &-play-btn {
     display: inline-block;
     width: 100%;
-    padding: 10px;
-    margin: 10px;
+    padding: @gap-sm;
+    margin: @gap-sm;
     overflow: hidden;
     color: @primary;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
     background-color: transparent;
+
+    &:hover {
+      .hover;
+    }
+
+    &:active {
+      .click;
+    }
   }
 
   &-share-btn {
     position: absolute;
-    top: 3px;
-    right: 0;
+    top: -4px;
+    right: 20px;
     width: 60px;
     padding: 5px;
     font-size: 12px;
@@ -43,6 +52,6 @@
 
   &-change-btn {
     float: right;
-    margin: 10px;
+    margin: @gap-sm;
   }
 }

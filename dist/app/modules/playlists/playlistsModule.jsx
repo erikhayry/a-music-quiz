@@ -27,9 +27,9 @@ var PlaylistsView = React.createClass({
         this.props.onPlay(event.target.dataset.owner, event.target.dataset.playlistid)
     },
 
-    getPlaylists: function(userId) {
-        log('Playlist: getPlaylists ' + userId);
-        spotifyService.getPlaylists(userId).then(function(playlists) {
+    getAllPlaylists: function(userId) {
+        log('Playlist: getAllPlaylists ' + userId);
+        spotifyService.getAllPlaylists(userId).then(function(playlists) {
         	log('Playlist: got playlists');
         	log(playlists)
             this.setState({
@@ -43,7 +43,8 @@ var PlaylistsView = React.createClass({
 
     render: function() {
         log('Playlist: render');
-        var _view = <Loading module="Playlist" />;
+        var _view =  '',
+            _loader = '';
 
         if(this.state.playlists){
         	var _list = {};
@@ -78,19 +79,26 @@ var PlaylistsView = React.createClass({
 	        		</ul>     	
         }
         else{
-        	this.getPlaylists(this.props.player);
+            _loader = <Loading module="Playlist" />;
+        	this.getAllPlaylists(this.props.player);
         }
 
-        return ( <div ref='view' className="m-playlist l-view">
-                    <h1>Choose a playlist to play</h1>
+        return ( 
+                <div className="l-view-outer">
+                    <div ref='view' className="m-playlists l-view">
+                        <h1>Play</h1>
 
-                    <PlaylistInput 
-                        onPlay={this.props.onPlay}
-                        onUnvalidPlaylistUrl={this.props.onError}
-                    />
-                    {_view}
-                    <button onClick={this.props.onChangeUser}>Change user</button>
-            	</div>
+                        <PlaylistInput 
+                            onPlay={this.props.onPlay}
+                            onUnvalidPlaylistUrl={this.props.onError}
+                        />
+                        <h2>Or choose one of your playlists</h2>
+
+                        {_view}
+                        <button className="m-playlists-change-btn" onClick={this.props.onChangeUser}>Change user</button>
+                	</div>
+                    {_loader}
+                </div>  
         );
 	}
 });

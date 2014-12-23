@@ -15,8 +15,6 @@ var PlaylistInput = React.createClass({
     handlePlay: function(event){
         log('PlaylistInput: handlePlay')
         event.preventDefault();
-        //http://open.spotify.com/user/eportin/playlist/5L5SPmBNR3VMGQVGLJfIDL
-        //spotify:user:eportin:playlist:3vz4y2C9dYDFivKP79QorS
 
         var _playlistUrl = spotifyService.getUrl(this.state.input);
 
@@ -66,8 +64,8 @@ var PlaylistInput = React.createClass({
         }
 
         return (
-            <div className="m-playlist-inout">
-                <input ref="input"  type="text" placeholder="Use HTTP Link or Spotify URI" />
+            <div className="m-playlist-input">
+                <input ref="input"  type="text" placeholder="Use a HTTP Link or Spotify URI" />
                 <button onClick={this.handlePlay} disabled={_disabled}>Play</button>
             </div>
        )     

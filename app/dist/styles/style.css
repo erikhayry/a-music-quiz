@@ -138,8 +138,10 @@ body {
   height: 100%;
   padding: 20px;
   font-family: 'Varela Round', sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 1.5em;
   color: #ffffff;
+  letter-spacing: 2px;
   background-color: #222222;
 }
 a {
@@ -153,8 +155,9 @@ button {
   display: block;
   padding: 20px;
   margin: 20px 0;
-  font-family: 'Varela Round', sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 1em;
+  letter-spacing: 2px;
   cursor: pointer;
   border: none;
   border-radius: 0px;
@@ -168,6 +171,7 @@ button[disabled] {
 }
 input {
   border: none;
+  outline: none;
 }
 .l-app-inner {
   height: 100%;
@@ -195,11 +199,11 @@ input {
   left: 0;
   width: 101%;
   padding: 40px;
-  margin-bottom: 20px;
   font-size: 1.5em;
   color: #ffffff;
   text-align: center;
   text-transform: uppercase;
+  letter-spacing: 4px;
   background-color: #232d3b;
 }
 .l-view h2 {
@@ -207,6 +211,7 @@ input {
   font-size: 1em;
   text-align: center;
   text-transform: uppercase;
+  letter-spacing: 4px;
 }
 @-webkit-keyframes fadin {
   from {
@@ -246,8 +251,9 @@ input {
 }
 .m-playlists-list-item {
   position: relative;
-  padding-right: 100px;
+  padding-right: 110px;
   overflow: hidden;
+  font-size: 0.6em;
   border-bottom: 1px solid #ba3239;
 }
 .m-playlists-play-btn {
@@ -262,10 +268,16 @@ input {
   white-space: nowrap;
   background-color: transparent;
 }
+.m-playlists-play-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.m-playlists-play-btn:active {
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
 .m-playlists-share-btn {
   position: absolute;
-  top: 3px;
-  right: 0;
+  top: -4px;
+  right: 20px;
   width: 60px;
   padding: 5px;
   font-size: 12px;
@@ -279,11 +291,12 @@ input {
   position: relative;
   height: 100%;
   padding-bottom: 50px;
+  background-color: #232d3b;
 }
 .m-round-nav {
   width: 100%;
-  margin-bottom: 20px;
   overflow: hidden;
+  background-color: #232d3b;
 }
 .m-round-nav-item {
   float: left;
@@ -310,12 +323,14 @@ input {
 }
 .m-music-player {
   width: 100%;
-  height: 100px;
+  height: 130px;
+  padding-bottom: 50px;
   overflow: hidden;
   font-size: 2em;
   line-height: 100px;
-  color: #fff;
+  color: #ffffff;
   text-align: center;
+  background-color: #232d3b;
 }
 .m-login {
   text-align: center;
@@ -334,7 +349,7 @@ input {
   border-radius: 0px;
 }
 .m-login a:hover {
-  opacity: .8;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .m-login a:active {
   box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.3);
@@ -404,6 +419,7 @@ input {
   margin: 20px 0;
 }
 .m-game-nav-result {
+  margin: 40px 0;
   font-size: 1.5em;
   text-transform: uppercase;
 }
@@ -461,9 +477,21 @@ input {
 }
 .m-options-btn {
   width: 100%;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 30px;
+  margin: 0 0 10px;
   text-align: center;
+}
+.m-options-btn:nth-child(1) {
+  background-color: #7eb867;
+}
+.m-options-btn:nth-child(2) {
+  background-color: #e5625c;
+}
+.m-options-btn:nth-child(3) {
+  background-color: #f9bf76;
+}
+.m-options-btn:nth-child(4) {
+  background-color: #8eb2c5;
 }
 .m-options-btn.is-active {
   opacity: 1;
@@ -529,32 +557,37 @@ input {
     margin-top: 25px;
   }
 }
+.m-game-over p {
+  padding: 10px;
+}
+.m-game-over-history {
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+}
 .m-game-over-history-item {
   position: relative;
   width: 100%;
-  padding: 20px 100px 20px 30px;
+  padding: 20px 110px 20px 30px;
   overflow: hidden;
+  font-size: 0.6em;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border-bottom: 1px solid #ba3239;
 }
 .m-game-over-history-item:after {
   position: absolute;
-  top: 25px;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  content: '';
-  background-color: #1a9d1a;
-  border: 3px solid #ffffff;
-  border-radius: 50%;
+  top: 20px;
+  left: 10px;
+  content: '\2714';
 }
 .m-game-over-history-item.is-answer-false:after {
-  background-color: #cf1c1c;
+  content: '\2718';
 }
 .m-game-over-history-item-listen {
   position: absolute;
-  top: 15px;
+  top: 10px;
   right: 0;
   width: 100px;
   height: 36px;
@@ -606,24 +639,23 @@ input {
 }
 .m-playlist-input {
   position: relative;
-  padding: 10px 110px 10px 10px;
-  margin-bottom: 20px;
+  padding: 20px 110px 20px 10px;
   overflow: hidden;
+  font-size: 0.6em;
 }
 .m-playlist-input input {
   width: 100%;
-  height: 50px;
   padding: 10px;
-  font-size: 1em;
+  font-size: 0.6em;
 }
 .m-playlist-input button {
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: 10px;
   width: 100px;
-  height: 50px;
   padding: 10px;
   margin: 0;
+  font-size: 0.6em;
 }
 .m-error {
   position: relative;
