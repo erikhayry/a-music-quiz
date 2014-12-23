@@ -10,9 +10,70 @@
 
 
 .hover() {
-  background-color: rgba(0, 0, 0, .1);
+  background-color: @yellow;
 }
 
-.click() {
-  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .3);
+.button(@color) {
+  position: relative;
+  display: inline-block;
+  background-color: @color;
+  transition: .1s all;
+  transform: translate3d(0, 0, 0);
+
+  &[disabled="disabled"], &[disabled] {
+    opacity: .5;
+
+    &:hover {
+      opacity: .5;
+    }
+  }
+
+  &:after,
+  &:before {
+    position: absolute;
+    top: 100%;
+    width: 50%;
+    height: 3px;
+    content: '';
+    background: darken(@color, 10);
+    transition: .1s height,
+    .1s background;
+  }
+
+  &:after {
+    right: 0;
+    transform: skewX(-45deg);
+    transform-origin: 0 0;
+  }
+
+  &:before {
+    left: 0;
+    transform: skewX(45deg);
+    transform-origin: 100% 0;
+  }
+
+  &:hover {
+    background: darken(@color, 10);
+    transform: translate3d(0, 3px, 0);
+
+    &:after,
+    &:before {
+      height: 0;
+    }
+  }
+
+  &[disabled="disabled"], &[disabled] {
+    &:after,
+    &:before {
+      height: 0;
+    }
+  }
+
+  &.is-active {
+    opacity: 1;
+    &:hover {
+      background-color: @color;
+      opacity: 1;
+    }
+  }
 }

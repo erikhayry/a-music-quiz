@@ -1,23 +1,38 @@
 .m-options {
+  height: 100%;
+  padding: 0;
   &-btn {
     width: 100%;
-    padding: 30px;
-    margin: 0 0 @gap-sm;
+    height: 20px;
+    padding: 0;
+    margin: 0 0 5px;
+    font-size: @font-sm;
     text-align: center;
     &:nth-child(1) {
-      background-color: #7eb867;
+      .button(#7eb867);
     }
     &:nth-child(2) {
-      background-color: #e5625c;
+      .button(#e5625c);
     }
     &:nth-child(3) {
-      background-color: #f9bf76;
+      .button(@yellow);
     }
     &:nth-child(4) {
-      background-color: #8eb2c5;
+      .button(#8eb2c5);
     }
-    &.is-active {
-      opacity: 1;
-    }
+
+    @media (min-height: @bp-h-sm) {
+      height: 22%;
+      margin: 0 0 3%;
+      font-size: @font-md;
+    } 
+
+    @media (min-height: @bp-h-md) {
+      padding: 30px;
+    }    
   }
+
+     @media (min-height: @bp-h-sm) {
+      padding: @gap;
+    }  
 }

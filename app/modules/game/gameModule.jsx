@@ -17,10 +17,19 @@ var GameView = React.createClass({
     		log('GameView: got next round ' + game.round.current.artist.name);
     		log(game)
 
-		    this.setState({
-	    		game: game
-	    	}); 
-
+            if(!game.isGameOver){
+                this.setState({
+                    game: game
+                });                 
+            }
+            //TODO user clicking x cause js error
+            else{
+                Delay.f(function(){
+                    this.setState({
+                        game: game
+                    }); 
+                }.bind(this, game))
+            }            
 	    }.bind(this), function(error){
 			console.error('GameView: next()')
 		}) 

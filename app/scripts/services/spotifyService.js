@@ -181,7 +181,7 @@ var spotifyService = (function(id) {
                     total: _total
                 });
 
-            }, function() {
+            }, function(error) {
                 console.error('error')
                 _deferred.reject(error);
             })

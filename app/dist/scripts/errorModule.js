@@ -23,9 +23,11 @@ var Error = React.createClass({displayName: 'Error',
 
         return (
             React.DOM.div( {className:"m-error"}, 
-                React.DOM.p(null, _text),
+                React.DOM.div( {className:"m-error-inner"}, 
+                    React.DOM.p(null, _text),
 
-                React.DOM.button( {className:"m-error-close-btn", onClick:this.handleError}, "Ok")
+                    React.DOM.button( {className:"m-error-close-btn", onClick:this.handleError}, "Ok")
+                )
             )
        )     
     }

@@ -13,6 +13,7 @@ var GameNav = React.createClass({displayName: 'GameNav',
     },
 
     render: function(){
+        log('GameNav: render');
         var _buttonEl = '',
             _disabled = '',
             _buttonTxt = '',

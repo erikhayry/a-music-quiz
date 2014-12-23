@@ -29,13 +29,17 @@ var $ = (function() {
             _config.refresh = _config.refresh || false; 
 
         this.bindFunction = function(caller, object) {
+            log('Ajax: bindFunction')
             return function() {
                 return caller.apply(object, [object]);
             };
         };
 
         this.stateChange = function(object) {
-            if (this.request.status == 401) {
+            log('Ajax: stateChange')
+            log(this.request)
+
+            if (this.request.status == 401 || this.request.status == 404) {
                 _deferred.reject(new Error(this.request.responseURL + ' : ' + this.request.statusText));
             } else if (this.request.readyState == 4 && this.request.status == 200 && this.request.responseText) {
                 var _data = JSON.parse(this.request.responseText);
