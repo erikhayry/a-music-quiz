@@ -999,6 +999,9 @@ input {
   display: inline-block;
   max-width: 600px;
 }
+.m-share a {
+  color: #222222;
+}
 .m-share p {
   padding: 20px;
 }
