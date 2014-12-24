@@ -17,7 +17,7 @@ var redirect_uri_path = 'api/callback'; // Your redirect uri
 
 var app = express();
 var dir = '/app';
-var host = 'http://a-music-quiz.herokuapp.com/';
+var host = 'http://www.amusicquiz.com/';
 var port = process.env.PORT || 3000;
 
 
