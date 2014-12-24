@@ -81,7 +81,7 @@ var LoginView = React.createClass({displayName: 'LoginView',
 		if(this.state.loginUrl){
 			_view = React.DOM.div( {className:"m-login-inner"}, 
 				    	React.DOM.h1(null, "a music quiz"),
-                        React.DOM.p(null, "Turn your Spotify playlists into a Music Quiz"),
+                        React.DOM.p(null, "Turn your Spotify playlist into a Music Quiz"),
            				React.DOM.a( {className:"m-login-link", href:this.state.loginUrl},  " login with Spotify " ),
 				      	React.DOM.p( {className:"m-login-cred"}, "made by Erik Portin")
            			) 	
