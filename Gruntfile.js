@@ -159,7 +159,7 @@ module.exports = function(grunt) {
                         'app.js'
                     ]
                 }]
-            }           
+            }
         },
 
         clean: {
@@ -183,7 +183,7 @@ module.exports = function(grunt) {
                         'dist/app/modules/{,*/}*',
                     ]
                 }]
-            }             
+            }
         },
 
         uglify: {
@@ -214,14 +214,14 @@ module.exports = function(grunt) {
             }
         },
 
-anonymous: {
-    dist: {
-      options: {},
-      files: {
-        'dist/app/amq.js': ['dist/app/amq.js'],
-      },
-    }
-  }        
+        anonymous: {
+            dist: {
+                options: {},
+                files: {
+                    'dist/app/amq.js': ['dist/app/amq.js'],
+                },
+            }
+        }
 
     });
 
