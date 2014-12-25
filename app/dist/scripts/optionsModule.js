@@ -23,7 +23,7 @@ var Options = React.createClass({displayName: 'Options',
                                 onClick:this.handleAnswer,
                                 'data-answer':option.id,
                                 key:option.id}
-                           , option.name)
+                           , React.DOM.span(null, option.name))
                            );        
         }.bind(this));
         
