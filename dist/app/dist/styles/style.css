@@ -350,8 +350,9 @@ input {
   line-height: 30px;
   color: #222222;
   text-align: center;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 50%;
+  letter-spacing: 0px;
 }
 .m-round-points {
   padding: 10px;
@@ -460,6 +461,9 @@ input {
     margin: 80px 0;
   }
 }
+.m-login p {
+  padding: 0 10px;
+}
 .m-login-cred {
   position: absolute;
   bottom: 0;
@@ -523,7 +527,7 @@ input {
 .m-progress-item:nth-last-child(2) {
   position: relative;
   display: inline-block;
-  text-indent: -999px;
+  text-indent: -99999px;
 }
 .m-progress-item:nth-last-child(2):after {
   position: absolute;
@@ -569,7 +573,7 @@ input {
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden visible;
+  overflow: hidden;
 }
 .m-options-btn:nth-child(1) {
   position: relative;
@@ -998,6 +1002,7 @@ input {
 .m-share-inner {
   display: inline-block;
   max-width: 600px;
+  width: 100%;
 }
 .m-share a {
   color: #222222;
@@ -1015,6 +1020,9 @@ input {
   background-color: #222222;
   border-radius: 0px;
   font-size: 0.6em;
+}
+.m-share-link-wrapper {
+  overflow: auto;
 }
 .m-share-link {
   font-size: 0.6em;

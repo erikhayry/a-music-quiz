@@ -24,7 +24,7 @@ var LoginView = React.createClass({
         log('Login: tryLogin');
 
         var _queries = Helpers.getQueries(window.location.search),
-            _tokens = sessionStorage.getItem('amq-user') || spotifyService.getTokens(window.location.search).accessToken;
+            _tokens = localStorage.getItem('amq-user') || spotifyService.getTokens(window.location.search).accessToken;
 
         
         //TODO automate
@@ -48,7 +48,7 @@ var LoginView = React.createClass({
                 log('Login: got user');
                 log(userData);
                 
-                sessionStorage.setItem('amq-user', _tokens);
+                localStorage.setItem('amq-user', _tokens);
             
                 var _gameUrl = JSON.parse(sessionStorage.getItem('amq-game'));
 
@@ -64,7 +64,7 @@ var LoginView = React.createClass({
 
             }.bind(this), function() {
                 log('Login: failed to get user');
-                sessionStorage.removeItem('amq-user');
+                localStorage.removeItem('amq-user');
                 this.login();
             }.bind(this))
         } else {

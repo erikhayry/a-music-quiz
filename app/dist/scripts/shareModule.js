@@ -31,7 +31,7 @@ var Share = React.createClass({displayName: 'Share',
                         )
                     ),
                     React.DOM.p(null, "or copy this url"),
-                    React.DOM.p(null, React.DOM.a( {href:this.props.share.url, target:"_blank", className:"m-share-link"}, this.props.share.url)),
+                    React.DOM.p( {className:"m-share-link-wrapper"}, React.DOM.a( {href:this.props.share.url, target:"_blank", className:"m-share-link"}, this.props.share.url)),
 
                     React.DOM.button( {className:"m-share-close-btn", onClick:this.props.onResetShare}, "Close")
                 )

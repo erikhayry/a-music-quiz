@@ -15,7 +15,7 @@ describe("Game Model", function() {
         expect(_game).toBeDefined();
 
         expect(_game.playlistId).toEqual('123');
-        expect(_game.playerId).toEqual('erikportin');
+        expect(_game.playlistOwner).toEqual('erikportin');
 
         expect(_game.points).toEqual(0);
         expect(_game.gameLength).toEqual(10);
@@ -386,7 +386,7 @@ describe("Game.reset()", function() {
         expect(_game).toBeDefined();
 
         expect(_game.playlistId).toEqual('123');
-        expect(_game.playerId).toEqual('erikportin');
+        expect(_game.playlistOwner).toEqual('erikportin');
 
         expect(_game.points).toEqual(0);
         expect(_game.gameLength).toEqual(6);
