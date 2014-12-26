@@ -82,7 +82,7 @@ var AppView = React.createClass({
 
     handleChangeUser: function(){
         log('AppView: handleChangeUser');
-        sessionStorage.removeItem('amq-user');
+        localStorage.removeItem('amq-user');
         history.pushState({ handleChangeUser: '' }, 'AppView', '');
 
         this.setState({
