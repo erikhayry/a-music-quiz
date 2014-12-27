@@ -49,7 +49,8 @@ var PlaylistsView = React.createClass({
         if(this.state.playlists){
         	var _list = {};
 			this.state.playlists.forEach(function(playlist) {
-							if(playlist.total >= Settings.minPlaylistSize){
+                console.log(playlist)
+							if(playlist.total >= Settings.minPlaylistSize && playlist.id){
 								_list['playlist' + playlist.id] =  
 										<li className='m-playlists-list-item'>                                            
                                             <button

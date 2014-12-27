@@ -55,7 +55,7 @@ var GameView = React.createClass({
     	log('GameView: getGame');
     	
     	new Game(playlistOwner, playlistId, {gameLength: Settings.gameLength}).next().then(function(game){
-    		log('GameView: got new game ' + game.round.current.artist.name);
+    		log('GameView: got new game ' + game.round.current.artist.name + ' - ' + game.round.current.track.name);
     		log(game)
 		    
 		    this.setState({

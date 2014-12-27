@@ -162,6 +162,7 @@ Game.prototype.answer = function(answer, points) {
     //TODO error handling and check potential race condition
     _getAllTracks(_this).then(function(allTracks) {
         //TODO can artist and track id be the same? low risk but could be a potential false negative
+        //Also possible with issue with artist.id being the same as other options but should be fine as we only allow one of each artist
         if (allTracks[_this._currentOptionsIndex].artist.id === answer || allTracks[_this._currentOptionsIndex].track.id === answer) {
             _this.points += parseInt(points);
 
