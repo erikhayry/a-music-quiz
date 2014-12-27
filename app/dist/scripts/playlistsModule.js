@@ -49,31 +49,30 @@ var PlaylistsView = React.createClass({displayName: 'PlaylistsView',
         if(this.state.playlists){
         	var _list = {};
 			this.state.playlists.forEach(function(playlist) {
-                console.log(playlist)
-							if(playlist.total >= Settings.minPlaylistSize && playlist.id){
-								_list['playlist' + playlist.id] =  
-										React.DOM.li( {className:"m-playlists-list-item"},                                             
-                                            React.DOM.button(
-                                                {className:"m-playlists-play-btn",
-                                                'data-owner':playlist.owner, 
-                                                'data-playlistid':playlist.id,   
-                                                onClick:this.handlePlay}
-                                            , 
-                                                playlist.name
-                                            ),                                            
+				if(playlist.total >= Settings.minPlaylistSize && playlist.id){
+					_list['playlist' + playlist.id] =  
+							React.DOM.li( {className:"m-playlists-list-item"},                                             
+                                React.DOM.button(
+                                    {className:"m-playlists-play-btn",
+                                    'data-owner':playlist.owner, 
+                                    'data-playlistid':playlist.id,   
+                                    onClick:this.handlePlay}
+                                , 
+                                    playlist.name
+                                ),                                            
 
-                                            React.DOM.button(
-                                                {className:"m-playlists-share-btn", 
-                                                'data-owner':playlist.owner, 
-                                                'data-playlistid':playlist.id,                                            
-                                                'data-playlistname':playlist.name,                                            
-                                                onClick:this.handleShare}
-                                            , 
-                                                " Share "
-                                            )
-										);		    		
-							}
-						}.bind(this));
+                                React.DOM.button(
+                                    {className:"m-playlists-share-btn", 
+                                    'data-owner':playlist.owner, 
+                                    'data-playlistid':playlist.id,                                            
+                                    'data-playlistname':playlist.name,                                            
+                                    onClick:this.handleShare}
+                                , 
+                                    " Share "
+                                )
+							);		    		
+				}
+			}.bind(this));
 
 	        _view = React.DOM.ul( {className:"m-playlists-list"},  
 	        			_list
