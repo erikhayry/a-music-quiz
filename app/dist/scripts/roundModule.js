@@ -36,6 +36,7 @@ var Round = React.createClass({displayName: 'Round',
 
     handleAnswer: function(answer) {
         log('Round: handleAnswer')
+        log(answer)
 
         this.setState({
             answer: answer,

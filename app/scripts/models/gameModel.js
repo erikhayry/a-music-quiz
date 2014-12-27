@@ -66,14 +66,15 @@ function _isValidPlaylist(allTracks){
 function _setCurrentRound(game, allTracks, gameLength){
     log('Game Model: _setCurrentRound')
     log(game, allTracks, gameLength)
+    var _type = (Math.random() >= 0.5) ? 'track' : 'artist';
     game._currentOptionsIndex++;
 
     //set current track for round
     var _currentRound = {
         current: allTracks[game._currentOptionsIndex],
         options: [{
-            'id': allTracks[game._currentOptionsIndex].artist.id,
-            'name': allTracks[game._currentOptionsIndex].artist.name
+            'id': allTracks[game._currentOptionsIndex][_type].id,
+            'name': allTracks[game._currentOptionsIndex][_type].name
         }]
     }
 
@@ -81,11 +82,13 @@ function _setCurrentRound(game, allTracks, gameLength){
 
     //add three more random tracks from different artists
     while (_currentRound.options.length < 4) {
-        var _randomIndex = Math.floor(Math.random() * allTracks.length);
-        if (!_containsId(_currentRound.options, allTracks[_randomIndex].artist.id)) {
+        var _randomIndex = Math.floor(Math.random() * allTracks.length),
+            _id = allTracks[_randomIndex][_type].id;
+
+        if (!_containsId(_currentRound.options, _id)) {
             _currentRound.options.push({
-                'id': allTracks[_randomIndex].artist.id,
-                'name': allTracks[_randomIndex].artist.name
+                'id': _id,
+                'name': allTracks[_randomIndex][_type].name
             });
         }
     }
@@ -158,7 +161,8 @@ Game.prototype.answer = function(answer, points) {
 
     //TODO error handling and check potential race condition
     _getAllTracks(_this).then(function(allTracks) {
-        if (allTracks[_this._currentOptionsIndex].artist.id === answer) {
+        //TODO can artist and track id be the same? low risk but could be a potential false negative
+        if (allTracks[_this._currentOptionsIndex].artist.id === answer || allTracks[_this._currentOptionsIndex].track.id === answer) {
             _this.points += parseInt(points);
 
             _history = {

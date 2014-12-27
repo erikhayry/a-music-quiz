@@ -7,6 +7,7 @@
 var RoundAction = React.createClass({
     handleAnswer: function(answer) {
         log('RoundAction: handleAnswer')
+        log(answer)
         this.props.onAnswer(answer);
     },    
 
@@ -26,14 +27,11 @@ var RoundAction = React.createClass({
                             />
         } 
         else if ((!this.props.musicPlaying && !this.props.answer) || this.props.game.isGameOver) {
-
             var _previous = _currentRoundIndex - 1,
-                _previousAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].answer : undefined,
-                _previousQuestion = (this.props.game.history[_previous]) ? this.props.game.history[_previous].data.artist.id : undefined
+                _previousRightAnswer = (this.props.game.history[_previous]) ? this.props.game.history[_previous].rightAnswer : undefined;
 
                 _roundAction = <GameNav
-                                    previousAnswer={_previousAnswer}
-                                    previousQuestion={_previousQuestion}
+                                    previousRightAnswer={_previousRightAnswer}
                                     isGameOver={this.props.game.isGameOver}
                                     isMusicLoaded={this.props.musicLoaded}
                                     

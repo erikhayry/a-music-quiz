@@ -11,7 +11,7 @@ var GameNav = React.createClass({displayName: 'GameNav',
             Delay.f(this.props.onGameOver);
         }
     },
-
+    
     render: function(){
         log('GameNav: render');
         var _buttonEl = '',
@@ -19,8 +19,9 @@ var GameNav = React.createClass({displayName: 'GameNav',
             _buttonTxt = '',
             _navCopy = '';
 
-        if(this.props.previousQuestion){
-            if(this.props.previousAnswer == this.props.previousQuestion){
+        if(this.props.previousRightAnswer === false || this.props.previousRightAnswer === true){
+
+            if(this.props.previousRightAnswer){
                 _navCopy = 'Right!';
             }
             

@@ -110,6 +110,7 @@ describe("Game.next()", function() {
 
         expect(_game.round.current.track.url).toEqual('http://d318706lgtcm8e.cloudfront.net/mp3-preview/1');
         expect(_game.round.current.track.name).toEqual('Track Name 1');
+        expect(_game.round.current.track.id).toEqual('1');
         expect(_game.round.current.artist.name).toEqual('Artist Name 1');
         expect(_game.round.current.artist.id).toEqual('1');
         expect(_game.round.current.index).toEqual(1);
@@ -331,11 +332,13 @@ describe("Game.answer()", function() {
         expect(_game.history[0].rightAnswer).toEqual(true);
         expect(_game.history[0].points).toEqual(20);
         expect(_game.history[0].data.artist.id).toEqual('1');
+        expect(_game.history[0].data.track.id).toEqual('1');
         expect(_game.history[0].answer).toEqual('1');
 
         expect(_game.history[2].rightAnswer).toEqual(false);
         expect(_game.history[2].points).toEqual(0);
-        expect(_game.history[2].data.artist.id).toEqual('3');
+        expect(_game.history[0].data.artist.id).toEqual('1');
+        expect(_game.history[2].data.track.id).toEqual('3');
         expect(_game.history[2].answer).toEqual('2');
 
     });

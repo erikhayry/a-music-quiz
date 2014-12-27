@@ -65,7 +65,7 @@ var GameView = React.createClass({displayName: 'GameView',
 		}.bind(this), function(error){
 			console.error('GameView: failed to get game');
             this.props.onError({
-                text: 'Failed to load playlist. Url is not valid or the playlist is private',
+                text: 'Failed to load playlist. Either the url is not valid, the playlist is private or it doesn\'t have enough variety',
                 reset: true
             })
 		}.bind(this));   		
