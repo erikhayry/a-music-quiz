@@ -248,7 +248,11 @@ var spotifyService = (function(id) {
                     id: _arr[4]
                 };
             }
-        } else if (str.indexOf('http://open.spotify.com/user/') > -1) {
+        } else if ( str.indexOf('http://open.spotify.com/user/') > -1 || 
+                    str.indexOf('https://open.spotify.com/user/') > -1 ||
+                    str.indexOf('http://play.spotify.com/user/') > -1 ||
+                    str.indexOf('https://play.spotify.com/user/') > -1
+                ) {
             var _arr = str.split('/')
             if (_arr.length === 7) {
                 _ret = {
