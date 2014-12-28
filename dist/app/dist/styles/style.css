@@ -215,7 +215,9 @@ button[disabled]:hover {
   background-color: #232d3b;
 }
 input {
+  margin: 0;
   border: none;
+  border-radius: 0px;
   outline: none;
 }
 .l-app-inner {
