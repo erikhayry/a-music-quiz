@@ -34,7 +34,7 @@ app.use(express.static(__dirname + dir));
 
 app.get('/api/login', function(req, res) {
     var redirect_uri = host + redirect_uri_path;
-    var scope = 'playlist-modify playlist-modify-private';
+    var scope = '';
     res.send({
         'redirect_url': 'https://accounts.spotify.com/authorize?' +
             querystring.stringify({
