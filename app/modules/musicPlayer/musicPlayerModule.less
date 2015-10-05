@@ -1,15 +1,15 @@
 .m-music-player {
   width: 100%;
   height: calc(~"35% - " @round-nav-height);
+  min-height: 50px;
+  max-height: 100px;
   overflow: hidden;
   font-size: 1em;
-  line-height: calc(~"35% - " @round-nav-height);
+  line-height: 1;
   color: @primary;
   text-align: center;
   background-color: @bg-2;
-  max-height: 100px;
-  min-height: 50px;
   @media (min-height: @bp-h-sm) {
     font-size: 2em;
-  }  
+  }
 }
