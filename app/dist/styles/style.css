@@ -194,8 +194,7 @@ button {
   border: none;
   border-radius: 0px;
   outline: none;
-  -webkit-transition: .2s all;
-          transition: .2s all;
+  transition: .2s all;
   color: #ffffff;
   background-color: #232d3b;
 }
@@ -270,7 +269,6 @@ input {
   height: 100%;
   margin: 0 auto;
   overflow: hidden;
-  background: -webkit-linear-gradient(315deg, #bd2b33 0%, #d5474e 100%);
   background: linear-gradient(135deg, #bd2b33 0%, #d5474e 100%);
   border-radius: 0px;
 }
@@ -303,8 +301,7 @@ input {
   text-overflow: ellipsis;
   white-space: nowrap;
   background-color: transparent;
-  -webkit-transition: .1s all;
-          transition: .1s all;
+  transition: .1s all;
 }
 .m-playlists-play-btn:hover {
   background-color: #bd2b33;
@@ -352,9 +349,9 @@ input {
   line-height: 30px;
   color: #222222;
   text-align: center;
+  letter-spacing: 0;
   background-color: #ffffff;
   border-radius: 50%;
-  letter-spacing: 0px;
 }
 .m-round-points {
   padding: 10px;
@@ -362,14 +359,14 @@ input {
 .m-music-player {
   width: 100%;
   height: calc(35% -  105px);
+  min-height: 50px;
+  max-height: 100px;
   overflow: hidden;
   font-size: 1em;
   line-height: 1;
   color: #ffffff;
   text-align: center;
   background-color: #232d3b;
-  max-height: 100px;
-  min-height: 50px;
 }
 @media (min-height: 380px) {
   .m-music-player {
@@ -392,8 +389,7 @@ input {
   position: relative;
   display: inline-block;
   background-color: #d0323a;
-  -webkit-transition: .1s all;
-          transition: .1s all;
+  transition: .1s all;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -413,9 +409,7 @@ input {
   height: 3px;
   content: '';
   background: #a8272d;
-  -webkit-transition: .1s height,
-    .1s background;
-          transition: .1s height,
+  transition: .1s height,
     .1s background;
 }
 .m-login a:after {
@@ -569,24 +563,23 @@ input {
 .m-options-btn {
   width: 100%;
   height: 20px;
+  min-height: 40px;
   padding: 10px;
   margin: 0 0 5px;
-  min-height: 40px;
   font-size: 0.6em;
   text-align: center;
 }
 .m-options-btn span {
   display: block;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 }
 .m-options-btn:nth-child(1) {
   position: relative;
   display: inline-block;
   background-color: #7eb867;
-  -webkit-transition: .1s all;
-          transition: .1s all;
+  transition: .1s all;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -606,9 +599,7 @@ input {
   height: 3px;
   content: '';
   background: #63a14b;
-  -webkit-transition: .1s height,
-    .1s background;
-          transition: .1s height,
+  transition: .1s height,
     .1s background;
 }
 .m-options-btn:nth-child(1):after {
@@ -655,8 +646,7 @@ input {
   position: relative;
   display: inline-block;
   background-color: #e5625c;
-  -webkit-transition: .1s all;
-          transition: .1s all;
+  transition: .1s all;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -676,9 +666,7 @@ input {
   height: 3px;
   content: '';
   background: #de3830;
-  -webkit-transition: .1s height,
-    .1s background;
-          transition: .1s height,
+  transition: .1s height,
     .1s background;
 }
 .m-options-btn:nth-child(2):after {
@@ -725,8 +713,7 @@ input {
   position: relative;
   display: inline-block;
   background-color: #f9bf76;
-  -webkit-transition: .1s all;
-          transition: .1s all;
+  transition: .1s all;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -746,9 +733,7 @@ input {
   height: 3px;
   content: '';
   background: #f7a845;
-  -webkit-transition: .1s height,
-    .1s background;
-          transition: .1s height,
+  transition: .1s height,
     .1s background;
 }
 .m-options-btn:nth-child(3):after {
@@ -795,8 +780,7 @@ input {
   position: relative;
   display: inline-block;
   background-color: #8eb2c5;
-  -webkit-transition: .1s all;
-          transition: .1s all;
+  transition: .1s all;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -816,9 +800,7 @@ input {
   height: 3px;
   content: '';
   background: #6c9bb4;
-  -webkit-transition: .1s height,
-    .1s background;
-          transition: .1s height,
+  transition: .1s height,
     .1s background;
 }
 .m-options-btn:nth-child(4):after {
@@ -1007,8 +989,8 @@ input {
 }
 .m-share-inner {
   display: inline-block;
-  max-width: 600px;
   width: 100%;
+  max-width: 600px;
 }
 .m-share a {
   color: #222222;
@@ -1022,10 +1004,10 @@ input {
 .m-share-close-btn {
   display: inline-block;
   padding: 20px;
+  font-size: 0.6em;
   color: #ffffff;
   background-color: #222222;
   border-radius: 0px;
-  font-size: 0.6em;
 }
 .m-share-link-wrapper {
   overflow: auto;
