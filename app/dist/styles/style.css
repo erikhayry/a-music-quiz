@@ -364,7 +364,7 @@ input {
   height: calc(35% -  105px);
   overflow: hidden;
   font-size: 1em;
-  line-height: calc(35% -  105px);
+  line-height: 1;
   color: #ffffff;
   text-align: center;
   background-color: #232d3b;
@@ -865,12 +865,12 @@ input {
   .m-options-btn {
     height: 22%;
     margin: 0 0 3%;
-    font-size: 1em;
   }
 }
 @media (min-height: 600px) and (min-width: 320px) {
   .m-options-btn {
-    padding: 30px;
+    font-size: 1em;
+    padding: 0 30px;
   }
 }
 @media (min-height: 380px) {
